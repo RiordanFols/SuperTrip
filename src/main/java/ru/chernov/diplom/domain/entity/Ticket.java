@@ -3,7 +3,9 @@ package ru.chernov.diplom.domain.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.List;
+import java.util.Comparator;
+import java.util.Set;
+import java.util.TreeSet;
 
 /**
  * @author Pavel Chernov
@@ -16,9 +18,8 @@ public class Ticket {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
-    // todo: Set sequence of trips
     @OneToMany(fetch = FetchType.EAGER)
-    private List<Trip> trips;
+    private Set<Trip> trips = new TreeSet<>(Comparator.comparing(Trip::getFromTime));
 
     @Column(length = 25, nullable = false, updatable = false)
     private String passengerName;
