@@ -6,6 +6,7 @@ import ru.chernov.diplom.domain.TransportType;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 
 /**
  * @author Pavel Chernov
@@ -37,5 +38,9 @@ public class Trip {
     @Column(nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
-    private TransportType transportType;
+    private TransportType type;
+
+    public long getTravelTime() {
+        return ChronoUnit.MINUTES.between(fromTime, toTime);
+    }
 }

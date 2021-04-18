@@ -14,7 +14,7 @@ import java.util.Set;
 @Data
 public abstract class Solver {
 
-    public final Schedule schedule;
+    public Schedule schedule;
     public final Node start;
     public final Node end;
     public final LocalDateTime startTime;
@@ -40,7 +40,7 @@ public abstract class Solver {
     // filtering trips by time and transport type
     public Schedule filterSchedule(Schedule schedule) {
         for (var edge : schedule.getEdges()) {
-            edge.getTrips().removeIf(trip -> !transportTypesAvailable.contains(trip.getTransportType()));
+            edge.getTrips().removeIf(trip -> !transportTypesAvailable.contains(trip.getType()));
             edge.getTrips().removeIf(trip -> trip.getFromTime().isBefore(startTime));
             edge.getTrips().removeIf(trip -> trip.getToTime().isAfter(endTime));
         }

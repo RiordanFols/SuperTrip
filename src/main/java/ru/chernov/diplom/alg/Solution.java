@@ -12,6 +12,10 @@ import java.util.List;
 @Data
 public class Solution {
     private long time;
-    private long price;
+    private long cost;
     private List<Trip> trips = new ArrayList<>();
+
+    public Trip getLastTrip() {
+        return trips.get(trips.size() - 1);
+    }
 }
