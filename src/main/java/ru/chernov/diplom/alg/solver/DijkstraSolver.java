@@ -1,6 +1,5 @@
 package ru.chernov.diplom.alg.solver;
 
-import ru.chernov.diplom.alg.Edge;
 import ru.chernov.diplom.alg.Schedule;
 import ru.chernov.diplom.alg.Solution;
 import ru.chernov.diplom.domain.TransportType;
@@ -48,10 +47,9 @@ public class DijkstraSolver extends Solver {
             undone.remove(nearNode);
 
             for (Node curNode : undone) {
-                Edge edge = schedule.findEdgeByNodes(nearNode, curNode);
                 // if edge between nodes exists
-                if (edge != null) {
-                    Trip plannedTrip = findFirstTrip(edge.getTrips(),
+                if (schedule.isEdgePresent(nearNode, curNode)) {
+                    Trip plannedTrip = findFirstTrip(schedule.findTripsByNodes(nearNode, curNode),
                             solutions.get(nearNode).getLastTrip().getToTime(), endTime);
                     // if found satisfying trip
                     if (plannedTrip != null)
@@ -59,18 +57,19 @@ public class DijkstraSolver extends Solver {
                 }
             }
         }
-        optimizeSolution();
+//        optimizeSolution();
 
-//        System.out.print("\n\nFinal:");
+        System.out.print("\n\nResult:");
+        printResult();
+
     }
 
     // finding the straight way from start to nodes
     private void findStraightSolutions() {
         for (Node curNode : undone) {
-            Edge requiredEdge = schedule.findEdgeByNodes(start, curNode);
             // if edge between start end node exists
-            if (requiredEdge != null) {
-                Trip firstTrip = findFirstTrip(requiredEdge.getTrips(), startTime, endTime);
+            if (schedule.isEdgePresent(start, curNode)) {
+                Trip firstTrip = findFirstTrip(schedule.findTripsByNodes(start, curNode), startTime, endTime);
                 // if can't find any satisfying trip
                 if (firstTrip == null)
                     return;
@@ -190,12 +189,11 @@ public class DijkstraSolver extends Solver {
                 // finding max time when passenger can depart and not be late for next trip
                 var curTrip = trips.get(i);
                 var prevTrip = trips.get(i - 1);
-                var minTransferTime = curTrip.getFrom().getTransferTime(prevTrip.getType(), curTrip.getType());
+                var minTransferTime = curTrip.getEdge().getFrom().getTransferTime(prevTrip.getType(), curTrip.getType());
                 var maxArrivalTime = curTrip.getFromTime().minusMinutes(minTransferTime);
                 // finding earlier transport for the previous trip
                 // to reduce time between two trips
-                Edge edge = schedule.findEdgeByNodes(prevTrip.getFrom(), prevTrip.getTo());
-                Trip bestTrip = edge.getTrips().stream()
+                Trip bestTrip = schedule.findTripsByEdge(prevTrip.getEdge()).stream()
                         .filter(e -> e.getType().equals(prevTrip.getType()))
                         .filter(e -> e.getToTime().isBefore(maxArrivalTime) || e.getToTime().isEqual(maxArrivalTime))
                         .filter(e -> !e.equals(prevTrip))
@@ -208,5 +206,22 @@ public class DijkstraSolver extends Solver {
                 }
             }
         }
+    }
+
+    public void printResult() {
+        var solution = solutions.get(end);
+        if (solution != null) {
+            var time = solution.getTime();
+            var cost = solution.getCost();
+            var trips = solution.getTrips();
+
+            System.out.println("Time = " + time / 60 + "h " + time % 60 + "m");
+            System.out.println("Cost = " + cost + "$");
+            System.out.println("Route:");
+            trips.forEach(System.out::println);
+        } else {
+            System.out.println("No route");
+        }
+
     }
 }

@@ -45,10 +45,10 @@ public class ScheduleGenerator {
     }
 
     public static void main(String[] args) {
-        ScheduleGenerator sg = new ScheduleGenerator(1, 1, 2, 31, 30, 0, 535, 400, 0);
+        ScheduleGenerator sg;
+        sg = new ScheduleGenerator(200, 1, 2, 31, 30, 0, 535, 400, 0);
         sg.go();
         System.out.println("\n\n\n\n\n");
-
         sg = new ScheduleGenerator(500, 2, 1, 31, 30, 0, 535, 400, 0);
         sg.go();
         System.out.println("\n\n\n\n\n");
@@ -56,13 +56,61 @@ public class ScheduleGenerator {
         sg = new ScheduleGenerator(1000, 1, 3, 0, 35, 0, 0, 450, 0);
         sg.go();
         System.out.println("\n\n\n\n\n");
-
         sg = new ScheduleGenerator(1500, 3, 1, 0, 35, 0, 0, 450, 0);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+
+        sg = new ScheduleGenerator(2000, 2, 3, 45, 32, 0, 600, 450, 0);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+        sg = new ScheduleGenerator(2500, 3, 2, 45, 32, 0, 600, 450, 0);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+
+        sg = new ScheduleGenerator(3000, 2, 4, 0, 43, 132, 0, 650, 115);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+        sg = new ScheduleGenerator(3500, 4, 2, 0, 43, 132, 0, 650, 115);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+
+        sg = new ScheduleGenerator(4000, 3, 4, 0, 62, 196, 0, 750, 130);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+        sg = new ScheduleGenerator(4500, 4, 3, 0, 62, 196, 0, 750, 130);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+
+        sg = new ScheduleGenerator(5000, 1, 6, 0, 31, 0, 0, 550, 0);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+        sg = new ScheduleGenerator(5500, 6, 1, 0, 31, 0, 0, 550, 0);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+
+        sg = new ScheduleGenerator(6000, 3, 6, 16, 0, 0, 470, 0, 0);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+        sg = new ScheduleGenerator(6500, 6, 3, 16, 0, 0, 470, 0, 0);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+
+        sg = new ScheduleGenerator(7000, 4, 5, 51, 44, 136, 870, 650, 115);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+        sg = new ScheduleGenerator(7500, 5, 4, 51, 44, 136, 870, 650, 115);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+
+        sg = new ScheduleGenerator(8000, 5, 6, 0, 41, 174, 0, 600, 105);
+        sg.go();
+        System.out.println("\n\n\n\n\n");
+        sg = new ScheduleGenerator(8500, 6, 5, 0, 41, 174, 0, 600, 105);
         sg.go();
         System.out.println("\n\n\n\n\n");
     }
     public void go() {
-        System.out.println("insert into trip (id, from_id, to_id, from_time, to_time, cost, type) values ");
+        System.out.println("insert into trip (id, edge_id, from_time, to_time, cost, type) values ");
         if (busTripTimeInMinutes != 0) {
             busStart = generateFirstTripTime(busStart);
             while (busStart.isBefore(busFinish)) {
@@ -70,7 +118,7 @@ public class ScheduleGenerator {
                 var finishTime = busStart.plusMinutes(busTripTimeInMinutes);
 
                 for (int i = 0; i < 31; i++) {
-                    System.out.printf("(%d, %d, %d, '%s', '%s', %d, %s),\n",
+                    System.out.printf("(%d, %d, '%s', '%s', %d, %s),\n",
                             id, from, to,
                             startTime.plusDays(i).toString().replaceAll("T", " ") + ":00+03",
                             finishTime.plusDays(i).toString().replaceAll("T", " ") + ":00+03",
@@ -89,7 +137,7 @@ public class ScheduleGenerator {
                 var finishTime = trainStart.plusMinutes(trainTripTimeInMinutes);
 
                 for (int i = 0; i < 31; i++) {
-                    System.out.printf("(%d, %d, %d, '%s', '%s', %d, %s),\n",
+                    System.out.printf("(%d, %d, '%s', '%s', %d, %s),\n",
                             id, from, to,
                             startTime.plusDays(i).toString().replaceAll("T", " ") + ":00+03",
                             finishTime.plusDays(i).toString().replaceAll("T", " ") + ":00+03",
@@ -108,7 +156,7 @@ public class ScheduleGenerator {
                 var finishTime = planeStart.plusMinutes(planeTripTimeInMinutes);
 
                 for (int i = 0; i < 31; i++) {
-                    System.out.printf("(%d, %d, %d, '%s', '%s', %d, %s),\n",
+                    System.out.printf("(%d, %d, '%s', '%s', %d, %s),\n",
                             id, from, to,
                             startTime.plusDays(i).toString().replaceAll("T", " ") + ":00+03",
                             finishTime.plusDays(i).toString().replaceAll("T", " ") + ":00+03",

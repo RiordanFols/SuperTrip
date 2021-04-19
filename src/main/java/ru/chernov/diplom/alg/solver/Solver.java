@@ -7,6 +7,7 @@ import ru.chernov.diplom.domain.entity.Node;
 
 import java.time.LocalDateTime;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * @author Pavel Chernov
@@ -39,11 +40,11 @@ public abstract class Solver {
 
     // filtering trips by time and transport type
     public Schedule filterSchedule(Schedule schedule) {
-        for (var edge : schedule.getEdges()) {
-            edge.getTrips().removeIf(trip -> !transportTypesAvailable.contains(trip.getType()));
-            edge.getTrips().removeIf(trip -> trip.getFromTime().isBefore(startTime));
-            edge.getTrips().removeIf(trip -> trip.getToTime().isAfter(endTime));
-        }
+        schedule.setTrips(schedule.getTrips().stream()
+                .filter(e -> transportTypesAvailable.contains(e.getType()))
+                .filter(e -> e.getFromTime().isAfter(startTime))
+                .filter(e -> e.getToTime().isBefore(endTime))
+                .collect(Collectors.toSet()));
         return schedule;
     }
 }

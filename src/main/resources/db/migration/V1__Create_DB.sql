@@ -1,3 +1,7 @@
+alter table if exists edge
+    drop constraint if exists FKeir9mjo2jcgf142wvwnahivk2;
+alter table if exists edge
+    drop constraint if exists FKnvky5pi7h6jck3sbnwlpn16u5;
 alter table if exists node
     drop constraint if exists FK5pdh1j3cxragtocd3b49kw95o;
 alter table if exists ticket_trips
@@ -5,12 +9,11 @@ alter table if exists ticket_trips
 alter table if exists ticket_trips
     drop constraint if exists FK1sl7bejme6g019nxa1kw94xej;
 alter table if exists trip
-    drop constraint if exists FKqqtdlq664x5fmlvn58d0r69o4;
-alter table if exists trip
-    drop constraint if exists FKge5erckfobmfixg5vqqcep83y;
+    drop constraint if exists FKlill4w6carrwyg6f1ni5oxg4s;
 alter table if exists user_role
     drop constraint if exists FKfpm8swft53ulq2hl11yplpr5;
 
+drop table if exists edge cascade;
 drop table if exists node cascade;
 drop table if exists ticket cascade;
 drop table if exists ticket_trips cascade;
@@ -20,7 +23,17 @@ drop table if exists user_role cascade;
 drop table if exists usr cascade;
 drop sequence if exists hibernate_sequence;
 
+
 create sequence hibernate_sequence start 10000 increment 1;
+
+
+create table edge
+(
+    id      int8 not null,
+    from_id int8,
+    to_id   int8,
+    primary key (id)
+);
 
 create table node
 (
@@ -69,8 +82,7 @@ create table trip
     from_time timestamp    not null,
     to_time   timestamp,
     type      varchar(255) not null,
-    from_id   int8,
-    to_id     int8,
+    edge_id   int8,
     primary key (id)
 );
 
@@ -95,8 +107,13 @@ create table usr
     primary key (id)
 );
 
+
 alter table if exists ticket_trips
     add constraint UK_3t24fpg39ys0wnc2fxys5tuxg unique (trips_id);
+alter table if exists edge
+    add constraint FKeir9mjo2jcgf142wvwnahivk2 foreign key (from_id) references node;
+alter table if exists edge
+    add constraint FKnvky5pi7h6jck3sbnwlpn16u5 foreign key (to_id) references node;
 alter table if exists node
     add constraint FK5pdh1j3cxragtocd3b49kw95o foreign key (transfer_map_id) references transfer_map;
 alter table if exists ticket_trips
@@ -104,8 +121,6 @@ alter table if exists ticket_trips
 alter table if exists ticket_trips
     add constraint FK1sl7bejme6g019nxa1kw94xej foreign key (ticket_id) references ticket;
 alter table if exists trip
-    add constraint FKqqtdlq664x5fmlvn58d0r69o4 foreign key (from_id) references node;
-alter table if exists trip
-    add constraint FKge5erckfobmfixg5vqqcep83y foreign key (to_id) references node;
+    add constraint FKlill4w6carrwyg6f1ni5oxg4s foreign key (edge_id) references edge;
 alter table if exists user_role
     add constraint FKfpm8swft53ulq2hl11yplpr5 foreign key (user_id) references usr;

@@ -20,15 +20,13 @@ public class Trip {
     private long id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    private Node from;
-
-    @ManyToOne(fetch = FetchType.EAGER)
-    private Node to;
+    private Edge edge;
 
     @Column(nullable = false, updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime fromTime;
 
+    @Column(nullable = false, updatable = false)
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy HH:mm")
     private LocalDateTime toTime;
 
@@ -42,5 +40,16 @@ public class Trip {
 
     public long getTravelTime() {
         return ChronoUnit.MINUTES.between(fromTime, toTime);
+    }
+
+    @Override
+    public String toString() {
+        return String.format("From %s to %s. Time: %s - %s. Cost = %s. Transport - %s.",
+                this.edge.getFrom().getName(),
+                this.edge.getTo().getName(),
+                this.fromTime.toString().replace("T", " "),
+                this.toTime.toString().replace("T", " "),
+                this.cost,
+                this.type);
     }
 }

@@ -7,4 +7,5 @@ import ru.chernov.diplom.domain.entity.Node;
  * @author Pavel Chernov
  */
 public interface NodeRepository extends JpaRepository<Node, Long> {
+    Node findByName(String name);
 }

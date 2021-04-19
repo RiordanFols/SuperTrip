@@ -1,12 +1,12 @@
 package ru.chernov.diplom.alg;
 
 import lombok.Data;
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.Setter;
+import ru.chernov.diplom.domain.entity.Edge;
 import ru.chernov.diplom.domain.entity.Node;
+import ru.chernov.diplom.domain.entity.Trip;
 
 import java.util.Comparator;
+import java.util.HashSet;
 import java.util.Set;
 import java.util.TreeSet;
 import java.util.stream.Collectors;
@@ -17,29 +17,35 @@ import java.util.stream.Collectors;
 @Data
 public class Schedule {
 
-    private Set<Edge> edges;
+    private Set<Trip> trips;
+    private Set<Edge> edges = new HashSet<>();
     private Set<Node> nodes = new TreeSet<>(Comparator.comparing(Node::getName));
 
-    public Schedule(Set<Edge> edges) {
-        this.edges = edges;
-
-        Set<Node> setFrom = edges.stream()
-                .map(Edge::getFrom)
-                .collect(Collectors.toSet());
-
-        Set<Node> setTo = edges.stream()
-                .map(Edge::getTo)
-                .collect(Collectors.toSet());
-
-        this.nodes.addAll(setFrom);
-        this.nodes.addAll(setTo);
+    public Schedule(Set<Trip> trips) {
+        this.trips = trips;
+        trips.forEach(e -> {
+            edges.add(e.getEdge());
+            nodes.add(e.getEdge().getFrom());
+            nodes.add(e.getEdge().getTo());
+        });
     }
 
-    public Edge findEdgeByNodes(Node from, Node to) {
+    public boolean isEdgePresent(Node startNode, Node endNode) {
         return edges.stream()
-                .filter(e -> e.getFrom().equals(from))
-                .filter(e -> e.getTo().equals(to))
-                .findFirst().orElse(null);
+                .anyMatch(e -> e.getFrom().equals(startNode) && e.getTo().equals(endNode));
+    }
 
+    public Set<Trip> findTripsByEdge(Edge edge) {
+        return trips.stream()
+                .filter(e -> e.getEdge().getFrom().equals(edge.getFrom()))
+                .filter(e -> e.getEdge().getTo().equals(edge.getTo()))
+                .collect(Collectors.toSet());
+    }
+
+    public Set<Trip> findTripsByNodes(Node start, Node end) {
+        return trips.stream()
+                .filter(e -> e.getEdge().getFrom().equals(start))
+                .filter(e -> e.getEdge().getTo().equals(end))
+                .collect(Collectors.toSet());
     }
 }
