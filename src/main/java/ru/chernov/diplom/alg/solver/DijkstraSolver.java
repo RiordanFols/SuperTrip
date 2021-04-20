@@ -90,8 +90,9 @@ public class DijkstraSolver extends Solver {
     private Trip findFirstTrip(Set<Trip> trips, LocalDateTime min, LocalDateTime max) {
         Predicate<Trip> timeFiletPredicate = (e) -> {
             var fromDateTime = e.getFromTime();
-            return fromDateTime.isAfter(min) || fromDateTime.isEqual(max) &&
-                    fromDateTime.isBefore(min) || fromDateTime.isEqual(max);
+            var toDateTime = e.getToTime();
+            return fromDateTime.isAfter(min) || fromDateTime.isEqual(min) &&
+                    toDateTime.isBefore(max) || toDateTime.isEqual(max);
         };
         return switch (solutionType) {
             case TIME -> trips.stream()
