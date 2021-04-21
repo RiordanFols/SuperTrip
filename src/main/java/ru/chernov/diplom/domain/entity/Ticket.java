@@ -3,9 +3,7 @@ package ru.chernov.diplom.domain.entity;
 import lombok.Data;
 
 import javax.persistence.*;
-import java.util.Comparator;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 
 /**
  * @author Pavel Chernov
@@ -15,24 +13,33 @@ import java.util.TreeSet;
 public class Ticket {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
-    private long id;
+    @Column(length = 36)
+    private String number;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private Set<Trip> trips = new TreeSet<>(Comparator.comparing(Trip::getFromTime));
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "ticket_trips",
+            joinColumns = @JoinColumn(name = "ticket_id", nullable = false, updatable = false),
+            inverseJoinColumns = @JoinColumn(name = "trip_id", nullable = false, updatable = false))
+    private List<Trip> trips = new ArrayList<>();
 
-    @Column(length = 25, nullable = false, updatable = false)
+    @Column(length = 25)
     private String passengerName;
 
-    @Column(length = 25, nullable = false, updatable = false)
+    @Column(length = 25)
     private String passengerSurname;
 
-    @Column(length = 25, nullable = false, updatable = false)
+    @Column(length = 25)
     private String passengerMiddleName;
 
-    @Column(length = 6, nullable = false, updatable = false)
-    private String passengerPassportId;
+    @Column
+    private int passengerPassportId;
 
-    @Column(length = 4, nullable = false, updatable = false)
-    private String passengerPassportSeries;
+    @Column
+    private int passengerPassportSeries;
+
+    public int getCost() {
+        return trips.stream()
+                .map(Trip::getCost)
+                .reduce(Integer::sum).orElse(0);
+    }
 }

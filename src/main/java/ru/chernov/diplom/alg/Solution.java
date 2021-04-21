@@ -16,6 +16,6 @@ public class Solution {
     private List<Trip> trips = new ArrayList<>();
 
     public Trip getLastTrip() {
-        return trips.get(trips.size() - 1);
+        return trips.isEmpty() ? null : trips.get(trips.size() - 1);
     }
 }

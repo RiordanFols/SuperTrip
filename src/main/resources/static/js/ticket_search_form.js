@@ -1,5 +1,5 @@
-let app = new Vue({
-    el: '#app',
+let tickerSearchForm = new Vue({
+    el: '#tickerSearchForm',
     data: {
         // error: frontendData.error,
         // notification: frontendData.notification,

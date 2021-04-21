@@ -13,6 +13,7 @@ import javax.persistence.*;
 @EqualsAndHashCode(of = {"id"})
 public class Edge {
 
+    // todo: key of from and to
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;

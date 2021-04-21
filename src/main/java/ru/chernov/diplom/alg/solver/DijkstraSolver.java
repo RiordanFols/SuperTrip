@@ -34,7 +34,7 @@ public class DijkstraSolver extends Solver {
     }
 
     @Override
-    public void solve() {
+    public Solution solve() {
 
         // finding the straight way from start to nodes
         findStraightSolutions();
@@ -62,6 +62,7 @@ public class DijkstraSolver extends Solver {
         System.out.print("\n\nResult:");
         printResult();
 
+        return solutions.get(end);
     }
 
     // finding the straight way from start to nodes
@@ -169,7 +170,7 @@ public class DijkstraSolver extends Solver {
         if (curSolution.equals(new Solution()) || newWeight < oldWeight) {
             curSolution.setTime(time);
             curSolution.setCost(cost);
-            curSolution.setTrips(new ArrayList<>(trips));
+            curSolution.setTrips(trips);
             curSolution.getTrips().add(plannedTrip);
         }
         return curSolution;

@@ -2,6 +2,7 @@ package ru.chernov.diplom.alg.solver;
 
 import lombok.Data;
 import ru.chernov.diplom.alg.Schedule;
+import ru.chernov.diplom.alg.Solution;
 import ru.chernov.diplom.domain.TransportType;
 import ru.chernov.diplom.domain.entity.Node;
 
@@ -36,7 +37,7 @@ public abstract class Solver {
         this.solutionType = solutionType;
     }
 
-    abstract public void solve();
+    abstract public Solution solve();
 
     // filtering trips by time and transport type
     public Schedule filterSchedule(Schedule schedule) {
