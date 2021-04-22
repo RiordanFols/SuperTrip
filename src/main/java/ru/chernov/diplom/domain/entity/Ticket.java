@@ -22,19 +22,19 @@ public class Ticket {
             inverseJoinColumns = @JoinColumn(name = "trip_id", nullable = false, updatable = false))
     private List<Trip> trips = new ArrayList<>();
 
-    @Column(length = 25)
+    @Column(length = 25, nullable = false, updatable = false)
     private String passengerName;
 
-    @Column(length = 25)
+    @Column(length = 25, nullable = false, updatable = false)
     private String passengerSurname;
 
     @Column(length = 25)
     private String passengerMiddleName;
 
-    @Column
+    @Column(nullable = false, updatable = false)
     private int passengerPassportId;
 
-    @Column
+    @Column(nullable = false, updatable = false)
     private int passengerPassportSeries;
 
     public int getCost() {

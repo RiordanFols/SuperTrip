@@ -2,7 +2,7 @@ package ru.chernov.diplom.alg.solver;
 
 import lombok.Data;
 import ru.chernov.diplom.alg.Schedule;
-import ru.chernov.diplom.alg.Solution;
+import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.domain.TransportType;
 import ru.chernov.diplom.domain.entity.Node;
 

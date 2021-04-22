@@ -1,17 +1,16 @@
 let passengerInfoForm = new Vue({
     el: '#passengerInfoForm',
     data: {
-        tempTicketNumber: frontendData.tempTicketNumber,
+        solutionId: frontendData.solutionId,
         // error: frontendData.error,
         // notification: frontendData.notification,
     },
     template:
         '<div>' +
-            '<form method="post" action="/ticket/assemble">' +
+            '<form method="post" v-bind:href="\'/ticket/buy/\' + solutionId">' +
                 // '<p v-if="error !== null">{{ error }}</p>' +
                 // '<p v-if="notification !== null">{{ notification }}</p>' +
 
-                '<input v-model="tempTicketNumber" hidden name="tempTicketNumber">' +
                 '<div>' +
                     '<span>Name</span>' +
                     '<input type="text" maxlength="25" name="name" required autofocus>' +

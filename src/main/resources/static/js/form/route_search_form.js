@@ -1,5 +1,5 @@
-let tickerSearchForm = new Vue({
-    el: '#tickerSearchForm',
+let routeSearchForm = new Vue({
+    el: '#routeSearchForm',
     data: {
         // error: frontendData.error,
         // notification: frontendData.notification,
@@ -48,14 +48,6 @@ let tickerSearchForm = new Vue({
                 '<div>' +
                     '<span>Max number of transfers</span>' +
                     '<input type="number" max="10" min="0" value="2" name="transfersN" required>' +
-                '</div>' +
-
-                '<div>' +
-                    '<span>Priority</span>' +
-                    '<select name="solutionType">' +
-                        '<option name="TIME">Time</option>' +
-                        '<option name="COST">Cost</option>' +
-                    '</select>' +
                 '</div>' +
 
                 '<div>' +

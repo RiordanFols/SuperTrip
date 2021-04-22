@@ -1,7 +1,7 @@
 package ru.chernov.diplom.alg.solver;
 
 import ru.chernov.diplom.alg.Schedule;
-import ru.chernov.diplom.alg.Solution;
+import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.domain.TransportType;
 import ru.chernov.diplom.domain.entity.Node;
 import ru.chernov.diplom.domain.entity.Trip;
@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 public class DijkstraSolver extends Solver {
 
     private final List<Node> undone;
-    private final Map<Node, Solution> solutions;
+    private final Map<Node, Solution> solutions = new HashMap<>();
 
     public DijkstraSolver(Schedule schedule, Node start, Node end,
                           LocalDateTime startTime, LocalDateTime endTime, int maxTransfersNumber,
@@ -29,10 +29,9 @@ public class DijkstraSolver extends Solver {
 
         undone = new ArrayList<>(schedule.getNodes());
         undone.remove(start);
-
-        solutions = new LinkedHashMap<>();
     }
 
+    // todo: bag
     @Override
     public Solution solve() {
 
@@ -79,6 +78,7 @@ public class DijkstraSolver extends Solver {
                 solution.getTrips().add(firstTrip);
                 solution.setTime(firstTrip.getTravelTime());
                 solution.setCost(firstTrip.getCost());
+                solution.setType(solutionType);
 
                 solutions.put(curNode, solution);
             } else {
@@ -120,57 +120,52 @@ public class DijkstraSolver extends Solver {
     // итерация алгоритма Дейкстры с нахождением ближайшего узла и пересчетом пути до узлов
     private void algorithmIteration(Trip plannedTrip, Node nearNode, Node curNode) {
         var solution = solutions.get(nearNode);
-
         // stop if number of allowed transfers is reached
         if (solution.getTrips().size() == (maxTransfersNumber + 1))
             return;
-
-        var lastTrip = solution.getLastTrip();
 
         // minimum time for transfer from one transport type to another
         var minTransferTime = nearNode.getTransferTime(
                 plannedTrip.getType(),
                 solution.getLastTrip().getType());
 
-        // time when passenger can go
+        var lastTrip = solution.getLastTrip();
         var readyToGo = lastTrip.getToTime().plusMinutes(minTransferTime);
-
         var departure = plannedTrip.getFromTime();
         // if passenger has time for next trip
-        if (readyToGo.isBefore(departure) || readyToGo.equals(departure)) {
-            // newTime = current time on road + transfer time + trip time
-            var newTime = solution.getTime() + plannedTrip.getTravelTime() +
-                    ChronoUnit.MINUTES.between(lastTrip.getToTime(), plannedTrip.getFromTime());
-            var newCost = solution.getCost() + plannedTrip.getCost();
-
-            // the best solution for chosen node
-            var curSolution = solutions.get(curNode);
-            //
-            solutions.put(curNode, checkNewSolution(curSolution, solution.getTrips(), newTime, newCost, plannedTrip));
-        }
+        if (readyToGo.isBefore(departure) || readyToGo.equals(departure))
+            solutions.put(curNode, checkNewSolution(curNode, solution, lastTrip, plannedTrip));
     }
 
-    private Solution checkNewSolution(Solution curSolution, List<Trip> trips,
-                                      long time, long cost, Trip plannedTrip) {
-        if (curSolution == null)
-            curSolution = new Solution();
+    private Solution checkNewSolution(Node curNode, Solution solution, Trip lastTrip, Trip plannedTrip) {
+
+        // newTime = current time on road + transfer time + trip time
+        var newTime = solution.getTime() + plannedTrip.getTravelTime() +
+                    ChronoUnit.MINUTES.between(lastTrip.getToTime(), plannedTrip.getFromTime());
+        var newCost = solution.getCost() + plannedTrip.getCost();
+
+        // the best solution for chosen node
+        var curSolution = solutions.get(curNode);
+
         long oldWeight = 0;
         long newWeight = 0;
         switch (solutionType) {
             case TIME -> {
-                oldWeight = curSolution.getTime();
-                newWeight = time;
+                oldWeight = curSolution == null ? 0 : curSolution.getTime();
+                newWeight = newTime;
             }
             case COST -> {
-                oldWeight = curSolution.getCost();
-                newWeight = cost;
+                oldWeight = curSolution == null ? 0 : curSolution.getCost();
+                newWeight = newCost;
             }
         }
         // if there is no solution yet or new solution is better
-        if (curSolution.equals(new Solution()) || newWeight < oldWeight) {
-            curSolution.setTime(time);
-            curSolution.setCost(cost);
-            curSolution.setTrips(trips);
+        if (curSolution == null || newWeight <= oldWeight) {
+            curSolution = new Solution();
+            curSolution.setTime(newTime);
+            curSolution.setCost(newCost);
+            curSolution.setType(solutionType);
+            curSolution.setTrips(new ArrayList<>(solution.getTrips()));
             curSolution.getTrips().add(plannedTrip);
         }
         return curSolution;

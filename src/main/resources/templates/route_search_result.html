@@ -2,16 +2,19 @@
 <html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
 <head>
     <meta charset="UTF-8">
-    <title>Поиск билетов</title>
+    <title>Результат поиска</title>
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
+    <script th:inline="javascript">
+        let frontendData = [[${frontendData}]];
+    </script>
 </head>
 <body>
 
-<h3>Поиск билетов</h3>
-<div id="routeSearchForm"></div>
+<h2>Лучшие маршруты</h2>
+<div id="routeSearchResult"></div>
 
-<script type="module" src="js/form/route_search_form.js"></script>
+<script type="module" src="/js/route_search_result.js"></script>
 
 </body>
 </html>
