@@ -36,10 +36,10 @@ public class User implements UserDetails {
     @Column(length = 25)
     private String middleName;
 
-    @Column(length = 6)
+    @Column(nullable = false)
     private int passportId;
 
-    @Column(length = 4)
+    @Column(nullable = false)
     private int passportSeries;
 
     @Column(length = 100, nullable = false)

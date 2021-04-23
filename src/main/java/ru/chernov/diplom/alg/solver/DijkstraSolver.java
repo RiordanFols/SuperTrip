@@ -58,7 +58,6 @@ public class DijkstraSolver extends Solver {
         }
         optimizeSolution();
 
-        System.out.print("\n\nResult:");
 //        printResult();
 
         return solutions.get(end);
@@ -211,6 +210,7 @@ public class DijkstraSolver extends Solver {
     }
 
     public void printResult() {
+        System.out.println("\n\nResult:");
         var solution = solutions.get(end);
         if (solution != null) {
             var time = solution.getTime();

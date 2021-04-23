@@ -2,7 +2,7 @@ Vue.component('solution-trip', {
     props: ['trip'],
     template:
         '<div class="solution-trip">' +
-            '<div class="trip-info-nodes">Transport: {{ trip.type }} ({{ trip.cost }}$)</div>' +
+            '<div class="trip-info-transport">Transport: {{ trip.type }} ({{ trip.cost }}$)</div>' +
             '<div class="trip-info-nodes">From {{ trip.edge.from.name }} to {{ trip.edge.to.name }}</div>' +
             '<div class="trip-info-time">{{ trip.fromTime }} - {{ trip.toTime }}</div>' +
         '</div>'
