@@ -1,9 +1,9 @@
 package ru.chernov.diplom.alg.solver;
 
 import ru.chernov.diplom.alg.Schedule;
-import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.domain.TransportType;
 import ru.chernov.diplom.domain.entity.Node;
+import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.domain.entity.Trip;
 
 import java.time.LocalDateTime;
@@ -95,13 +95,19 @@ public class DijkstraSolver extends Solver {
             return fromDateTime.isAfter(min) || fromDateTime.isEqual(min) &&
                     toDateTime.isBefore(max) || toDateTime.isEqual(max);
         };
+        Trip minCostTrip = trips.stream()
+                .filter(timeFiletPredicate)
+                .min(Comparator.comparing(Trip::getCost)).orElse(null);
+        long minCost = minCostTrip != null ? minCostTrip.getCost() : 0;
+
         return switch (solutionType) {
             case TIME -> trips.stream()
                     .filter(timeFiletPredicate)
                     .min(Comparator.comparing(Trip::getToTime)).orElse(null);
             case COST -> trips.stream()
                     .filter(timeFiletPredicate)
-                    .min(Comparator.comparing(Trip::getCost)).orElse(null);
+                    .filter(e -> e.getCost() == minCost)
+                    .min(Comparator.comparing(Trip::getToTime)).orElse(null);
         };
     }
 
@@ -141,7 +147,7 @@ public class DijkstraSolver extends Solver {
 
         // newTime = current time on road + transfer time + trip time
         var newTime = solution.getTime() + plannedTrip.getTravelTime() +
-                    ChronoUnit.MINUTES.between(lastTrip.getToTime(), plannedTrip.getFromTime());
+                ChronoUnit.MINUTES.between(lastTrip.getToTime(), plannedTrip.getFromTime());
         var newCost = solution.getCost() + plannedTrip.getCost();
 
         // the best solution for chosen node
