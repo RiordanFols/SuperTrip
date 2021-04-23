@@ -5,6 +5,8 @@ import org.springframework.stereotype.Service;
 import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.repository.SolutionRepository;
 
+import java.time.LocalDateTime;
+
 /**
  * @author Pavel Chernov
  */
@@ -18,15 +20,14 @@ public class SolutionService {
         this.solutionRepository = solutionRepository;
     }
 
-    public Solution save(Solution solution) {
-        return solution != null ? solutionRepository.save(solution) : null;
+    public void save(Solution solution) {
+        if (solution != null) {
+            solution.setCreationDateTime(LocalDateTime.now());
+            solutionRepository.save(solution);
+        }
     }
 
     public Solution findById(long id) {
         return solutionRepository.findById(id).orElse(null);
-    }
-
-    public void deleteById(long id) {
-        solutionRepository.deleteById(id);
     }
 }

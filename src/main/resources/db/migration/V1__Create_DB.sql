@@ -91,10 +91,11 @@ create table edge
 
 create table solution
 (
-    id   int8         not null,
-    cost int8         not null,
-    time int8         not null,
-    type varchar(255) not null,
+    id                 int8         not null,
+    creation_date_time timestamp    not null,
+    cost               int8         not null,
+    time               int8         not null,
+    type               varchar(255) not null,
     primary key (id)
 );
 create table solution_trips

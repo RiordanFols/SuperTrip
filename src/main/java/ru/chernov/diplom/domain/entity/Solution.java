@@ -6,6 +6,7 @@ import ru.chernov.diplom.alg.solver.SolutionType;
 import ru.chernov.diplom.domain.entity.Trip;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,6 +20,10 @@ public class Solution {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
+
+    @Column(nullable = false, updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm")
+    private LocalDateTime creationDateTime;
 
     @Column(nullable = false, updatable = false)
     private long time;
