@@ -4,9 +4,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import ru.chernov.diplom.domain.Role;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.repository.UserRepository;
+
+import java.util.Collections;
 
 /**
  * @author Pavel Chernov
@@ -15,10 +19,11 @@ import ru.chernov.diplom.repository.UserRepository;
 public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    @Autowired
-    public UserService(UserRepository userRepository) {
+    public UserService(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -27,11 +32,42 @@ public class UserService implements UserDetailsService {
         return user != null ? user : new User();
     }
 
+    public User findById(long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public User findByUsername(String username) {
         return userRepository.findByUsername(username);
     }
 
     public User save(User user) {
         return userRepository.save(user);
+    }
+
+    public void registration(String username, String name, String surname, String middleName,
+                             int passportId, int passportSeries, String password) {
+        User user = new User();
+        user.setUsername(username);
+        user.setName(name);
+        user.setSurname(surname);
+        user.setMiddleName(middleName);
+        user.setPassportId(passportId);
+        user.setPassportSeries(passportSeries);
+        user.setPassword(passwordEncoder.encode(password));
+        user.setRoles(Collections.singleton(Role.USER));
+        user.setActive(true);
+        save(user);
+    }
+
+    public void activate(long userId) {
+        User user = findById(userId);
+        user.setActive(true);
+        save(user);
+    }
+
+    public void block(long userId) {
+        User user = findById(userId);
+        user.setActive(false);
+        save(user);
     }
 }
