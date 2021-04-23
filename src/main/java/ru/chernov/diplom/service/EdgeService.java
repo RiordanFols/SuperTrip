@@ -30,8 +30,8 @@ public class EdgeService {
         return save(edge);
     }
 
-    public boolean isPresent(Edge edge) {
-        return findByNodes(edge.getFrom(), edge.getTo()) != null;
+    public Edge findById(long id) {
+        return edgeRepository.findById(id).orElse(null);
     }
 
     public Edge findByNodes(Node from, Node to) {
@@ -42,5 +42,9 @@ public class EdgeService {
             edge.setTo(to);
         }
         return edge;
+    }
+
+    public void deleteById(long id) {
+        edgeRepository.deleteById(id);
     }
 }

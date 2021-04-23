@@ -6,10 +6,8 @@ import ru.chernov.diplom.domain.TransportType;
 import ru.chernov.diplom.domain.entity.Edge;
 import ru.chernov.diplom.domain.entity.Node;
 import ru.chernov.diplom.domain.entity.Trip;
-import ru.chernov.diplom.repository.NodeRepository;
 import ru.chernov.diplom.repository.TripRepository;
 
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.HashSet;
@@ -34,13 +32,17 @@ public class TripService {
         this.edgeService = edgeService;
     }
 
-    public Set<Trip> getAll() {
+    public Set<Trip> findAll() {
         return new HashSet<>(tripRepository.findAll());
+    }
+
+    public Trip findById(long id) {
+        return tripRepository.findById(id).orElse(null);
     }
 
     public Trip save(Trip trip) {
         // create edge if doesn't exist yet
-        if (!edgeService.isPresent(trip.getEdge()))
+        if (edgeService.findById(trip.getEdge().getId()) == null)
             edgeService.save(trip.getEdge());
         return tripRepository.save(trip);
     }
@@ -54,6 +56,7 @@ public class TripService {
 
         Trip trip = new Trip();
         trip.setEdge(edge);
+        trip.setCost(cost);
         trip.setFromTime(fromTime);
         trip.setToTime(toTime);
         trip.setType(transportType);
@@ -66,12 +69,15 @@ public class TripService {
                 .collect(Collectors.toCollection(TreeSet::new));
     }
 
-    public TreeSet<Trip> getTripsByEdge(long edgeId, int days) {
-        var now = LocalDate.now();
-        return tripRepository.findAllByEdgeId(edgeId).stream()
-                // filtering for days from now
-                .filter(e -> e.getFromTime().toLocalDate().isBefore(now.plusDays(days)))
-                .sorted(Comparator.comparing(Trip::getFromTime))
-                .collect(Collectors.toCollection(TreeSet::new));
+    public void deleteById(long id) {
+        Trip trip = findById(id);
+        if (trip != null) {
+            tripRepository.deleteById(id);
+            // deleting also the edge if no trips left
+            var edgeId = trip.getEdge().getId();
+            var trips = getTripsByEdge(edgeId);
+            if (trips.isEmpty())
+                edgeService.deleteById(edgeId);
+        }
     }
 }

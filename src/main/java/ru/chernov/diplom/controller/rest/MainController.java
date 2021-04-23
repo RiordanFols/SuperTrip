@@ -51,7 +51,6 @@ public class MainController {
         return "main";
     }
 
-    // todo: remove logic from controller
     @PostMapping("/main")
     public String findSolutions(@RequestParam String fromCity,
                                 @RequestParam String toCity,
@@ -64,7 +63,7 @@ public class MainController {
                                 @RequestParam(required = false) boolean planeAvailable,
                                 @RequestParam int transfersN,
                                 Model model) {
-        Schedule schedule = new Schedule(tripService.getAll());
+        Schedule schedule = new Schedule(tripService.findAll());
         Node start = nodeService.findByName(fromCity);
         Node end = nodeService.findByName(toCity);
         // todo: open-closed P
@@ -76,14 +75,10 @@ public class MainController {
             if (planeAvailable)
                 add(TransportType.PLANE);
         }};
-        DijkstraSolver solver1 = new DijkstraSolver(
-                schedule, start, end, departureTime, arrivalTime, transfersN, transportTypes,
-                SolutionType.TIME);
-        DijkstraSolver solver2 = new DijkstraSolver(
-                schedule, start, end, departureTime, arrivalTime, transfersN, transportTypes,
-                SolutionType.COST);
-        Solution solution1 = solver1.solve();
-        Solution solution2 = solver2.solve();
+        Solution solution1 = new DijkstraSolver(schedule, start, end, departureTime,
+                arrivalTime, transfersN, transportTypes, SolutionType.TIME).solve();
+        Solution solution2 = new DijkstraSolver(schedule, start, end, departureTime,
+                arrivalTime, transfersN, transportTypes, SolutionType.COST).solve();
         solutionService.save(solution1);
         solutionService.save(solution2);
 
@@ -113,7 +108,6 @@ public class MainController {
                                  @RequestParam int passportId,
                                  @RequestParam int passportSeries) {
 
-        // todo: error in case solution was deleted
         var solution = solutionService.findById(solutionId);
         Ticket ticket = ticketService.assembleAndSave(solution,
                 name, surname, middleName, passportId, passportSeries);

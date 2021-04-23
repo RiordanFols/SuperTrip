@@ -31,7 +31,6 @@ public class DijkstraSolver extends Solver {
         undone.remove(start);
     }
 
-    // todo: bag
     @Override
     public Solution solve() {
 
@@ -40,27 +39,27 @@ public class DijkstraSolver extends Solver {
 
         while (undone.size() > 1) {
             // node with minimum weight from undone
-            Node nearNode = getNearestNode();
-            if (nearNode == null)
+            Node minNode = getMinNode();
+            if (minNode == null)
                 break;
-            undone.remove(nearNode);
+            undone.remove(minNode);
 
             for (Node curNode : undone) {
                 // if edge between nodes exists
-                if (schedule.isEdgePresent(nearNode, curNode)) {
-                    Set<Trip> edgeTrips = schedule.findTripsByNodes(nearNode, curNode);
-                    Trip lastTrip = solutions.get(nearNode).getLastTrip();
+                if (schedule.isEdgePresent(minNode, curNode)) {
+                    Set<Trip> edgeTrips = schedule.findTripsByNodes(minNode, curNode);
+                    Trip lastTrip = solutions.get(minNode).getLastTrip();
                     Trip plannedTrip = findBestTrip(edgeTrips, lastTrip, lastTrip.getToTime(), endTime);
                     // if found satisfying trip
                     if (plannedTrip != null)
-                        algorithmIteration(plannedTrip, nearNode, curNode);
+                        algorithmIteration(plannedTrip, minNode, curNode);
                 }
             }
         }
-//        optimizeSolution();
+        optimizeSolution();
 
         System.out.print("\n\nResult:");
-        printResult();
+//        printResult();
 
         return solutions.get(end);
     }
@@ -121,7 +120,7 @@ public class DijkstraSolver extends Solver {
     }
 
     // get node with minimum weight from undone list
-    private Node getNearestNode() {
+    private Node getMinNode() {
         return switch (solutionType) {
             case TIME -> undone.stream()
                     .filter(node -> solutions.get(node) != null)
@@ -133,8 +132,8 @@ public class DijkstraSolver extends Solver {
     }
 
     // итерация алгоритма Дейкстры с нахождением ближайшего узла и пересчетом пути до узлов
-    private void algorithmIteration(Trip plannedTrip, Node nearNode, Node curNode) {
-        var solution = solutions.get(nearNode);
+    private void algorithmIteration(Trip plannedTrip, Node minNode, Node curNode) {
+        var solution = solutions.get(minNode);
         // stop if number of allowed transfers is reached
         if (solution.getTrips().size() == (maxTransfersNumber + 1))
             return;
@@ -225,6 +224,5 @@ public class DijkstraSolver extends Solver {
         } else {
             System.out.println("No route");
         }
-
     }
 }
