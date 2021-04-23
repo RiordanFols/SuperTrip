@@ -17,7 +17,7 @@ import java.util.function.Predicate;
 public class DijkstraSolver extends Solver {
 
     private final List<Node> undone;
-    private final Map<Node, Solution> solutions = new HashMap<>();
+    private final Map<Node, Solution> solutions = new TreeMap<>(Comparator.comparing(Node::getName));
 
     public DijkstraSolver(Schedule schedule, Node start, Node end,
                           LocalDateTime startTime, LocalDateTime endTime, int maxTransfersNumber,
@@ -48,8 +48,9 @@ public class DijkstraSolver extends Solver {
             for (Node curNode : undone) {
                 // if edge between nodes exists
                 if (schedule.isEdgePresent(nearNode, curNode)) {
-                    Trip plannedTrip = findFirstTrip(schedule.findTripsByNodes(nearNode, curNode),
-                            solutions.get(nearNode).getLastTrip().getToTime(), endTime);
+                    Set<Trip> edgeTrips = schedule.findTripsByNodes(nearNode, curNode);
+                    Trip lastTrip = solutions.get(nearNode).getLastTrip();
+                    Trip plannedTrip = findBestTrip(edgeTrips, lastTrip, lastTrip.getToTime(), endTime);
                     // if found satisfying trip
                     if (plannedTrip != null)
                         algorithmIteration(plannedTrip, nearNode, curNode);
@@ -69,7 +70,8 @@ public class DijkstraSolver extends Solver {
         for (Node curNode : undone) {
             // if edge between start end node exists
             if (schedule.isEdgePresent(start, curNode)) {
-                Trip firstTrip = findFirstTrip(schedule.findTripsByNodes(start, curNode), startTime, endTime);
+                Set<Trip> edgeTrips = schedule.findTripsByNodes(start, curNode);
+                Trip firstTrip = findBestTrip(edgeTrips, null, startTime, endTime);
                 // if can't find any satisfying trip
                 if (firstTrip == null)
                     return;
@@ -87,25 +89,32 @@ public class DijkstraSolver extends Solver {
         }
     }
 
-    // finding the first satisfying trip
-    private Trip findFirstTrip(Set<Trip> trips, LocalDateTime min, LocalDateTime max) {
-        Predicate<Trip> timeFiletPredicate = (e) -> {
+    // finding the first(for time) and the best satisfying trip
+    private Trip findBestTrip(Set<Trip> trips, Trip lastTrip, LocalDateTime min, LocalDateTime max) {
+        Predicate<Trip> timeFilterPredicate = (e) -> {
             var fromDateTime = e.getFromTime();
             var toDateTime = e.getToTime();
-            return fromDateTime.isAfter(min) || fromDateTime.isEqual(min) &&
-                    toDateTime.isBefore(max) || toDateTime.isEqual(max);
+            var minThreshold = min;
+            if (lastTrip != null) {
+                var lastNode = lastTrip.getEdge().getTo();
+                // minimum time for transfer from one transport type to another
+                var minTransferTime = lastNode.getTransferTime(e.getType(), lastTrip.getType());
+                minThreshold = minThreshold.plusMinutes(minTransferTime);
+            }
+            return fromDateTime.isAfter(minThreshold) || fromDateTime.isEqual(minThreshold) &&
+                        toDateTime.isBefore(max) || toDateTime.isEqual(max);
         };
         Trip minCostTrip = trips.stream()
-                .filter(timeFiletPredicate)
+                .filter(timeFilterPredicate)
                 .min(Comparator.comparing(Trip::getCost)).orElse(null);
         long minCost = minCostTrip != null ? minCostTrip.getCost() : 0;
 
         return switch (solutionType) {
             case TIME -> trips.stream()
-                    .filter(timeFiletPredicate)
+                    .filter(timeFilterPredicate)
                     .min(Comparator.comparing(Trip::getToTime)).orElse(null);
             case COST -> trips.stream()
-                    .filter(timeFiletPredicate)
+                    .filter(timeFilterPredicate)
                     .filter(e -> e.getCost() == minCost)
                     .min(Comparator.comparing(Trip::getToTime)).orElse(null);
         };
@@ -130,17 +139,8 @@ public class DijkstraSolver extends Solver {
         if (solution.getTrips().size() == (maxTransfersNumber + 1))
             return;
 
-        // minimum time for transfer from one transport type to another
-        var minTransferTime = nearNode.getTransferTime(
-                plannedTrip.getType(),
-                solution.getLastTrip().getType());
-
         var lastTrip = solution.getLastTrip();
-        var readyToGo = lastTrip.getToTime().plusMinutes(minTransferTime);
-        var departure = plannedTrip.getFromTime();
-        // if passenger has time for next trip
-        if (readyToGo.isBefore(departure) || readyToGo.equals(departure))
-            solutions.put(curNode, checkNewSolution(curNode, solution, lastTrip, plannedTrip));
+        solutions.put(curNode, checkNewSolution(curNode, solution, lastTrip, plannedTrip));
     }
 
     private Solution checkNewSolution(Node curNode, Solution solution, Trip lastTrip, Trip plannedTrip) {
@@ -166,7 +166,7 @@ public class DijkstraSolver extends Solver {
             }
         }
         // if there is no solution yet or new solution is better
-        if (curSolution == null || newWeight <= oldWeight) {
+        if (curSolution == null || newWeight < oldWeight) {
             curSolution = new Solution();
             curSolution.setTime(newTime);
             curSolution.setCost(newCost);
