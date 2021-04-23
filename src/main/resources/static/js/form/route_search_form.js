@@ -21,12 +21,12 @@ let routeSearchForm = new Vue({
                 '</div>' +
 
                 '<div>' +
-                    '<span>Departure date</span>' +
+                    '<span>Min departure time</span>' +
                     '<input type="datetime-local" name="departureTime">' +
                 '</div>' +
 
                 '<div>' +
-                    '<span>Max arrival date</span>' +
+                    '<span>Max arrival time</span>' +
                     '<input type="datetime-local" name="arrivalTime">' +
                 '</div>' +
 

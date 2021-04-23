@@ -2,8 +2,26 @@ Vue.component('solution-trip', {
     props: ['trip'],
     template:
         '<div class="solution-trip">' +
-            '<div class="trip-info">{{ trip.edge.from.name }} to {{ trip.edge.to.name }}</div>' +
+            '<div class="trip-info-nodes">Transport: {{ trip.type }} ({{ trip.cost }}$)</div>' +
+            '<div class="trip-info-nodes">From {{ trip.edge.from.name }} to {{ trip.edge.to.name }}</div>' +
+            '<div class="trip-info-time">{{ trip.fromTime }} - {{ trip.toTime }}</div>' +
         '</div>'
+});
+
+Vue.component('time-separator', {
+    props: ['time'],
+    data: function() {
+        return {
+            hours: 0,
+            minutes: 0
+        };
+    },
+    template:
+        '<div class="solution-time">Time &#61; {{ hours }}h {{ minutes }}m</div>',
+    created: function () {
+        this.hours = Math.floor(this.time / 60);
+        this.minutes = this.time % 60;
+    }
 });
 
 Vue.component('solution', {
@@ -11,17 +29,18 @@ Vue.component('solution', {
     template:
         '<div class="solution">' +
             '<a v-bind:href="\'/ticket/assemble/\' + solution.id">' +
-                '<div class="solution-description"></div>' +
+                '<h3 class="solution-description">Solution:</h3>' +
                 '<div class="solution-header">' +
-                    '<div class="solution-type">{{ solution.type }}</div>' +
-                    '<div class="solution-time">{{ solution.time }}</div>' +
-                    '<div class="solution-cost">{{ solution.cost }}</div>' +
+                    '<div class="solution-type">Priority &#61;  {{ solution.type }}</div>' +
+                    '<time-separator :time="solution.time"/>' +
+                    '<div class="solution-cost">Cost &#61;  {{ solution.cost }} $</div>' +
                 '</div>' +
                 '<div class="solution-trips-block">' +
+                    '<h4 class="trips-caption">Trips:</h4>' +
                     '<solution-trip v-for="trip in solution.trips" :key="trip.id" :trip="trip"/>' +
                 '</div>' +
             '</a>' +
-        '</div>'
+        '<br/><br/></div>'
 });
 
 let routeSearchResult = new Vue({
