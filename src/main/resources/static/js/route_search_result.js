@@ -57,7 +57,9 @@ let routeSearchResult = new Vue({
                 // '<p v-if="notification !== null">{{ notification }}</p>' +
 
                 '<div class="solutions">' +
-                    '<solution v-for="solution in solutions" :key="solution.id" :solution="solution"/>' +
+                    '<solution v-for="solution in solutions" v-if="solution !== null" ' +
+                            ':key="solution.id" :solution="solution"/>' +
+                    '<div v-else>Sorry, can\'t find route</div>' +
                 '</div>' +
             '</form>' +
         '</div>'
