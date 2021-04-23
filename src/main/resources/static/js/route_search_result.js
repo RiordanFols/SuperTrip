@@ -10,7 +10,7 @@ Vue.component('solution', {
     props: ['solution'],
     template:
         '<div class="solution">' +
-            '<a v-bind:href="\'/ticket/buy/\' + solution.id">' +
+            '<a v-bind:href="\'/ticket/assemble/\' + solution.id">' +
                 '<div class="solution-description"></div>' +
                 '<div class="solution-header">' +
                     '<div class="solution-type">{{ solution.type }}</div>' +

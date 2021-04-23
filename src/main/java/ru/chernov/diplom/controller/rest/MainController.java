@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.chernov.diplom.alg.Schedule;
-import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.alg.solver.DijkstraSolver;
 import ru.chernov.diplom.alg.solver.SolutionType;
 import ru.chernov.diplom.domain.TransportType;
 import ru.chernov.diplom.domain.entity.Node;
+import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.domain.entity.Ticket;
 import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.SolutionService;
@@ -96,16 +96,16 @@ public class MainController {
         return "route_search_result";
     }
 
-    @GetMapping("ticket/buy/{id}")
-    public String buyTicketPage(@PathVariable(name = "id") long solutionId,
-                                Model model) {
+    @GetMapping("/ticket/assemble/{id}")
+    public String assembleTicketPage(@PathVariable(name = "id") long solutionId,
+                                     Model model) {
         var frontendData = new HashMap<String, Object>();
         frontendData.put("solutionId", solutionId);
         model.addAttribute("frontendData", frontendData);
         return "passenger_info_blank";
     }
 
-    @PostMapping("ticket/buy/{id}")
+    @PostMapping("/ticket/assemble/{id}")
     public String assembleTicket(@PathVariable(name = "id") long solutionId,
                                  @RequestParam String name,
                                  @RequestParam String surname,
@@ -115,9 +115,24 @@ public class MainController {
 
         // todo: error in case solution was deleted
         var solution = solutionService.findById(solutionId);
-        ticketService.assembleAndSave(solution,
+        Ticket ticket = ticketService.assembleAndSave(solution,
                 name, surname, middleName, passportId, passportSeries);
-        return "redirect:/main";
+        return "redirect:/ticket/buy/" + ticket.getNumber();
     }
 
+    @GetMapping("/ticket/buy/{number}")
+    public String buyTicketPage(@PathVariable(name = "number") String ticketNumber,
+                                Model model) {
+        var frontendData = new HashMap<String, Object>();
+        frontendData.put("ticketNumber", ticketNumber);
+        model.addAttribute("frontendData", frontendData);
+        return "payment";
+    }
+
+    @PostMapping("/ticket/buy/{number}")
+    public String buyTicket(@PathVariable(name = "number") String ticketNumber) {
+        Ticket ticket = ticketService.findByNumber(ticketNumber);
+        ticketService.pay(ticketNumber);
+        return "redirect:/main";
+    }
 }

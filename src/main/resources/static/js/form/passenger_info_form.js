@@ -7,7 +7,7 @@ let passengerInfoForm = new Vue({
     },
     template:
         '<div>' +
-            '<form method="post" v-bind:href="\'/ticket/buy/\' + solutionId">' +
+            '<form method="post" v-bind:href="\'/ticket/assemble/\' + solutionId">' +
                 // '<p v-if="error !== null">{{ error }}</p>' +
                 // '<p v-if="notification !== null">{{ notification }}</p>' +
 
