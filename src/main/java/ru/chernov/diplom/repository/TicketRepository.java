@@ -4,6 +4,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import ru.chernov.diplom.domain.entity.Ticket;
 
+import java.util.List;
+
 /**
  * @author Pavel Chernov
  */
@@ -15,6 +17,6 @@ public interface TicketRepository extends JpaRepository<Ticket, Long> {
             "t.pas_surname =?2 AND " +
             "t.pas_middle_name=?3 AND " +
             "t.pas_passport_id=?4 AND " +
-            "t.pas_passport_series=?5)")
-    Ticket findAllByUserInfo(String name, String surname, String middleName, int passportId, int passportSeries);
+            "t.pas_passport_series=?5) ORDER BY t.creation_date_time DESC ")
+    List<Ticket> findAllByUserInfo(String name, String surname, String middleName, int passportId, int passportSeries);
 }

@@ -34,8 +34,7 @@ public class TicketController {
                                      Model model) {
         if (authUser != null) {
             var solution = solutionService.findById(solutionId);
-            Ticket ticket = ticketService.assembleAndSave(solution, authUser.getName(), authUser.getSurname(),
-                    authUser.getMiddleName(), authUser.getPassportId(), authUser.getPassportSeries());
+            Ticket ticket = ticketService.assembleAndSave(solution, authUser);
             return "redirect:/ticket/buy/" + ticket.getNumber();
         } else {
             var frontendData = new HashMap<String, Object>();

@@ -5,6 +5,7 @@ import lombok.Data;
 import ru.chernov.diplom.domain.TicketStatus;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -22,6 +23,10 @@ public class Ticket {
     @Enumerated(value = EnumType.STRING)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private TicketStatus status;
+
+    @Column(nullable = false, updatable = false)
+    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm")
+    private LocalDateTime creationDateTime;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "ticket_trips",

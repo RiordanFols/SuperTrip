@@ -8,6 +8,9 @@ import ru.chernov.diplom.domain.entity.Ticket;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.repository.TicketRepository;
 
+import java.time.LocalDateTime;
+import java.util.Comparator;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -24,6 +27,7 @@ public class TicketService {
     }
 
     public Ticket save(Ticket ticket) {
+        ticket.setCreationDateTime(LocalDateTime.now());
         return ticketRepository.save(ticket);
     }
 
@@ -31,14 +35,18 @@ public class TicketService {
         return ticketRepository.findByNumber(number);
     }
 
-    public Ticket findTicketsByUser(User user) {
-        return ticketRepository.findAllByUserInfo(user.getName(), user.getSurname(),
+    public List<Ticket> findTicketsByUser(User user) {
+        var tickets = ticketRepository.findAllByUserInfo(user.getName(), user.getSurname(),
                 user.getMiddleName(), user.getPassportId(), user.getPassportSeries());
+        tickets.sort(Comparator.comparing(Ticket::getCreationDateTime));
+        return tickets;
     }
 
-    public Ticket findTicketsByUser(String name, String surname, String middleName,
-                                    int passportId, int passportSeries) {
-        return ticketRepository.findAllByUserInfo(name, surname, middleName, passportId, passportSeries);
+    public List<Ticket> findTicketsByUser(String name, String surname, String middleName,
+                                          int passportId, int passportSeries) {
+        var tickets = ticketRepository.findAllByUserInfo(name, surname, middleName, passportId, passportSeries);
+        tickets.sort(Comparator.comparing(Ticket::getCreationDateTime));
+        return tickets;
     }
 
     public Ticket assembleAndSave(Solution solution, User user) {
