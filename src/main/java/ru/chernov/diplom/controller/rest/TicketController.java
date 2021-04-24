@@ -1,10 +1,12 @@
 package ru.chernov.diplom.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.chernov.diplom.domain.entity.Ticket;
+import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.SolutionService;
 import ru.chernov.diplom.service.TicketService;
 
@@ -27,12 +29,20 @@ public class TicketController {
     }
 
     @GetMapping("/assemble/{id}")
-    public String assembleTicketPage(@PathVariable(name = "id") long solutionId,
+    public String assembleTicketPage(@AuthenticationPrincipal User authUser,
+                                     @PathVariable(name = "id") long solutionId,
                                      Model model) {
-        var frontendData = new HashMap<String, Object>();
-        frontendData.put("solutionId", solutionId);
-        model.addAttribute("frontendData", frontendData);
-        return "passenger_info_blank";
+        if (authUser != null) {
+            var solution = solutionService.findById(solutionId);
+            Ticket ticket = ticketService.assembleAndSave(solution, authUser.getName(), authUser.getSurname(),
+                    authUser.getMiddleName(), authUser.getPassportId(), authUser.getPassportSeries());
+            return "redirect:/ticket/buy/" + ticket.getNumber();
+        } else {
+            var frontendData = new HashMap<String, Object>();
+            frontendData.put("solutionId", solutionId);
+            model.addAttribute("frontendData", frontendData);
+            return "passenger_info_blank";
+        }
     }
 
     @PostMapping("/assemble/{id}")
