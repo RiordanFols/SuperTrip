@@ -84,4 +84,5 @@ public class MainController {
         model.addAttribute("frontendData", frontendData);
         return "route_search_result";
     }
+
 }

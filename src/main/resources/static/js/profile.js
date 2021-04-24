@@ -24,7 +24,8 @@ let profile = new Vue({
     el: '#profile',
     data: {
         user: frontendData.user,
-        tickets: frontendData.tickets,
+        expiredTickets: frontendData.expiredTickets,
+        actualTickets: frontendData.actualTickets,
         // error: frontendData.error,
         // notification: frontendData.notification,
     },
@@ -37,8 +38,13 @@ let profile = new Vue({
                 '<div class="user-info-middle-name">Middle name: {{ user.middleName }}</div>' +
                 '<div class="user-info-passport">Passport: {{ user.passportId }} {{ user.passportSeries }}</div>' +
             '</div>' +
-            '<div class="user-tickets">' +
-                '<user-ticket v-for="ticket in tickets" :key="ticket.id" :ticket="ticket"/>' +
+            '<div class="user-tickets" v-if="actualTickets.length > 0">' +
+                '<h4>Your actual tickets:</h4>' +
+                '<user-ticket v-for="ticket in actualTickets" :key="ticket.id" :ticket="ticket"/>' +
+            '</div>' +
+            '<div class="user-tickets" v-if="expiredTickets.length > 0">' +
+                '<h4>Your expired tickets:</h4>' +
+                '<user-ticket v-for="ticket in expiredTickets" :key="ticket.id" :ticket="ticket"/>' +
             '</div>' +
         '</div>'
 });

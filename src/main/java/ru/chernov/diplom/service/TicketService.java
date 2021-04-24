@@ -9,9 +9,9 @@ import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.repository.TicketRepository;
 
 import java.time.LocalDateTime;
-import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 /**
  * @author Pavel Chernov
@@ -36,17 +36,13 @@ public class TicketService {
     }
 
     public List<Ticket> findTicketsByUser(User user) {
-        var tickets = ticketRepository.findAllByUserInfo(user.getName(), user.getSurname(),
+        return ticketRepository.findAllByUserInfo(user.getName(), user.getSurname(),
                 user.getMiddleName(), user.getPassportId(), user.getPassportSeries());
-        tickets.sort(Comparator.comparing(Ticket::getCreationDateTime));
-        return tickets;
     }
 
     public List<Ticket> findTicketsByUser(String name, String surname, String middleName,
                                           int passportId, int passportSeries) {
-        var tickets = ticketRepository.findAllByUserInfo(name, surname, middleName, passportId, passportSeries);
-        tickets.sort(Comparator.comparing(Ticket::getCreationDateTime));
-        return tickets;
+        return ticketRepository.findAllByUserInfo(name, surname, middleName, passportId, passportSeries);
     }
 
     public Ticket assembleAndSave(Solution solution, User user) {
@@ -84,5 +80,23 @@ public class TicketService {
             ticket.setStatus(TicketStatus.PAID);
 
         save(ticket);
+    }
+
+    public List<Ticket> getActualTickets(List<Ticket> tickets) {
+        return tickets.stream()
+                .filter(e -> {
+                    var lastTrip = e.getTrips().get(e.getTrips().size() - 1);
+                    return lastTrip.getFromTime().isAfter(LocalDateTime.now());
+                })
+                .collect(Collectors.toList());
+    }
+
+    public List<Ticket> getExpiredTickets(List<Ticket> tickets) {
+        return tickets.stream()
+                .filter(e -> {
+                    var lastTrip = e.getTrips().get(e.getTrips().size() - 1);
+                    return lastTrip.getFromTime().isBefore(LocalDateTime.now());
+                })
+                .collect(Collectors.toList());
     }
 }

@@ -1,20 +1,15 @@
 package ru.chernov.diplom.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.chernov.diplom.component.FormChecker;
-import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.page.Error;
-import ru.chernov.diplom.service.TicketService;
 import ru.chernov.diplom.service.UserService;
 
-import java.util.HashMap;
 
 /**
  * @author Pavel Chernov
@@ -25,13 +20,11 @@ public class AuthController {
 
     private final UserService userService;
     private final FormChecker formChecker;
-    private final TicketService ticketService;
 
     @Autowired
-    public AuthController(UserService userService, FormChecker formChecker, TicketService ticketService) {
+    public AuthController(UserService userService, FormChecker formChecker) {
         this.userService = userService;
         this.formChecker = formChecker;
-        this.ticketService = ticketService;
     }
 
     @GetMapping("/login")
@@ -57,16 +50,5 @@ public class AuthController {
         if (error == null)
             userService.registration(username, name, surname, middleName, passportId, passportSeries, password);
         return "redirect:/main";
-    }
-
-    @GetMapping("/profile")
-    public String profilePage(@AuthenticationPrincipal User authUser,
-                              Model model) {
-        User user = userService.findById(authUser.getId());
-        var frontendData = new HashMap<String, Object>();
-        frontendData.put("user", user);
-        frontendData.put("tickets", ticketService.findTicketsByUser(user));
-        model.addAttribute("frontendData", frontendData);
-        return "auth/profile";
     }
 }
