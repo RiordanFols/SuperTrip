@@ -2,6 +2,7 @@ package ru.chernov.diplom.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.page.Error;
 import ru.chernov.diplom.service.UserService;
 
@@ -21,7 +22,7 @@ public class FormChecker {
     public Error checkRegistrationData(String username, String password, String passwordConfirm) {
 
         // if username is taken
-        if (userService.loadUserByUsername(username) != null)
+        if (!userService.loadUserByUsername(username).equals(new User()))
             return Error.USERNAME_IS_TAKEN;
 
         // if password is too short (at least 6 symbols)

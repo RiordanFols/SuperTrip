@@ -16,8 +16,8 @@ import java.util.Set;
  * @author Pavel Chernov
  */
 @Entity
-@Table(name = "usr")
 @Data
+@Table(name = "usr")
 public class User implements UserDetails {
 
     @Id
@@ -42,6 +42,8 @@ public class User implements UserDetails {
     @Column(nullable = false)
     private int passportSeries;
 
+    // real length is 25
+    // passwordEncoder needs more
     @Column(length = 100, nullable = false)
     @JsonIgnore
     private String password;

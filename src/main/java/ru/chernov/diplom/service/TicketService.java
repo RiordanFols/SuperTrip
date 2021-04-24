@@ -31,17 +31,27 @@ public class TicketService {
         return ticketRepository.findByNumber(number);
     }
 
+    public Ticket findTicketsByUser(User user) {
+        return ticketRepository.findAllByUserInfo(user.getName(), user.getSurname(),
+                user.getMiddleName(), user.getPassportId(), user.getPassportSeries());
+    }
+
+    public Ticket findTicketsByUser(String name, String surname, String middleName,
+                                    int passportId, int passportSeries) {
+        return ticketRepository.findAllByUserInfo(name, surname, middleName, passportId, passportSeries);
+    }
+
     public Ticket assembleAndSave(Solution solution, User user) {
         var trips = solution.getTrips();
         Ticket ticket = new Ticket();
         ticket.setNumber(UUID.randomUUID().toString());
         ticket.setStatus(TicketStatus.NOT_PAID);
         ticket.setTrips(trips);
-        ticket.setPassengerName(user.getName());
-        ticket.setPassengerSurname(user.getSurname());
-        ticket.setPassengerMiddleName(user.getMiddleName());
-        ticket.setPassengerPassportId(user.getPassportId());
-        ticket.setPassengerPassportSeries(user.getPassportSeries());
+        ticket.setPasName(user.getName());
+        ticket.setPasSurname(user.getSurname());
+        ticket.setPasMiddleName(user.getMiddleName());
+        ticket.setPasPassportId(user.getPassportId());
+        ticket.setPasPassportSeries(user.getPassportSeries());
         return save(ticket);
     }
 
@@ -52,11 +62,11 @@ public class TicketService {
         ticket.setNumber(UUID.randomUUID().toString());
         ticket.setStatus(TicketStatus.NOT_PAID);
         ticket.setTrips(trips);
-        ticket.setPassengerName(userName);
-        ticket.setPassengerSurname(userSurname);
-        ticket.setPassengerMiddleName(userMiddleName);
-        ticket.setPassengerPassportId(userPassportId);
-        ticket.setPassengerPassportSeries(userPassportSeries);
+        ticket.setPasName(userName);
+        ticket.setPasSurname(userSurname);
+        ticket.setPasMiddleName(userMiddleName);
+        ticket.setPasPassportId(userPassportId);
+        ticket.setPasPassportSeries(userPassportSeries);
         return save(ticket);
     }
 

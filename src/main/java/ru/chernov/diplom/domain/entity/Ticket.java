@@ -30,19 +30,19 @@ public class Ticket {
     private List<Trip> trips = new ArrayList<>();
 
     @Column(length = 25, nullable = false, updatable = false)
-    private String passengerName;
+    private String pasName;
 
     @Column(length = 25, nullable = false, updatable = false)
-    private String passengerSurname;
+    private String pasSurname;
 
     @Column(length = 25)
-    private String passengerMiddleName;
+    private String pasMiddleName;
 
     @Column(nullable = false, updatable = false)
-    private int passengerPassportId;
+    private int pasPassportId;
 
     @Column(nullable = false, updatable = false)
-    private int passengerPassportSeries;
+    private int pasPassportSeries;
 
     public int getCost() {
         return trips.stream()

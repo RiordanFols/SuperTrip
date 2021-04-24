@@ -3,7 +3,6 @@ package ru.chernov.diplom.domain.entity;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 import ru.chernov.diplom.alg.solver.SolutionType;
-import ru.chernov.diplom.domain.entity.Trip;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;

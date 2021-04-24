@@ -56,13 +56,13 @@ create table transfer_map
 
 create table ticket
 (
-    number                    varchar(36)  not null,
-    status                    varchar(255) not null,
-    passenger_name            varchar(25)  not null,
-    passenger_surname         varchar(25)  not null,
-    passenger_middle_name     varchar(25),
-    passenger_passport_id     int4         not null,
-    passenger_passport_series int4         not null,
+    number              varchar(36)  not null,
+    status              varchar(255) not null,
+    pas_name            varchar(25)  not null,
+    pas_surname         varchar(25)  not null,
+    pas_middle_name     varchar(25),
+    pas_passport_id     int4         not null,
+    pas_passport_series int4         not null,
     primary key (number)
 );
 create table ticket_trips
