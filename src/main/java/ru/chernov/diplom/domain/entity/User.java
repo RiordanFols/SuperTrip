@@ -59,6 +59,17 @@ public class User implements UserDetails {
     @Column(name = "role", nullable = false, updatable = false)
     private Set<Role> roles = new HashSet<>();
 
+    public User() {
+    }
+
+    public User(String name, String surname, String middleName, int passportId, int passportSeries) {
+        this.name = name;
+        this.surname = surname;
+        this.middleName = middleName;
+        this.passportId = passportId;
+        this.passportSeries = passportSeries;
+    }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return roles;

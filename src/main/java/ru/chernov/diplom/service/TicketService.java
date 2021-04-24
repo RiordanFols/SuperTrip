@@ -40,11 +40,6 @@ public class TicketService {
                 user.getMiddleName(), user.getPassportId(), user.getPassportSeries());
     }
 
-    public List<Ticket> findTicketsByUser(String name, String surname, String middleName,
-                                          int passportId, int passportSeries) {
-        return ticketRepository.findAllByUserInfo(name, surname, middleName, passportId, passportSeries);
-    }
-
     public Ticket assembleAndSave(Solution solution, User user) {
         var trips = solution.getTrips();
         Ticket ticket = new Ticket();
@@ -56,21 +51,6 @@ public class TicketService {
         ticket.setPasMiddleName(user.getMiddleName());
         ticket.setPasPassportId(user.getPassportId());
         ticket.setPasPassportSeries(user.getPassportSeries());
-        return save(ticket);
-    }
-
-    public Ticket assembleAndSave(Solution solution, String userName, String userSurname,
-                                  String userMiddleName, int userPassportId, int userPassportSeries) {
-        var trips = solution.getTrips();
-        Ticket ticket = new Ticket();
-        ticket.setNumber(UUID.randomUUID().toString());
-        ticket.setStatus(TicketStatus.NOT_PAID);
-        ticket.setTrips(trips);
-        ticket.setPasName(userName);
-        ticket.setPasSurname(userSurname);
-        ticket.setPasMiddleName(userMiddleName);
-        ticket.setPasPassportId(userPassportId);
-        ticket.setPasPassportSeries(userPassportSeries);
         return save(ticket);
     }
 

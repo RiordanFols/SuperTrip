@@ -53,8 +53,8 @@ public class TicketController {
                                  @RequestParam int passportSeries) {
 
         var solution = solutionService.findById(solutionId);
-        Ticket ticket = ticketService.assembleAndSave(solution,
-                name, surname, middleName, passportId, passportSeries);
+        var passenger = new User(name, surname, middleName, passportId, passportSeries);
+        Ticket ticket = ticketService.assembleAndSave(solution, passenger);
         return "redirect:/ticket/buy/" + ticket.getNumber();
     }
 
@@ -82,5 +82,28 @@ public class TicketController {
         model.addAttribute("frontendData", frontendData);
 
         return "ticket_info";
+    }
+
+    @GetMapping("/search")
+    public String ticketSearchPage() {
+        return "tickets_search";
+    }
+
+    @PostMapping("/search")
+    public String ticketSearch(@RequestParam String name,
+                               @RequestParam String surname,
+                               @RequestParam String middleName,
+                               @RequestParam int passportId,
+                               @RequestParam int passportSeries,
+                               Model model) {
+        var passenger = new User(name, surname, middleName, passportId, passportSeries);
+        var passengerTickets = ticketService.findTicketsByUser(passenger);
+
+        var frontendData = new HashMap<String, Object>();
+        frontendData.put("user", passenger);
+        frontendData.put("expiredTickets", ticketService.getExpiredTickets(passengerTickets));
+        frontendData.put("actualTickets", ticketService.getActualTickets(passengerTickets));
+        model.addAttribute("frontendData", frontendData);
+        return "tickets_search_result";
     }
 }

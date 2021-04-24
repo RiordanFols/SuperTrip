@@ -46,13 +46,8 @@ public class UserService implements UserDetailsService {
 
     public void registration(String username, String name, String surname, String middleName,
                              int passportId, int passportSeries, String password) {
-        User user = new User();
+        User user = new User(name, surname, middleName, passportId, passportSeries);
         user.setUsername(username);
-        user.setName(name);
-        user.setSurname(surname);
-        user.setMiddleName(middleName);
-        user.setPassportId(passportId);
-        user.setPassportSeries(passportSeries);
         user.setPassword(passwordEncoder.encode(password));
         user.setRoles(Collections.singleton(Role.USER));
         user.setActive(true);
