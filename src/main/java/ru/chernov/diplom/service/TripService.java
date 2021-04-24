@@ -54,12 +54,7 @@ public class TripService {
         Node to = nodeService.findByName(toCity);
         Edge edge = edgeService.findByNodes(from, to);
 
-        Trip trip = new Trip();
-        trip.setEdge(edge);
-        trip.setCost(cost);
-        trip.setFromTime(fromTime);
-        trip.setToTime(toTime);
-        trip.setType(transportType);
+        Trip trip = new Trip(edge, fromTime, toTime, cost, transportType);
         return save(trip);
     }
 

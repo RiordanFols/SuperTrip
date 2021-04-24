@@ -2,6 +2,7 @@ package ru.chernov.diplom.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import ru.chernov.diplom.domain.Role;
@@ -18,6 +19,7 @@ import java.util.Set;
 @Entity
 @Data
 @Table(name = "usr")
+@NoArgsConstructor
 public class User implements UserDetails {
 
     @Id
@@ -58,9 +60,6 @@ public class User implements UserDetails {
     @Enumerated(EnumType.STRING)
     @Column(name = "role", nullable = false, updatable = false)
     private Set<Role> roles = new HashSet<>();
-
-    public User() {
-    }
 
     public User(String name, String surname, String middleName, int passportId, int passportSeries) {
         this.name = name;

@@ -23,13 +23,6 @@ public class EdgeService {
         return edgeRepository.save(edge);
     }
 
-    public Edge save(Node from, Node to) {
-        Edge edge = new Edge();
-        edge.setFrom(from);
-        edge.setTo(to);
-        return save(edge);
-    }
-
     public Edge findById(long id) {
         return edgeRepository.findById(id).orElse(null);
     }

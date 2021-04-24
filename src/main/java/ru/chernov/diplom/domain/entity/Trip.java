@@ -2,6 +2,7 @@ package ru.chernov.diplom.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.chernov.diplom.domain.TransportType;
 
 import javax.persistence.*;
@@ -13,6 +14,7 @@ import java.time.temporal.ChronoUnit;
  */
 @Entity
 @Data
+@NoArgsConstructor
 public class Trip {
 
     @Id
@@ -37,6 +39,14 @@ public class Trip {
     @Enumerated(EnumType.STRING)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
     private TransportType type;
+
+    public Trip(Edge edge, LocalDateTime fromTime, LocalDateTime toTime, int cost, TransportType type) {
+        this.edge = edge;
+        this.fromTime = fromTime;
+        this.toTime = toTime;
+        this.cost = cost;
+        this.type = type;
+    }
 
     public long getTravelTime() {
         return ChronoUnit.MINUTES.between(fromTime, toTime);
