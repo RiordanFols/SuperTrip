@@ -58,6 +58,7 @@ create table ticket
 (
     number              varchar(36)  not null,
     status              varchar(255) not null,
+    creation_date_time  timestamp    not null,
     pas_name            varchar(25)  not null,
     pas_surname         varchar(25)  not null,
     pas_middle_name     varchar(25),
