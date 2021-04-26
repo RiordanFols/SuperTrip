@@ -20,10 +20,10 @@ public class Node {
     private String name;
 
     @Column(nullable = false, updatable = false)
-    private float x;
+    private double lat;
 
     @Column(nullable = false, updatable = false)
-    private float y;
+    private double lon;
 
     // todo: open-closed P
     @OneToOne(fetch = FetchType.EAGER)

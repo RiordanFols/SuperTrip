@@ -1,4 +1,4 @@
-package ru.chernov.diplom.component;
+package ru.chernov.diplom.utils;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
