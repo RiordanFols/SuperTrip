@@ -6,7 +6,7 @@ let loginForm = new Vue({
     },
     template:
         '<div>' +
-            '<form method="post" action="/auth/login">' +
+            '<form method="post" action="/login">' +
                 // '<p v-if="error !== null">{{ error }}</p>' +
                 // '<p v-if="notification !== null">{{ notification }}</p>' +
 
@@ -24,6 +24,6 @@ let loginForm = new Vue({
                     '<input value="OK" type="submit">' +
                 '</div>' +
             '</form>' +
-            '<a href="/auth/registration">Registration</a>' +
+            '<a href="/registration">Registration</a>' +
         '</div>'
 });

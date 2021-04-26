@@ -2,11 +2,13 @@ package ru.chernov.diplom.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.chernov.diplom.domain.entity.Trip;
+import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.TripService;
 
 import java.util.Comparator;
@@ -30,7 +32,8 @@ public class ManagerController {
     }
 
     @GetMapping("/schedule")
-    public String schedulePage(Model model) {
+    public String schedulePage(@AuthenticationPrincipal User authUser,
+                               Model model) {
         var schedule = new TreeSet<>(Comparator.comparing(Trip::getFromTime));
         // todo: page display
         schedule.addAll(tripService.findAll().stream()
@@ -38,6 +41,7 @@ public class ManagerController {
                 .collect(Collectors.toSet()));
         var frontendData = new HashMap<String, Object>();
         frontendData.put("schedule", schedule);
+        frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
         return "manager/schedule";
     }

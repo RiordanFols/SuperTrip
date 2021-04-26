@@ -1,7 +1,6 @@
 package ru.chernov.diplom.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -41,6 +40,7 @@ public class TicketController {
         } else {
             var frontendData = new HashMap<String, Object>();
             frontendData.put("solutionId", solutionId);
+            frontendData.put("authUser", authUser);
             model.addAttribute("frontendData", frontendData);
             return "passenger_info_blank";
         }
@@ -61,10 +61,12 @@ public class TicketController {
     }
 
     @GetMapping("/buy/{number}")
-    public String buyTicketPage(@PathVariable(name = "number") String ticketNumber,
+    public String buyTicketPage(@AuthenticationPrincipal User authUser,
+                                @PathVariable(name = "number") String ticketNumber,
                                 Model model) {
         var frontendData = new HashMap<String, Object>();
         frontendData.put("ticketNumber", ticketNumber);
+        frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
         return "payment";
     }
@@ -76,18 +78,24 @@ public class TicketController {
     }
 
     @GetMapping("/info/{number}")
-    public String ticketInfoPage(@PathVariable(name = "number") String ticketNumber,
+    public String ticketInfoPage(@AuthenticationPrincipal User authUser,
+                                 @PathVariable(name = "number") String ticketNumber,
                                  Model model) {
         Ticket ticket = ticketService.findByNumber(ticketNumber);
         var frontendData = new HashMap<String, Object>();
         frontendData.put("ticket", ticket);
+        frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
 
         return "ticket_info";
     }
 
     @GetMapping("/search")
-    public String ticketSearchPage() {
+    public String ticketSearchPage(@AuthenticationPrincipal User authUser,
+                                   Model model) {
+        var frontendData = new HashMap<String, Object>();
+        frontendData.put("authUser", authUser);
+        model.addAttribute("frontendData", frontendData);
         return "tickets_search";
     }
 

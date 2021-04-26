@@ -1,21 +1,25 @@
 package ru.chernov.diplom.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.chernov.diplom.component.FormChecker;
+import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.page.Error;
 import ru.chernov.diplom.service.UserService;
+
+import java.util.HashMap;
 
 
 /**
  * @author Pavel Chernov
  */
 @Controller
-@RequestMapping("/auth")
 public class AuthController {
 
     private final UserService userService;
@@ -28,12 +32,20 @@ public class AuthController {
     }
 
     @GetMapping("/login")
-    public String loginPage() {
+    public String loginPage(@AuthenticationPrincipal User authUser,
+                            Model model) {
+        var frontendData = new HashMap<String, Object>();
+        frontendData.put("authUser", authUser);
+        model.addAttribute("frontendData", frontendData);
         return "auth/login";
     }
 
     @GetMapping("/registration")
-    public String registrationPage() {
+    public String registrationPage(@AuthenticationPrincipal User authUser,
+                                   Model model) {
+        var frontendData = new HashMap<String, Object>();
+        frontendData.put("authUser", authUser);
+        model.addAttribute("frontendData", frontendData);
         return "auth/registration";
     }
 

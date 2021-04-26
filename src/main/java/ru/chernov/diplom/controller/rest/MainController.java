@@ -2,6 +2,7 @@ package ru.chernov.diplom.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,9 +14,11 @@ import ru.chernov.diplom.alg.solver.SolutionType;
 import ru.chernov.diplom.domain.TransportType;
 import ru.chernov.diplom.domain.entity.Node;
 import ru.chernov.diplom.domain.entity.Solution;
+import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.SolutionService;
 import ru.chernov.diplom.service.TripService;
+import ru.chernov.diplom.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -41,12 +44,17 @@ public class MainController {
     }
 
     @GetMapping("/main")
-    public String mainPage() {
+    public String mainPage(@AuthenticationPrincipal User authUser,
+                           Model model) {
+        var frontendData = new HashMap<String, Object>();
+        frontendData.put("authUser", authUser);
+        model.addAttribute("frontendData", frontendData);
         return "main";
     }
 
     @PostMapping("/main")
-    public String findSolutions(@RequestParam String fromCity,
+    public String findSolutions(@AuthenticationPrincipal User authUser,
+                                @RequestParam String fromCity,
                                 @RequestParam String toCity,
                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                         LocalDateTime departureTime,
@@ -81,6 +89,7 @@ public class MainController {
             add(solution1);
             add(solution2);
         }});
+        frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
         return "route_search_result";
     }

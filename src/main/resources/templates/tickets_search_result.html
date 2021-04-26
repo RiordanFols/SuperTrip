@@ -3,6 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <title>Tickets search result</title>
+    <link rel="stylesheet" href="/css/reset.css">
+    <link rel="stylesheet" href="/css/main.css">
     <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/vue-resource@1.5.1"></script>
     <script th:inline="javascript">
@@ -11,9 +13,12 @@
 </head>
 <body>
 
+<div id="header"></div>
+
 <h3>Issued tickets search result</h3>
 <div id="ticketSearchResult"></div>
 
+<script type="module" src="/js/common/header.js"></script>
 <script type="module" src="/js/ticket_search_result.js"></script>
 
 </body>

@@ -6,7 +6,7 @@ let registrationForm = new Vue({
     },
     template:
         '<div>' +
-            '<form method="post" action="/auth/registration">' +
+            '<form method="post" action="/registration">' +
                 // '<p v-if="error !== null">{{ error }}</p>' +
                 // '<p v-if="notification !== null">{{ notification }}</p>' +
 
@@ -55,6 +55,6 @@ let registrationForm = new Vue({
                 '</div>' +
             '</form>' +
 
-            '<a href="/auth/login">Login</a>' +
+            '<a href="/login">Login</a>' +
         '</div>'
 });

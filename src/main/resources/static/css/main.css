@@ -1,0 +1,81 @@
+
+/*header*/
+/**/
+
+.header {
+    background-color: #505068;
+    width: 100%;
+    height: 40px;
+}
+
+.header a {
+    text-decoration: none;
+}
+
+.header-content {
+    margin: auto;
+    width: 1000px;
+    height: 40px;
+}
+
+.header-app-name {
+    margin-top: 5px;
+    color: white;
+    width: 100px;
+    height: 40px;
+    font-size: 25px;
+    float: left;
+}
+
+.header-middle {
+    height: 40px;
+    float: left;
+    width: 587px;
+}
+
+.header-profile {
+    float: left;
+    height: 40px;
+    min-width: 150px;
+}
+
+.header-profile-img {
+    float: left;
+    margin-top: 4px;
+    width: 32px;
+    height: 32px;
+    border-radius: 20px;
+}
+
+.header-profile-name {
+    min-width: 100px;
+    max-width: 180px;
+    height: 30px;
+    float: left;
+    padding-top: 10px;
+    margin-left: 8px;
+    color: white;
+    font-size: 18px;
+}
+
+.header-auth {
+    border-left: 1px solid #656573;
+    float: left;
+    display: block;
+    padding-top: 12px;
+    padding-left: 10px;
+    height: 28px;
+    margin-left: 10px;
+    color: darkgray;
+    font-size: 15px;
+    align-content: center;
+}
+
+/*main content*/
+/**/
+
+.main {
+    width: 965px;
+    min-height: 800px;
+    margin: 5px auto 0 auto;
+}

@@ -2,10 +2,10 @@ Vue.component('trip', {
     props: ['trip'],
     template:
         '<tr class="schedule-row">' +
-            '<td class="trip-id">{{ trip.id }}</td>' +
-            '<td class="trip-route">From {{ trip.edge.from.name }} {{ trip.fromTime }} to {{ trip.edge.to.name }}' +
+            '<td class="schedule-trip-id">{{ trip.id }}</td>' +
+            '<td class="schedule-trip-route">From {{ trip.edge.from.name }} {{ trip.fromTime }} to {{ trip.edge.to.name }}' +
                 ' {{ trip.toTime }} on {{ trip.type }}</td>' +
-            '<td class="trip-cost">{{ trip.cost }}</td>' +
+            '<td class="schedule-trip-cost">{{ trip.cost }}</td>' +
         '</tr>'
 });
 

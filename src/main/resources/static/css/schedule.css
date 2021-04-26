@@ -1,0 +1,39 @@
+table, th, td {
+    border: 2px black solid;
+}
+
+.schedule {
+    width: 1000px;
+}
+
+.schedule-header {
+    height: 45px;
+}
+
+.schedule-header-id {
+    width: 50px;
+}
+
+.schedule-header-route {
+    width: 850px;
+}
+
+.schedule-header-cost {
+    width: 100px;
+}
+
+.schedule-row {
+    height: 35px;
+}
+
+.schedule-trip-id {
+
+}
+
+.schedule-trip-route {
+
+}
+
+.schedule-trip-cost {
+
+}

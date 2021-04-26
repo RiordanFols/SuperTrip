@@ -23,7 +23,7 @@ Vue.component('user-ticket', {
 let profile = new Vue({
     el: '#profile',
     data: {
-        user: frontendData.user,
+        user: frontendData.authUser,
         expiredTickets: frontendData.expiredTickets,
         actualTickets: frontendData.actualTickets,
         // error: frontendData.error,
