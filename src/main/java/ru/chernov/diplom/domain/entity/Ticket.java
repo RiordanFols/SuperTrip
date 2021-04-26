@@ -6,7 +6,8 @@ import ru.chernov.diplom.domain.TicketStatus;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * @author Pavel Chernov

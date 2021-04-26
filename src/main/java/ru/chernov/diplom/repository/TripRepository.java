@@ -10,5 +10,6 @@ import java.util.Set;
  */
 public interface TripRepository extends JpaRepository<Trip, Long> {
     Set<Trip> findByOrderByFromTimeAsc();
+
     Set<Trip> findAllByEdgeId(long edgeId);
 }

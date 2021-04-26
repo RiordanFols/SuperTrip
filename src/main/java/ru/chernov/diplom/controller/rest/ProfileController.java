@@ -8,7 +8,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.TicketService;
-import ru.chernov.diplom.service.UserService;
 
 import java.util.HashMap;
 

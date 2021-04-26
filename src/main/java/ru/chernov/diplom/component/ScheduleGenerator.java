@@ -109,6 +109,7 @@ public class ScheduleGenerator {
         sg.go();
         System.out.println("\n\n\n\n\n");
     }
+
     public void go() {
         System.out.println("insert into trip (id, edge_id, from_time, to_time, cost, type) values ");
         if (busTripTimeInMinutes != 0) {

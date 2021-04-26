@@ -100,7 +100,7 @@ public class DijkstraSolver extends Solver {
                 minThreshold = minThreshold.plusMinutes(minTransferTime);
             }
             return fromDateTime.isAfter(minThreshold) || fromDateTime.isEqual(minThreshold) &&
-                        toDateTime.isBefore(max) || toDateTime.isEqual(max);
+                    toDateTime.isBefore(max) || toDateTime.isEqual(max);
         };
         Trip minCostTrip = trips.stream()
                 .filter(timeFilterPredicate)

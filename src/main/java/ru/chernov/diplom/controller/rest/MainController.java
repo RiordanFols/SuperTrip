@@ -18,7 +18,6 @@ import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.SolutionService;
 import ru.chernov.diplom.service.TripService;
-import ru.chernov.diplom.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;

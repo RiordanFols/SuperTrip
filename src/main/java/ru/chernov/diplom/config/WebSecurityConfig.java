@@ -31,21 +31,21 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/profile", "/manager/**").authenticated()
-                .anyRequest().permitAll()
+                    .antMatchers("/profile", "/manager/**").authenticated()
+                    .anyRequest().permitAll()
                 .and()
-                .formLogin()
-                .loginPage("/login")
-                .defaultSuccessUrl("/main", false)
-                .permitAll()
+                    .formLogin()
+                    .loginPage("/login")
+                    .defaultSuccessUrl("/main", false)
+                    .permitAll()
                 .and()
-                .rememberMe()
+                    .rememberMe()
                 .and()
-                .logout()
-                .logoutSuccessUrl("/main")
-                .permitAll()
+                    .logout()
+                    .logoutSuccessUrl("/main")
+                    .permitAll()
                 .and()
-                .csrf().disable();
+                    .csrf().disable();
     }
 
     @Override
