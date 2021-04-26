@@ -1,10 +1,12 @@
 package ru.chernov.diplom.controller.rest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
+import ru.chernov.diplom.domain.Role;
 import ru.chernov.diplom.domain.entity.Ticket;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.SolutionService;
@@ -32,7 +34,7 @@ public class TicketController {
     public String assembleTicketPage(@AuthenticationPrincipal User authUser,
                                      @PathVariable(name = "id") long solutionId,
                                      Model model) {
-        if (authUser != null) {
+        if (authUser != null && authUser.getRoles().contains(Role.USER)) {
             var solution = solutionService.findById(solutionId);
             Ticket ticket = ticketService.assembleAndSave(solution, authUser);
             return "redirect:/ticket/buy/" + ticket.getNumber();

@@ -17,7 +17,7 @@ let loginForm = new Vue({
 
                 '<div>' +
                     '<span>Password</span>' +
-                    '<input type="text" maxlength="25" name="password" required >' +
+                    '<input type="password" maxlength="25" name="password" required >' +
                 '</div>' +
 
                 '<div>' +

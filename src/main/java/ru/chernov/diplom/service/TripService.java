@@ -33,7 +33,7 @@ public class TripService {
     }
 
     public Set<Trip> findAll() {
-        return new HashSet<>(tripRepository.findAll());
+        return tripRepository.findByOrderByFromTimeAsc();
     }
 
     public Trip findById(long id) {
