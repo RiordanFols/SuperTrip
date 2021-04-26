@@ -1,4 +1,4 @@
-var header = new Vue({
+let header = new Vue({
     el: '#header',
     data: {
         authUser: frontendData.authUser,
