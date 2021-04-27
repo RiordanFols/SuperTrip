@@ -62,7 +62,6 @@ public class MainController {
                                 @RequestParam(required = false) boolean busAvailable,
                                 @RequestParam(required = false) boolean trainAvailable,
                                 @RequestParam(required = false) boolean planeAvailable,
-                                @RequestParam int transfersN,
                                 Model model) {
         Schedule schedule = new Schedule(tripService.findAll());
         Node start = nodeService.findByName(fromCity);
@@ -77,9 +76,9 @@ public class MainController {
                 add(TransportType.PLANE);
         }};
         Solution solution1 = new DijkstraSolver(schedule, start, end, departureTime,
-                arrivalTime, transfersN, transportTypes, SolutionType.TIME).solve();
+                arrivalTime, transportTypes, SolutionType.TIME).solve();
         Solution solution2 = new DijkstraSolver(schedule, start, end, departureTime,
-                arrivalTime, transfersN, transportTypes, SolutionType.COST).solve();
+                arrivalTime, transportTypes, SolutionType.COST).solve();
         solutionService.save(solution1);
         solutionService.save(solution2);
 

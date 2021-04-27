@@ -20,9 +20,9 @@ public class DijkstraSolver extends Solver {
     private final Map<Node, Solution> solutions = new TreeMap<>(Comparator.comparing(Node::getName));
 
     public DijkstraSolver(Schedule schedule, Node start, Node end,
-                          LocalDateTime startTime, LocalDateTime endTime, int maxTransfersNumber,
+                          LocalDateTime startTime, LocalDateTime endTime,
                           Set<TransportType> transportTypesAvailable, SolutionType solutionType) {
-        super(schedule, start, end, startTime, endTime, maxTransfersNumber, transportTypesAvailable, solutionType);
+        super(schedule, start, end, startTime, endTime, transportTypesAvailable, solutionType);
 
         // filtering trips by time and transport type
         schedule = filterSchedule(this.schedule);
@@ -130,13 +130,8 @@ public class DijkstraSolver extends Solver {
         };
     }
 
-    // итерация алгоритма Дейкстры с нахождением ближайшего узла и пересчетом пути до узлов
     private void algorithmIteration(Trip plannedTrip, Node minNode, Node curNode) {
         var solution = solutions.get(minNode);
-        // stop if number of allowed transfers is reached
-        if (solution.getTrips().size() == (maxTransfersNumber + 1))
-            return;
-
         var lastTrip = solution.getLastTrip();
         solutions.put(curNode, checkNewSolution(curNode, solution, lastTrip, plannedTrip));
     }

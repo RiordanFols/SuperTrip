@@ -3,7 +3,7 @@
 /**/
 
 .header {
-    background-color: #505068;
+    background-color: #2074A8;
     width: 100%;
     height: 40px;
 }
@@ -21,9 +21,9 @@
 .header-app-name {
     margin-top: 5px;
     color: white;
-    width: 100px;
+    width: 150px;
     height: 40px;
-    font-size: 25px;
+    font-size: 26px;
     float: left;
 }
 
@@ -58,28 +58,32 @@
     font-size: 18px;
 }
 
+.header-profile-name:hover {
+    color: #F5F353;
+}
+
 .header-auth {
     border-left: 1px solid #656573;
     float: left;
     display: block;
-    padding-top: 12px;
+    padding-top: 11px;
     padding-left: 10px;
-    height: 28px;
+    height: 29px;
     margin-left: 10px;
     color: white;
-    font-size: 15px;
+    font-size: 16px;
     align-content: center;
 }
 
 .header-auth:hover {
-    color: darkgray;
+    color: #F5F353;
 }
 
 /*main content*/
 /**/
 
 .main {
-    width: 965px;
+    width: 1000px;
     min-height: 800px;
     margin: 5px auto 0 auto;
 }
@@ -88,9 +92,9 @@
 /**/
 
 .footer {
-    background-color: #505068;
+    background-color: #2276AA;
     width: 100%;
-    height: 90px;
+    height: 100px;
     position: fixed;
     left: 0;
     bottom: 0;
@@ -107,7 +111,7 @@
 }
 
 .footer-up {
-    height: 50px;
+    height: 60px;
 }
 
 .footer-up-item {
@@ -115,10 +119,11 @@
     width: 156px;
     margin-right: 10px;
     text-align: center;
+    font-size: 18px;
 }
 
 .footer-up-item:hover {
-    color: darkgray;
+    color: #F5F353;
 }
 
 .footer-down {
@@ -128,5 +133,6 @@
 .footer-down-text {
     text-align: center;
     padding-top: 10px;
-    color: darkgray;
+    color: black;
+    font-size: 17px;
 }

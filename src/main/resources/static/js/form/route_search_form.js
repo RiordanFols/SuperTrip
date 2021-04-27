@@ -5,54 +5,47 @@ let routeSearchForm = new Vue({
         // notification: frontendData.notification,
     },
     template:
-        '<div>' +
-            '<form method="post" action="/main">' +
-                // '<p v-if="error !== null">{{ error }}</p>' +
-                // '<p v-if="notification !== null">{{ notification }}</p>' +
-
-                '<div>' +
-                    '<span>From</span>' +
-                    '<input type="text" maxlength="50" name="fromCity" required autofocus>' +
-                '</div>' +
-
-                '<div>' +
-                    '<span>To</span>' +
-                    '<input type="text" maxlength="50" name="toCity" required>' +
-                '</div>' +
-
-                '<div>' +
-                    '<span>Min departure time</span>' +
-                    '<input type="datetime-local" name="departureTime">' +
-                '</div>' +
-
-                '<div>' +
-                    '<span>Max arrival time</span>' +
-                    '<input type="datetime-local" name="arrivalTime">' +
-                '</div>' +
-
-                '<div>' +
-                    '<div>' +
-                        '<span>Bus</span>' +
-                        '<input type="checkbox" name="busAvailable">' +
+        '<form method="post" action="/main">' +
+            // '<p v-if="error !== null">{{ error }}</p>' +
+            // '<p v-if="notification !== null">{{ notification }}</p>' +
+            '<div class="route-search-form">' +
+                '<div class="form-block-left">' +
+                    '<div class="form-block-left-line">' +
+                        '<input class="city-input" type="text" maxlength="50" name="fromCity" placeholder="From" required autofocus>' +
+                        '<input class="city-input" type="text" maxlength="50" name="toCity" placeholder="To" required>' +
                     '</div>' +
-                    '<div>' +
-                        '<span>Train</span>' +
-                        '<input type="checkbox" name="trainAvailable">' +
-                    '</div>' +
-                    '<div>' +
-                        '<span>Plane</span>' +
-                        '<input type="checkbox" name="planeAvailable">' +
+                    '<div class="form-block-left-line">' +
+                        '<div class="datetime-input-line">' +
+                            '<div class="datetime-label">Min departure time</div>' +
+                            '<input class="datetime-input" type="datetime-local" name="departureTime" required >' +
+                        '</div>' +
+                        '<div class="datetime-input-line">' +
+                            '<div class="datetime-label">Max arrival time</div>' +
+                            '<input class="datetime-input" type="datetime-local" name="arrivalTime"  >' +
+                        '</div>' +
                     '</div>' +
                 '</div>' +
 
-                '<div>' +
-                    '<span>Max number of transfers</span>' +
-                    '<input type="number" max="10" min="0" value="2" name="transfersN" required>' +
+                '<div class="form-block-right">' +
+                    '<div class="transport-block">' +
+                        '<div class="transport-item">' +
+                            '<div class="transport-name">Bus</div>' +
+                            '<input class="transport-checkbox" type="checkbox" checked name="busAvailable">' +
+                        '</div>' +
+                        '<div class="transport-item">' +
+                            '<div class="transport-name">Train</div>' +
+                            '<input class="transport-checkbox" type="checkbox" checked name="trainAvailable">' +
+                        '</div>' +
+                        '<div class="transport-item">' +
+                            '<div class="transport-name">Plane</div>' +
+                            '<input class="transport-checkbox" type="checkbox" checked name="planeAvailable">' +
+                        '</div>' +
+                    '</div>' +
                 '</div>' +
+            '</div>' +
 
-                '<div>' +
-                    '<input value="OK" type="submit">' +
-                '</div>' +
-            '</form>' +
-        '</div>'
+            '<div class="submit-block">' +
+                '<input class="submit-btn" value="Find" type="submit">' +
+            '</div>' +
+        '</form>'
 });
