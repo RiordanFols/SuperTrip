@@ -6,7 +6,7 @@ values (51, 30, 20, 45, 45, 130, 100),
        (55, 30, 20, 45, 50, 125, 130),
        (56, 30, 20, 45, 55, 115, 125);
 
-insert into node(id, name, x, y, transfer_map_id)
+insert into node(id, name, lat, lon, transfer_map_id)
 values (1, 'Bristol', 51.4545, -2.5879, 51),
        (2, 'London', 51.5074, -0.1278, 52),
        (3, 'Coventry', 52.4068, -1.5197, 53),

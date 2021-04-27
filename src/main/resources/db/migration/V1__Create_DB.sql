@@ -37,8 +37,8 @@ create table node
 (
     id              int8        not null,
     name            varchar(50) not null,
-    x               float8      not null,
-    y               float8      not null,
+    lat             float8      not null,
+    lon             float8      not null,
     transfer_map_id int8,
     primary key (id)
 );
