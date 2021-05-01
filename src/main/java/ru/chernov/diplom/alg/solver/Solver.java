@@ -7,7 +7,7 @@ import ru.chernov.diplom.domain.entity.Node;
 import ru.chernov.diplom.domain.entity.Solution;
 
 import java.time.LocalDateTime;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 /**
@@ -23,6 +23,8 @@ public abstract class Solver {
     public final LocalDateTime endTime;
     public final Set<TransportType> transportTypesAvailable;
     public final SolutionType solutionType;
+    public final List<Node> undone;
+    public final Map<Node, Solution> solutions = new TreeMap<>(Comparator.comparing(Node::getName));
 
     public Solver(Schedule schedule, Node start, Node end,
                   LocalDateTime startTime, LocalDateTime endTime,
@@ -34,6 +36,12 @@ public abstract class Solver {
         this.endTime = endTime;
         this.transportTypesAvailable = transportTypesAvailable;
         this.solutionType = solutionType;
+
+        // filtering trips by time and transport type
+        schedule = filterSchedule(this.schedule);
+
+        undone = new ArrayList<>(schedule.getNodes());
+        undone.remove(start);
     }
 
     abstract public Solution solve();

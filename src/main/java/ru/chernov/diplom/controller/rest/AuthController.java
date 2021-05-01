@@ -60,6 +60,6 @@ public class AuthController {
         Error error = formChecker.checkRegistrationData(username, password, passwordConfirm);
         if (error == null)
             userService.registration(username, name, surname, middleName, passportId, passportSeries, password);
-        return "redirect:/main";
+        return "redirect:/";
     }
 }

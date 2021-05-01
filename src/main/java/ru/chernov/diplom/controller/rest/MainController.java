@@ -42,7 +42,7 @@ public class MainController {
         this.solutionService = solutionService;
     }
 
-    @GetMapping("/main")
+    @GetMapping("/")
     public String mainPage(@AuthenticationPrincipal User authUser,
                            Model model) {
         var frontendData = new HashMap<String, Object>();
@@ -51,7 +51,7 @@ public class MainController {
         return "main";
     }
 
-    @PostMapping("/main")
+    @PostMapping("/")
     public String findSolutions(@AuthenticationPrincipal User authUser,
                                 @RequestParam String fromCity,
                                 @RequestParam String toCity,

@@ -5,7 +5,7 @@ let routeSearchForm = new Vue({
         // notification: frontendData.notification,
     },
     template:
-        '<form method="post" action="/main">' +
+        '<form method="post" action="/">' +
             // '<p v-if="error !== null">{{ error }}</p>' +
             // '<p v-if="notification !== null">{{ notification }}</p>' +
             '<div class="route-search-form">' +
