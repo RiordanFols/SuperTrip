@@ -19,11 +19,11 @@ let ticketInfo = new Vue({
         '<div class="ticket-info">' +
             '<div class="ticket-number">Number: {{ ticket.number }}</div>' +
             '<div class="ticket-status">Status: {{ ticket.status }}</div>' +
-            '<div class="ticket-name">Passenger name: {{ ticket.passengerName }}</div>' +
-            '<div class="ticket-name">Passenger surname: {{ ticket.passengerSurname }}</div>' +
-            '<div class="ticket-name">Passenger middle name: {{ ticket.passengerMiddleName }}</div>' +
-            '<div class="ticket-name">Passenger passport: {{ ticket.passengerPassportSeries }}' +
-                ' {{ ticket.passengerPassportId }}</div>' +
+            '<div class="ticket-name">Passenger name: {{ ticket.pasName }}</div>' +
+            '<div class="ticket-name">Passenger surname: {{ ticket.pasSurname }}</div>' +
+            '<div class="ticket-name">Passenger middle name: {{ ticket.pasMiddleName }}</div>' +
+            '<div class="ticket-name">Passenger passport: {{ ticket.pasPassportSeries }}' +
+                ' {{ ticket.pasPassportId }}</div>' +
             '<div class="ticket-trips">' +
                 '<ticket-trip v-for="trip in ticket.trips" :key="trip.id" :trip="trip"/>' +
             '</div>' +
