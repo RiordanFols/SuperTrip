@@ -1,19 +1,35 @@
 package ru.chernov.diplom.domain;
 
+import lombok.Getter;
+
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 /**
  * @author Pavel Chernov
  */
+@Getter
 public enum TransportType {
-    BUS,
-    TRAIN,
-    PLANE;
+    BUS(80),
+    TRAIN(140),
+    PLANE(800);
+
+    private final int speed;
+
+    TransportType(int speed) {
+        this.speed = speed;
+    }
 
     public static Set<TransportType> getAll() {
         return Arrays.stream(TransportType.values())
                 .collect(Collectors.toSet());
+    }
+
+    public static int getFastestTransportSpeed() {
+        return Arrays.stream(TransportType.values())
+                .max(Comparator.comparingLong(TransportType::getSpeed))
+                .map(TransportType::getSpeed).orElse(0);
     }
 }

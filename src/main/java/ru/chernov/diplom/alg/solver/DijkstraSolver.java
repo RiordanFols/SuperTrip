@@ -16,19 +16,11 @@ import java.util.function.Predicate;
  */
 public class DijkstraSolver extends Solver {
 
-    private final List<Node> undone;
-    private final Map<Node, Solution> solutions = new TreeMap<>(Comparator.comparing(Node::getName));
-
     public DijkstraSolver(Schedule schedule, Node start, Node end,
                           LocalDateTime startTime, LocalDateTime endTime,
                           Set<TransportType> transportTypesAvailable, SolutionType solutionType) {
         super(schedule, start, end, startTime, endTime, transportTypesAvailable, solutionType);
 
-        // filtering trips by time and transport type
-        schedule = filterSchedule(this.schedule);
-
-        undone = new ArrayList<>(schedule.getNodes());
-        undone.remove(start);
     }
 
     @Override
@@ -43,6 +35,8 @@ public class DijkstraSolver extends Solver {
             if (minNode == null)
                 break;
             undone.remove(minNode);
+            if (checkIfRouteTooBig(minNode))
+                continue;
 
             for (Node curNode : undone) {
                 // if edge between nodes exists
@@ -128,6 +122,26 @@ public class DijkstraSolver extends Solver {
                     .filter(node -> solutions.get(node) != null)
                     .min(Comparator.comparingLong(o -> solutions.get(o).getCost())).orElse(null);
         };
+    }
+
+    public boolean checkIfRouteTooBig(Node minNode) {
+        var minNodeSolution = solutions.get(minNode);
+        var endSolution = solutions.get(end);
+        // if can't compare solutions
+        if (minNodeSolution == null || endSolution == null)
+            return false;
+
+        switch (solutionType) {
+            case COST -> {
+                return minNodeSolution.getCost() >= endSolution.getCost();
+            }
+            case TIME -> {
+                return minNodeSolution.getTime() >= endSolution.getTime();
+            }
+            default -> {
+                return false;
+            }
+        }
     }
 
     private void algorithmIteration(Trip plannedTrip, Node minNode, Node curNode) {

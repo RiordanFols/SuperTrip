@@ -9,11 +9,11 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import ru.chernov.diplom.alg.Schedule;
-import ru.chernov.diplom.alg.solver.DijkstraSolver;
 import ru.chernov.diplom.alg.solver.SolutionType;
+import ru.chernov.diplom.alg.solver.Solver;
+import ru.chernov.diplom.alg.solver.SolverFactory;
 import ru.chernov.diplom.domain.TransportType;
 import ru.chernov.diplom.domain.entity.Node;
-import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.SolutionService;
@@ -75,12 +75,12 @@ public class MainController {
             if (planeAvailable)
                 add(TransportType.PLANE);
         }};
-        Solution solution1 = new DijkstraSolver(schedule, start, end, departureTime,
-                arrivalTime, transportTypes, SolutionType.TIME).solve();
-        Solution solution2 = new DijkstraSolver(schedule, start, end, departureTime,
-                arrivalTime, transportTypes, SolutionType.COST).solve();
-        solutionService.save(solution1);
-        solutionService.save(solution2);
+        Solver solver1 = SolverFactory.getAppropriateSolver(schedule, start, end,
+                departureTime, arrivalTime, transportTypes, SolutionType.TIME);
+        Solver solver2 = SolverFactory.getAppropriateSolver(schedule, start, end,
+                departureTime, arrivalTime, transportTypes, SolutionType.COST);
+        var solution1 = solutionService.save(solver1.solve());
+        var solution2 = solutionService.save(solver2.solve());
 
         var frontendData = new HashMap<String, Object>();
         frontendData.put("solutions", new ArrayList<>() {{

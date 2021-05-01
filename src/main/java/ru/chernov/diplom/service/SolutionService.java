@@ -20,11 +20,12 @@ public class SolutionService {
         this.solutionRepository = solutionRepository;
     }
 
-    public void save(Solution solution) {
+    public Solution save(Solution solution) {
         if (solution != null) {
             solution.setCreationDateTime(LocalDateTime.now());
-            solutionRepository.save(solution);
+            return solutionRepository.save(solution);
         }
+        return null;
     }
 
     public Solution findById(long id) {
