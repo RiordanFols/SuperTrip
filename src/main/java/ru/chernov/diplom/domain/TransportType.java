@@ -3,6 +3,7 @@ package ru.chernov.diplom.domain;
 import lombok.Getter;
 
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -27,8 +28,8 @@ public enum TransportType {
                 .collect(Collectors.toSet());
     }
 
-    public static int getFastestTransportSpeed() {
-        return Arrays.stream(TransportType.values())
+    public static int getFastestTransportSpeed(Collection<TransportType> allowedTypes) {
+        return allowedTypes.stream()
                 .max(Comparator.comparingLong(TransportType::getSpeed))
                 .map(TransportType::getSpeed).orElse(0);
     }

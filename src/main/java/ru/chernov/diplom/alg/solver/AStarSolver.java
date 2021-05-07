@@ -42,7 +42,7 @@ public class AStarSolver extends DijkstraSolver {
     // time in minutes
     private long getTimeHeuristicFunction(Node node1, Node node2) {
         var distance = DistanceCalculator.calculate(node1, node2); //  km
-        var speed = TransportType.getFastestTransportSpeed(); //  km/h
+        var speed = TransportType.getFastestTransportSpeed(transportTypesAvailable); //  km/h
         return (long) Math.ceil(distance / (double) speed * 60);
     }
 }
