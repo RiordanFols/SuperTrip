@@ -116,6 +116,7 @@ create table usr
     password        varchar(100) not null,
     surname         varchar(25)  not null,
     username        varchar(25)  not null,
+    spent           int4         not null,
     primary key (id)
 );
 create table user_role

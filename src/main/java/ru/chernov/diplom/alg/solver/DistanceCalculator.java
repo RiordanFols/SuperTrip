@@ -1,6 +1,5 @@
 package ru.chernov.diplom.alg.solver;
 
-import org.springframework.stereotype.Component;
 import ru.chernov.diplom.domain.entity.Node;
 
 /**

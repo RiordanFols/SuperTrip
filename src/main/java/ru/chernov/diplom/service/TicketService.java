@@ -20,10 +20,12 @@ import java.util.stream.Collectors;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
+    private final UserService userService;
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository) {
+    public TicketService(TicketRepository ticketRepository, UserService userService) {
         this.ticketRepository = ticketRepository;
+        this.userService = userService;
     }
 
     public Ticket save(Ticket ticket) {
@@ -54,12 +56,15 @@ public class TicketService {
         return save(ticket);
     }
 
-    public void pay(String ticketNumber) {
+    public void pay(String ticketNumber, User authUser) {
         Ticket ticket = findByNumber(ticketNumber);
         if (ticket.getStatus().equals(TicketStatus.NOT_PAID))
             ticket.setStatus(TicketStatus.PAID);
+        if (authUser != null)
+            authUser.addToSpent(ticket.getCost());
 
         save(ticket);
+        userService.save(authUser);
     }
 
     public List<Ticket> getActualTickets(List<Ticket> tickets) {

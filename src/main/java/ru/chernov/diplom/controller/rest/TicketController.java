@@ -72,8 +72,9 @@ public class TicketController {
     }
 
     @PostMapping("/buy/{number}")
-    public String buyTicket(@PathVariable(name = "number") String ticketNumber) {
-        ticketService.pay(ticketNumber);
+    public String buyTicket(@AuthenticationPrincipal User authUser,
+                            @PathVariable(name = "number") String ticketNumber) {
+        ticketService.pay(ticketNumber, authUser);
         return "redirect:/";
     }
 

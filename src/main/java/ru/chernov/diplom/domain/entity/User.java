@@ -2,9 +2,12 @@ package ru.chernov.diplom.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.Setter;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import ru.chernov.diplom.domain.PrivilegeLevel;
 import ru.chernov.diplom.domain.Role;
 
 import javax.persistence.*;
@@ -17,7 +20,7 @@ import java.util.Set;
  * @author Pavel Chernov
  */
 @Entity
-@Data
+@Getter
 @Table(name = "usr")
 @NoArgsConstructor
 public class User implements UserDetails {
@@ -26,34 +29,46 @@ public class User implements UserDetails {
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private long id;
 
+    @Setter
     @Column(length = 25, nullable = false)
     private String username;
 
+    @Setter
     @Column(length = 25, nullable = false)
     private String name;
 
+    @Setter
     @Column(length = 25, nullable = false)
     private String surname;
 
+    @Setter
     @Column(length = 25)
     private String middleName;
 
+    @Setter
     @Column(nullable = false)
     private int passportId;
 
+    @Setter
     @Column(nullable = false)
     private int passportSeries;
 
+    @Column(nullable = false)
+    private int spent = 0;
+
     // real length is 25
     // passwordEncoder needs more
+    @Setter
     @Column(length = 100, nullable = false)
     @JsonIgnore
     private String password;
 
+    @Setter
     @Column(nullable = false)
     @JsonIgnore
     private boolean isActive;
 
+    @Setter
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role",
             joinColumns = @JoinColumn(name = "user_id", nullable = false, updatable = false))
@@ -92,5 +107,13 @@ public class User implements UserDetails {
     @Override
     public boolean isCredentialsNonExpired() {
         return true;
+    }
+
+    public PrivilegeLevel getPrivilegeLevel() {
+        return PrivilegeLevel.getLevel(this.spent);
+    }
+
+    public void addToSpent(int amount) {
+        this.spent += amount;
     }
 }
