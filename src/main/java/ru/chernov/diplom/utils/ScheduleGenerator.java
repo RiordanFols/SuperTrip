@@ -174,7 +174,7 @@ public class ScheduleGenerator {
     private static LocalDateTime generateFirstTripTime(LocalDateTime startTime) {
         Random random = new Random();
         var hours = random.nextInt(4);
-        var minutes = random.nextInt(12) * 5;
+        var minutes = random.nextInt(13) * 5;
         startTime = startTime.plusHours(hours);
         startTime = startTime.plusMinutes(minutes);
         return startTime;
@@ -182,7 +182,7 @@ public class ScheduleGenerator {
 
     private static LocalDateTime generateTripTime(LocalDateTime lastTripTime, long minBreakInMinutes) {
         Random random = new Random();
-        var minutes = random.nextInt(12) * 5;
+        var minutes = random.nextInt(13) * 5;
         return lastTripTime
                 .plusMinutes(minBreakInMinutes)
                 .plusMinutes(minutes);
