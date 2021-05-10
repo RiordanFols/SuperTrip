@@ -5,6 +5,7 @@ import org.springframework.stereotype.Service;
 import ru.chernov.diplom.domain.TicketStatus;
 import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.domain.entity.Ticket;
+import ru.chernov.diplom.domain.entity.Trip;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.repository.TicketRepository;
 
@@ -43,16 +44,20 @@ public class TicketService {
     }
 
     public Ticket assembleAndSave(Solution solution, User user) {
-        var trips = solution.getTrips();
         Ticket ticket = new Ticket();
         ticket.setNumber(UUID.randomUUID().toString());
-        ticket.setStatus(TicketStatus.NOT_PAID);
-        ticket.setTrips(trips);
         ticket.setPasName(user.getName());
         ticket.setPasSurname(user.getSurname());
         ticket.setPasMiddleName(user.getMiddleName());
         ticket.setPasPassportId(user.getPassportId());
         ticket.setPasPassportSeries(user.getPassportSeries());
+        ticket.setStatus(TicketStatus.NOT_PAID);
+
+        var trips = solution.getTrips();
+        ticket.setTrips(trips);
+        ticket.setCost(trips.stream()
+                .map(Trip::getCost)
+                .reduce(Double::sum).orElse(0.0));
         return save(ticket);
     }
 

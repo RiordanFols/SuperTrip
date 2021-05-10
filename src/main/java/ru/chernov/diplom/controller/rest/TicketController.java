@@ -65,7 +65,7 @@ public class TicketController {
                                 @PathVariable(name = "number") String ticketNumber,
                                 Model model) {
         var frontendData = new HashMap<String, Object>();
-        frontendData.put("ticketNumber", ticketNumber);
+        frontendData.put("ticket", ticketService.findByNumber(ticketNumber));
         frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
         return "payment";

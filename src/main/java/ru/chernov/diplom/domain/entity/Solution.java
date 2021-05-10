@@ -28,7 +28,7 @@ public class Solution {
     private long time;
 
     @Column(nullable = false, updatable = false)
-    private long cost;
+    private double cost;
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "solution_trips",

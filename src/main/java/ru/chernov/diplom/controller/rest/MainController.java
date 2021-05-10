@@ -83,13 +83,14 @@ public class MainController {
         var solution2 = solutionService.save(solver2.solve());
 
         var frontendData = new HashMap<String, Object>();
+        frontendData.put("authUser", authUser);
         frontendData.put("solutions", new ArrayList<>() {{
             add(solution1);
             add(solution2);
         }});
-        frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
         return "route_search_result";
     }
+
 
 }

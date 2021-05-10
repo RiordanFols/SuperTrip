@@ -20,6 +20,9 @@ public class Ticket {
     @Column(length = 36)
     private String number;
 
+    @Column(nullable = false, updatable = false)
+    private double cost;
+
     @Column(nullable = false)
     @Enumerated(value = EnumType.STRING)
     @JsonFormat(shape = JsonFormat.Shape.STRING)
@@ -50,9 +53,4 @@ public class Ticket {
     @Column(nullable = false, updatable = false)
     private int pasPassportSeries;
 
-    public int getCost() {
-        return trips.stream()
-                .map(Trip::getCost)
-                .reduce(Integer::sum).orElse(0);
-    }
 }

@@ -10,20 +10,20 @@ import java.util.Collections;
  */
 @Getter
 public enum PrivilegeLevel {
-    BRONZE(1, 0),
-    SILVER(1.5, 1000),
-    GOLD(2, 5000),
-    PLATINUM(2.5, 20000);
+    BRONZE(1, 0.0),
+    SILVER(1.5, 1000.0),
+    GOLD(2, 5000.0),
+    PLATINUM(2.5, 20000.0);
 
     private final double discount;
-    private final int threshold;
+    private final double threshold;
 
-    PrivilegeLevel(double discount, int threshold) {
+    PrivilegeLevel(double discount, double threshold) {
         this.discount = discount;
         this.threshold = threshold;
     }
 
-    public static PrivilegeLevel getLevel(int spent) {
+    public static PrivilegeLevel getLevel(double spent) {
         var reverseLevels = Arrays.asList(PrivilegeLevel.values());
         Collections.reverse(reverseLevels);
 

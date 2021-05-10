@@ -57,6 +57,7 @@ create table transfer_map
 create table ticket
 (
     number              varchar(36)  not null,
+    cost                float8       not null,
     status              varchar(255) not null,
     creation_date_time  timestamp    not null,
     pas_name            varchar(25)  not null,
@@ -75,7 +76,7 @@ create table ticket_trips
 create table trip
 (
     id        int8         not null,
-    cost      int4         not null,
+    cost      float8       not null,
     from_time timestamp    not null,
     to_time   timestamp,
     type      varchar(255) not null,
@@ -94,7 +95,7 @@ create table solution
 (
     id                 int8         not null,
     creation_date_time timestamp    not null,
-    cost               int8         not null,
+    cost               float8       not null,
     time               int8         not null,
     type               varchar(255) not null,
     primary key (id)
@@ -116,7 +117,7 @@ create table usr
     password        varchar(100) not null,
     surname         varchar(25)  not null,
     username        varchar(25)  not null,
-    spent           int4         not null,
+    spent           float8       not null,
     primary key (id)
 );
 create table user_role

@@ -33,7 +33,7 @@ public class Trip {
     private LocalDateTime toTime;
 
     @Column(nullable = false)
-    private int cost;
+    private double cost;
 
     @Column(nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)

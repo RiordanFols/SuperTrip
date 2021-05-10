@@ -1,7 +1,6 @@
 package ru.chernov.diplom.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -54,7 +53,7 @@ public class User implements UserDetails {
     private int passportSeries;
 
     @Column(nullable = false)
-    private int spent = 0;
+    private double spent = 0.0;
 
     // real length is 25
     // passwordEncoder needs more
@@ -113,7 +112,7 @@ public class User implements UserDetails {
         return PrivilegeLevel.getLevel(this.spent);
     }
 
-    public void addToSpent(int amount) {
+    public void addToSpent(double amount) {
         this.spent += amount;
     }
 }

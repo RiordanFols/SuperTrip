@@ -8,7 +8,9 @@ import ru.chernov.diplom.domain.entity.Trip;
 
 import java.time.LocalDateTime;
 import java.time.temporal.ChronoUnit;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.Set;
 import java.util.function.Predicate;
 
 /**
@@ -50,7 +52,7 @@ public class DijkstraSolver extends Solver {
                 }
             }
         }
-        optimizeSolution();
+//        optimizeSolution();
 
 //        printResult();
 
@@ -99,7 +101,7 @@ public class DijkstraSolver extends Solver {
         Trip minCostTrip = trips.stream()
                 .filter(timeFilterPredicate)
                 .min(Comparator.comparing(Trip::getCost)).orElse(null);
-        long minCost = minCostTrip != null ? minCostTrip.getCost() : 0;
+        var minCost = minCostTrip != null ? minCostTrip.getCost() : 0;
 
         return switch (solutionType) {
             case TIME -> trips.stream()
@@ -117,10 +119,10 @@ public class DijkstraSolver extends Solver {
         return switch (solutionType) {
             case TIME -> undone.stream()
                     .filter(node -> solutions.get(node) != null)
-                    .min(Comparator.comparingLong(o -> solutions.get(o).getTime())).orElse(null);
+                    .min(Comparator.comparingDouble(o -> solutions.get(o).getTime())).orElse(null);
             case COST -> undone.stream()
                     .filter(node -> solutions.get(node) != null)
-                    .min(Comparator.comparingLong(o -> solutions.get(o).getCost())).orElse(null);
+                    .min(Comparator.comparingDouble(o -> solutions.get(o).getCost())).orElse(null);
         };
     }
 
@@ -160,8 +162,8 @@ public class DijkstraSolver extends Solver {
         // the best solution for chosen node
         var curSolution = solutions.get(curNode);
 
-        long oldWeight = 0;
-        long newWeight = 0;
+        var oldWeight = 0.0;
+        var newWeight = 0.0;
         switch (solutionType) {
             case TIME -> {
                 oldWeight = curSolution == null ? 0 : curSolution.getTime();
