@@ -26,17 +26,10 @@ public class AStarSolver extends DijkstraSolver {
         if (minNodeSolution == null || endSolution == null)
             return false;
 
-        switch (solutionType) {
-            case COST_ABSOLUTE -> {
-                return minNodeSolution.getCost() >= endSolution.getCost();
-            }
-            case TIME_ABSOLUTE -> {
-                return minNodeSolution.getTime() + getTimeHeuristicFunction(minNode, end) >= endSolution.getTime();
-            }
-            default -> {
-                return false;
-            }
-        }
+        return switch (solutionType) {
+            case COST -> minNodeSolution.getCost() >= endSolution.getCost();
+            case TIME ->  minNodeSolution.getTime() + getTimeHeuristicFunction(minNode, end) >= endSolution.getTime();
+        };
     }
 
     // time in minutes

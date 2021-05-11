@@ -15,11 +15,11 @@ public class SolverFactory {
                                               LocalDateTime startTime, LocalDateTime endTime,
                                               Set<TransportType> transportTypesAvailable, SolutionType solutionType) {
         switch (solutionType) {
-            case COST_ABSOLUTE -> {
+            case COST -> {
                 return new DijkstraSolver(schedule, start, end,
                         startTime, endTime, transportTypesAvailable, solutionType);
             }
-            case TIME_ABSOLUTE -> {
+            case TIME -> {
                 return new AStarSolver(schedule, start, end,
                         startTime, endTime, transportTypesAvailable, solutionType);
             }

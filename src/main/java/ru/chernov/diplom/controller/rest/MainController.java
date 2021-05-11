@@ -86,9 +86,9 @@ public class MainController {
                 add(TransportType.PLANE);
         }};
         Solver solver1 = SolverFactory.getAppropriateSolver(schedule, start, end,
-                departureTime, arrivalTime, transportTypes, SolutionType.TIME_ABSOLUTE);
+                departureTime, arrivalTime, transportTypes, SolutionType.TIME);
         Solver solver2 = SolverFactory.getAppropriateSolver(schedule, start, end,
-                departureTime, arrivalTime, transportTypes, SolutionType.COST_ABSOLUTE);
+                departureTime, arrivalTime, transportTypes, SolutionType.COST);
         var solution1 = solutionService.save(solver1.solve());
         var solution2 = solutionService.save(solver2.solve());
 

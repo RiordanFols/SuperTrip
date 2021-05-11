@@ -104,27 +104,25 @@ public class DijkstraSolver extends Solver {
         var minCost = minCostTrip != null ? minCostTrip.getCost() : 0;
 
         return switch (solutionType) {
-            case TIME_ABSOLUTE -> trips.stream()
+            case TIME -> trips.stream()
                     .filter(timeFilterPredicate)
                     .min(Comparator.comparing(Trip::getToTime)).orElse(null);
-            case COST_ABSOLUTE -> trips.stream()
+            case COST -> trips.stream()
                     .filter(timeFilterPredicate)
                     .filter(e -> e.getCost() == minCost)
                     .min(Comparator.comparing(Trip::getToTime)).orElse(null);
-            default -> throw new IllegalArgumentException("Wrong solutionType");
         };
     }
 
     // get node with minimum weight from undone list
     private Node getMinNode() {
         return switch (solutionType) {
-            case TIME_ABSOLUTE -> undone.stream()
+            case TIME -> undone.stream()
                     .filter(node -> solutions.get(node) != null)
                     .min(Comparator.comparingDouble(o -> solutions.get(o).getTime())).orElse(null);
-            case COST_ABSOLUTE -> undone.stream()
+            case COST -> undone.stream()
                     .filter(node -> solutions.get(node) != null)
                     .min(Comparator.comparingDouble(o -> solutions.get(o).getCost())).orElse(null);
-            default -> throw new IllegalArgumentException("Wrong solutionType");
         };
     }
 
@@ -135,17 +133,10 @@ public class DijkstraSolver extends Solver {
         if (minNodeSolution == null || endSolution == null)
             return false;
 
-        switch (solutionType) {
-            case COST_ABSOLUTE -> {
-                return minNodeSolution.getCost() >= endSolution.getCost();
-            }
-            case TIME_ABSOLUTE -> {
-                return minNodeSolution.getTime() >= endSolution.getTime();
-            }
-            default -> {
-                return false;
-            }
-        }
+        return switch (solutionType) {
+            case COST -> minNodeSolution.getCost() >= endSolution.getCost();
+            case TIME -> minNodeSolution.getTime() >= endSolution.getTime();
+        };
     }
 
     private void algorithmIteration(Trip plannedTrip, Node minNode, Node curNode) {
@@ -167,11 +158,11 @@ public class DijkstraSolver extends Solver {
         var oldWeight = 0.0;
         var newWeight = 0.0;
         switch (solutionType) {
-            case TIME_ABSOLUTE -> {
+            case TIME -> {
                 oldWeight = curSolution == null ? 0 : curSolution.getTime();
                 newWeight = newTime;
             }
-            case COST_ABSOLUTE -> {
+            case COST -> {
                 oldWeight = curSolution == null ? 0 : curSolution.getCost();
                 newWeight = newCost;
             }
@@ -189,7 +180,7 @@ public class DijkstraSolver extends Solver {
     }
 
     private void optimizeSolution() {
-        if (solutionType == SolutionType.TIME_ABSOLUTE)
+        if (solutionType == SolutionType.TIME)
             optimizeTime();
     }
 
