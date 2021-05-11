@@ -49,7 +49,8 @@ public class MainController {
     @GetMapping("/")
     public String mainPage(@AuthenticationPrincipal User authUser,
                            Model model) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
@@ -69,7 +70,8 @@ public class MainController {
                                 @RequestParam(required = false) boolean trainAvailable,
                                 @RequestParam(required = false) boolean planeAvailable,
                                 Model model) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         Schedule schedule = new Schedule(tripService.findAll());
         Node start = nodeService.findByName(fromCity);
@@ -84,9 +86,9 @@ public class MainController {
                 add(TransportType.PLANE);
         }};
         Solver solver1 = SolverFactory.getAppropriateSolver(schedule, start, end,
-                departureTime, arrivalTime, transportTypes, SolutionType.TIME);
+                departureTime, arrivalTime, transportTypes, SolutionType.TIME_ABSOLUTE);
         Solver solver2 = SolverFactory.getAppropriateSolver(schedule, start, end,
-                departureTime, arrivalTime, transportTypes, SolutionType.COST);
+                departureTime, arrivalTime, transportTypes, SolutionType.COST_ABSOLUTE);
         var solution1 = solutionService.save(solver1.solve());
         var solution2 = solutionService.save(solver2.solve());
 

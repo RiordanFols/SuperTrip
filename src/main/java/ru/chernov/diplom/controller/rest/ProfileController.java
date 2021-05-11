@@ -30,7 +30,7 @@ public class ProfileController {
         this.ticketService = ticketService;
     }
 
-    @GetMapping()
+    @GetMapping
     public String profilePage(@AuthenticationPrincipal User authUser,
                               Model model) {
         authUser = userService.findById(authUser.getId());

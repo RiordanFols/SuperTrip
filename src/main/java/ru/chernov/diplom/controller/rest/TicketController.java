@@ -36,7 +36,8 @@ public class TicketController {
     public String assembleTicketPage(@AuthenticationPrincipal User authUser,
                                      @PathVariable(name = "id") long solutionId,
                                      Model model) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         if (authUser != null && authUser.getRoles().contains(Role.USER)) {
             var solution = solutionService.findById(solutionId);
@@ -69,7 +70,8 @@ public class TicketController {
     public String buyTicketPage(@AuthenticationPrincipal User authUser,
                                 @PathVariable(name = "number") String ticketNumber,
                                 Model model) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         var frontendData = new HashMap<String, Object>();
         frontendData.put("ticket", ticketService.findByNumber(ticketNumber));
@@ -81,7 +83,8 @@ public class TicketController {
     @PostMapping("/buy/{number}")
     public String buyTicket(@AuthenticationPrincipal User authUser,
                             @PathVariable(name = "number") String ticketNumber) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         ticketService.pay(ticketNumber, authUser);
         return "redirect:/";
@@ -91,7 +94,8 @@ public class TicketController {
     public String ticketInfoPage(@AuthenticationPrincipal User authUser,
                                  @PathVariable(name = "number") String ticketNumber,
                                  Model model) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         Ticket ticket = ticketService.findByNumber(ticketNumber);
         var frontendData = new HashMap<String, Object>();
@@ -105,7 +109,8 @@ public class TicketController {
     @GetMapping("/search")
     public String ticketSearchPage(@AuthenticationPrincipal User authUser,
                                    Model model) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);

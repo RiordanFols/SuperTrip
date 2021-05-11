@@ -33,7 +33,8 @@ public class AuthController {
     @GetMapping("/login")
     public String loginPage(@AuthenticationPrincipal User authUser,
                             Model model) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
@@ -44,7 +45,8 @@ public class AuthController {
     @GetMapping("/registration")
     public String registrationPage(@AuthenticationPrincipal User authUser,
                                    Model model) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);

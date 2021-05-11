@@ -24,6 +24,9 @@ public class Solution {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm")
     private LocalDateTime creationDateTime;
 
+    @Transient
+    private Number metric;
+
     @Column(nullable = false, updatable = false)
     private long time;
 
@@ -40,6 +43,7 @@ public class Solution {
     @Column(nullable = false, updatable = false)
     @Enumerated(EnumType.STRING)
     private SolutionType type;
+
 
     public Trip getLastTrip() {
         return trips.isEmpty() ? null : trips.get(trips.size() - 1);

@@ -37,7 +37,8 @@ public class ManagerController {
     @GetMapping("/schedule")
     public String schedulePage(@AuthenticationPrincipal User authUser,
                                Model model) {
-        authUser = userService.findById(authUser.getId());
+        if (authUser != null)
+            authUser = userService.findById(authUser.getId());
 
         var schedule = new TreeSet<>(Comparator.comparing(Trip::getFromTime));
         // todo: page display
