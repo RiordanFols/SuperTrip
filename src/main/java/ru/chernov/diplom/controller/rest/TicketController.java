@@ -10,6 +10,7 @@ import ru.chernov.diplom.domain.entity.Ticket;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.SolutionService;
 import ru.chernov.diplom.service.TicketService;
+import ru.chernov.diplom.service.UserService;
 
 import java.util.HashMap;
 
@@ -22,17 +23,21 @@ public class TicketController {
 
     private final TicketService ticketService;
     private final SolutionService solutionService;
+    private final UserService userService;
 
     @Autowired
-    public TicketController(TicketService ticketService, SolutionService solutionService) {
+    public TicketController(TicketService ticketService, SolutionService solutionService, UserService userService) {
         this.ticketService = ticketService;
         this.solutionService = solutionService;
+        this.userService = userService;
     }
 
     @GetMapping("/assemble/{id}")
     public String assembleTicketPage(@AuthenticationPrincipal User authUser,
                                      @PathVariable(name = "id") long solutionId,
                                      Model model) {
+        authUser = userService.findById(authUser.getId());
+
         if (authUser != null && authUser.getRoles().contains(Role.USER)) {
             var solution = solutionService.findById(solutionId);
             Ticket ticket = ticketService.assembleAndSave(solution, authUser);
@@ -64,6 +69,8 @@ public class TicketController {
     public String buyTicketPage(@AuthenticationPrincipal User authUser,
                                 @PathVariable(name = "number") String ticketNumber,
                                 Model model) {
+        authUser = userService.findById(authUser.getId());
+
         var frontendData = new HashMap<String, Object>();
         frontendData.put("ticket", ticketService.findByNumber(ticketNumber));
         frontendData.put("authUser", authUser);
@@ -74,6 +81,8 @@ public class TicketController {
     @PostMapping("/buy/{number}")
     public String buyTicket(@AuthenticationPrincipal User authUser,
                             @PathVariable(name = "number") String ticketNumber) {
+        authUser = userService.findById(authUser.getId());
+
         ticketService.pay(ticketNumber, authUser);
         return "redirect:/";
     }
@@ -82,6 +91,8 @@ public class TicketController {
     public String ticketInfoPage(@AuthenticationPrincipal User authUser,
                                  @PathVariable(name = "number") String ticketNumber,
                                  Model model) {
+        authUser = userService.findById(authUser.getId());
+
         Ticket ticket = ticketService.findByNumber(ticketNumber);
         var frontendData = new HashMap<String, Object>();
         frontendData.put("ticket", ticket);
@@ -94,6 +105,8 @@ public class TicketController {
     @GetMapping("/search")
     public String ticketSearchPage(@AuthenticationPrincipal User authUser,
                                    Model model) {
+        authUser = userService.findById(authUser.getId());
+
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);

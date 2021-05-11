@@ -18,6 +18,7 @@ import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.SolutionService;
 import ru.chernov.diplom.service.TripService;
+import ru.chernov.diplom.service.UserService;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -34,17 +35,22 @@ public class MainController {
     private final TripService tripService;
     private final NodeService nodeService;
     private final SolutionService solutionService;
+    private final UserService userService;
 
     @Autowired
-    public MainController(TripService tripService, NodeService nodeService, SolutionService solutionService) {
+    public MainController(TripService tripService, NodeService nodeService,
+                          SolutionService solutionService, UserService userService) {
         this.tripService = tripService;
         this.nodeService = nodeService;
         this.solutionService = solutionService;
+        this.userService = userService;
     }
 
     @GetMapping("/")
     public String mainPage(@AuthenticationPrincipal User authUser,
                            Model model) {
+        authUser = userService.findById(authUser.getId());
+
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
@@ -63,6 +69,8 @@ public class MainController {
                                 @RequestParam(required = false) boolean trainAvailable,
                                 @RequestParam(required = false) boolean planeAvailable,
                                 Model model) {
+        authUser = userService.findById(authUser.getId());
+
         Schedule schedule = new Schedule(tripService.findAll());
         Node start = nodeService.findByName(fromCity);
         Node end = nodeService.findByName(toCity);

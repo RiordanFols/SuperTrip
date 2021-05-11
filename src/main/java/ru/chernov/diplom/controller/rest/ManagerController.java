@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import ru.chernov.diplom.domain.entity.Trip;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.TripService;
+import ru.chernov.diplom.service.UserService;
 
 import java.util.Comparator;
 import java.util.HashMap;
@@ -25,15 +26,19 @@ import java.util.stream.Collectors;
 public class ManagerController {
 
     private final TripService tripService;
+    private final UserService userService;
 
     @Autowired
-    public ManagerController(TripService tripService) {
+    public ManagerController(TripService tripService, UserService userService) {
         this.tripService = tripService;
+        this.userService = userService;
     }
 
     @GetMapping("/schedule")
     public String schedulePage(@AuthenticationPrincipal User authUser,
                                Model model) {
+        authUser = userService.findById(authUser.getId());
+
         var schedule = new TreeSet<>(Comparator.comparing(Trip::getFromTime));
         // todo: page display
         schedule.addAll(tripService.findAll().stream()

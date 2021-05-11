@@ -10,6 +10,7 @@ import ru.chernov.diplom.domain.PrivilegeLevel;
 import ru.chernov.diplom.domain.dto.PrivilegeInfo;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.TicketService;
+import ru.chernov.diplom.service.UserService;
 
 import java.util.HashMap;
 
@@ -20,16 +21,20 @@ import java.util.HashMap;
 @RequestMapping("/profile")
 public class ProfileController {
 
+    private final UserService userService;
     private final TicketService ticketService;
 
     @Autowired
-    public ProfileController(TicketService ticketService) {
+    public ProfileController(UserService userService, TicketService ticketService) {
+        this.userService = userService;
         this.ticketService = ticketService;
     }
 
     @GetMapping()
     public String profilePage(@AuthenticationPrincipal User authUser,
                               Model model) {
+        authUser = userService.findById(authUser.getId());
+
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
         frontendData.put("privilegeInfo", new PrivilegeInfo(authUser));
