@@ -1,3 +1,13 @@
+
+Vue.component('privilege-progress', {
+    props: ['privilegeInfo'],
+    template:
+        '<div class="privilege-progress">' +
+            '<progress class="privilege-progress-bar" :max="privilegeInfo.threshold" :value="privilegeInfo.spent"/>' +
+            '<div>{{ privilegeInfo.desc }}</div>' +
+        '</div>'
+});
+
 Vue.component('ticket-trip', {
     props: ['trip'],
     template:
@@ -26,6 +36,7 @@ let profile = new Vue({
         user: frontendData.authUser,
         expiredTickets: frontendData.expiredTickets,
         actualTickets: frontendData.actualTickets,
+        privilegeInfo: frontendData.privilegeInfo,
         // error: frontendData.error,
         // notification: frontendData.notification,
     },
@@ -38,13 +49,14 @@ let profile = new Vue({
                 '<div class="user-info-middle-name">Middle name: {{ user.middleName }}</div>' +
                 '<div class="user-info-passport">Passport: {{ user.passportId }} {{ user.passportSeries }}</div>' +
             '</div>' +
-            '<div class="user-tickets" v-if="actualTickets.length > 0">' +
-                '<h4>Your actual tickets:</h4>' +
-                '<user-ticket v-for="ticket in actualTickets" :key="ticket.id" :ticket="ticket"/>' +
-            '</div>' +
-            '<div class="user-tickets" v-if="expiredTickets.length > 0">' +
-                '<h4>Your expired tickets:</h4>' +
-                '<user-ticket v-for="ticket in expiredTickets" :key="ticket.id" :ticket="ticket"/>' +
-            '</div>' +
+            '<privilege-progress :privilegeInfo="privilegeInfo"/>' +
+            // '<div class="user-tickets" v-if="actualTickets.length > 0">' +
+            //     '<h4>Your actual tickets:</h4>' +
+            //     '<user-ticket v-for="ticket in actualTickets" :key="ticket.id" :ticket="ticket"/>' +
+            // '</div>' +
+            // '<div class="user-tickets" v-if="expiredTickets.length > 0">' +
+            //     '<h4>Your expired tickets:</h4>' +
+            //     '<user-ticket v-for="ticket in expiredTickets" :key="ticket.id" :ticket="ticket"/>' +
+            // '</div>' +
         '</div>'
 });

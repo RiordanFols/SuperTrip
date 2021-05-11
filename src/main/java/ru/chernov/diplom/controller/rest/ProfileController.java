@@ -6,6 +6,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import ru.chernov.diplom.domain.PrivilegeLevel;
+import ru.chernov.diplom.domain.dto.PrivilegeInfo;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.TicketService;
 
@@ -30,6 +32,7 @@ public class ProfileController {
                               Model model) {
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
+        frontendData.put("privilegeInfo", new PrivilegeInfo(authUser));
         var userTickets = ticketService.findTicketsByUser(authUser);
         frontendData.put("expiredTickets", ticketService.getExpiredTickets(userTickets));
         frontendData.put("actualTickets", ticketService.getActualTickets(userTickets));

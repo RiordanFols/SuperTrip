@@ -1,6 +1,7 @@
 package ru.chernov.diplom.domain;
 
 import lombok.Getter;
+import ru.chernov.diplom.domain.entity.User;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -10,15 +11,17 @@ import java.util.Collections;
  */
 @Getter
 public enum PrivilegeLevel {
-    BRONZE(1, 0.0),
-    SILVER(1.5, 1000.0),
-    GOLD(2, 5000.0),
-    PLATINUM(2.5, 20000.0);
+    BRONZE(0, 1, 0.0),
+    SILVER(1, 1.5, 1000.0),
+    GOLDEN(2, 2, 5000.0),
+    PLATINUM(3, 2.5, 20000.0);
 
+    private final int id;
     private final double discount;
     private final double threshold;
 
-    PrivilegeLevel(double discount, double threshold) {
+    PrivilegeLevel(int id, double discount, double threshold) {
+        this.id = id;
         this.discount = discount;
         this.threshold = threshold;
     }
@@ -33,5 +36,11 @@ public enum PrivilegeLevel {
         }
 
         return null;
+    }
+
+    public PrivilegeLevel getNextLevel() {
+        return Arrays.stream(PrivilegeLevel.values())
+                .filter(e -> e.getId() == this.getId() + 1)
+                .findFirst().orElse(null);
     }
 }
