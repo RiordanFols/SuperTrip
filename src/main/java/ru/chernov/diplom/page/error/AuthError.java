@@ -1,7 +1,6 @@
 package ru.chernov.diplom.page.error;
 
 import lombok.AllArgsConstructor;
-import lombok.ToString;
 
 /**
  * @author Pavel Chernov

@@ -86,12 +86,13 @@ public class AuthController {
                                @RequestParam String name,
                                @RequestParam String surname,
                                @RequestParam String middleName,
-                               @RequestParam int passportId,
-                               @RequestParam int passportSeries,
+                               @RequestParam String passportId,
+                               @RequestParam String passportSeries,
                                @RequestParam String password,
                                @RequestParam String passwordConfirm,
                                RedirectAttributes ra) {
-        var error = formChecker.checkRegistrationData(username, password, passwordConfirm);
+        var error = formChecker.checkRegistrationData(username, password, passwordConfirm,
+                name, surname, middleName, passportId, passportSeries);
 
         if (error != null) {
             ra.addAttribute("error", error);
@@ -104,7 +105,8 @@ public class AuthController {
             return "redirect:/registration";
         }
 
-        userService.registration(username, name, surname, middleName, passportId, passportSeries, password);
+        userService.registration(username, name, surname, middleName,
+                Integer.parseInt(passportId), Integer.parseInt(passportSeries), password);
         ra.addAttribute("notification", AuthNotification.REGISTRATION_SUCCESSFUL.toString());
         return "redirect:/login";
     }

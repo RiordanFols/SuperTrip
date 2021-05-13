@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import ru.chernov.diplom.page.error.AuthError;
 import ru.chernov.diplom.page.error.MainError;
+import ru.chernov.diplom.page.error.UserDataError;
 import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.UserService;
 
@@ -24,7 +25,9 @@ public class FormChecker {
         this.userService = userService;
     }
 
-    public String checkRegistrationData(String username, String password, String passwordConfirm) {
+    public String checkRegistrationData(String username, String password, String passwordConfirm,
+                                        String name, String surname, String middleName,
+                                        String passportId, String passportSeries) {
 
         // if username is taken
         if (userService.loadUserByUsername(username) != null)
@@ -38,7 +41,7 @@ public class FormChecker {
         if (!password.equals(passwordConfirm))
             return AuthError.DIFFERENT_PASSWORDS.toString();
 
-        return null;
+        return checkUserData(name, surname, middleName, passportId, passportSeries);
     }
 
     public String checkRouteSearchForm(String from, String to, LocalDateTime fromTime, LocalDateTime toTime,
@@ -61,6 +64,25 @@ public class FormChecker {
         // if no transport selected
         if (!busAllowed && !trainAllowed && !planeAllowed)
             return MainError.NO_TRANSPORT_SELECTED.toString();
+
+        return null;
+    }
+
+    public String checkUserData(String name, String surname, String middleName,
+                                String passportId, String passportSeries) {
+        // not numeric passport id or series
+        try {
+            Integer.parseInt(passportId);
+            Integer.parseInt(passportSeries);
+        } catch (NumberFormatException e) {
+            return UserDataError.NOT_NUMERIC_PASSPORT.toString();
+        }
+
+        // wrong length of passport data
+        if (passportId.length() != 6)
+            return UserDataError.WRONG_LENGTH_PASSPORT_ID.toString();
+        if (passportSeries.length() != 4)
+            return UserDataError.WRONG_LENGTH_PASSPORT_SERIES.toString();
 
         return null;
     }
