@@ -1,15 +1,15 @@
-package ru.chernov.diplom.page;
+package ru.chernov.diplom.page.notification;
 
 /**
  * @author Pavel Chernov
  */
-public enum Notification {
+public enum AuthNotification {
     REGISTRATION_SUCCESSFUL("Registration is successful"),
     ;
 
     private final String description;
 
-    Notification(String description) {
+    AuthNotification(String description) {
         this.description = description;
     }
 

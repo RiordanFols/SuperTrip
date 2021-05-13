@@ -10,8 +10,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.chernov.diplom.component.FormChecker;
 import ru.chernov.diplom.domain.entity.User;
-import ru.chernov.diplom.page.Error;
-import ru.chernov.diplom.page.Notification;
+import ru.chernov.diplom.page.error.AuthError;
+import ru.chernov.diplom.page.notification.AuthNotification;
 import ru.chernov.diplom.service.UserService;
 
 import java.util.HashMap;
@@ -43,7 +43,7 @@ public class AuthController {
 
         var frontendData = new HashMap<String, Object>();
         // specific Spring login error
-        frontendData.put("error", (error != null && error.isEmpty()) ? Error.WRONG_CREDENTIALS.toString() : error);
+        frontendData.put("error", (error != null && error.isEmpty()) ? AuthError.WRONG_CREDENTIALS.toString() : error);
         frontendData.put("notification", notification);
         frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
@@ -91,10 +91,10 @@ public class AuthController {
                                @RequestParam String password,
                                @RequestParam String passwordConfirm,
                                RedirectAttributes ra) {
-        Error error = formChecker.checkRegistrationData(username, password, passwordConfirm);
+        var error = formChecker.checkRegistrationData(username, password, passwordConfirm);
 
         if (error != null) {
-            ra.addAttribute("error", error.toString());
+            ra.addAttribute("error", error);
             ra.addAttribute("username", username);
             ra.addAttribute("name", name);
             ra.addAttribute("surname", surname);
@@ -105,7 +105,7 @@ public class AuthController {
         }
 
         userService.registration(username, name, surname, middleName, passportId, passportSeries, password);
-        ra.addAttribute("notification", Notification.REGISTRATION_SUCCESSFUL.toString());
+        ra.addAttribute("notification", AuthNotification.REGISTRATION_SUCCESSFUL.toString());
         return "redirect:/login";
     }
 }

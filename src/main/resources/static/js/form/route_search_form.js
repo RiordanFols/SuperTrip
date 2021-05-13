@@ -1,27 +1,33 @@
 let routeSearchForm = new Vue({
     el: '#routeSearchForm',
     data: {
-        // error: frontendData.error,
-        // notification: frontendData.notification,
+        fd: frontendData.formData,
+        error: frontendData.error,
+        notification: frontendData.notification,
     },
     template:
         '<form method="post" action="/">' +
-            // '<p v-if="error !== null">{{ error }}</p>' +
-            // '<p v-if="notification !== null">{{ notification }}</p>' +
+            '<p v-if="error !== null">{{ error }}</p>' +
+            '<p v-if="notification !== null">{{ notification }}</p>' +
+
             '<div class="route-search-form">' +
                 '<div class="form-block-left">' +
                     '<div class="form-block-left-line">' +
-                        '<input class="city-input" type="text" maxlength="50" name="fromCity" placeholder="From" required autofocus>' +
-                        '<input class="city-input" type="text" maxlength="50" name="toCity" placeholder="To" required>' +
+                        '<input class="city-input" type="text" maxlength="50" name="fromCity" placeholder="From"' +
+                            ' :value="fd.fromCity" required autofocus>' +
+                        '<input class="city-input" type="text" maxlength="50" name="toCity" placeholder="To"' +
+                            ' :value="fd.toCity" required>' +
                     '</div>' +
                     '<div class="form-block-left-line">' +
                         '<div class="datetime-input-line">' +
                             '<div class="datetime-label">Min departure time</div>' +
-                            '<input class="datetime-input" type="datetime-local" name="departureTime" required >' +
+                            '<input class="datetime-input" type="datetime-local" name="departureTime" ' +
+                                ' :value="fd.departureTime" required >' +
                         '</div>' +
                         '<div class="datetime-input-line">' +
                             '<div class="datetime-label">Max arrival time</div>' +
-                            '<input class="datetime-input" type="datetime-local" name="arrivalTime"  >' +
+                            '<input class="datetime-input" type="datetime-local" name="arrivalTime"' +
+                                ' :value="fd.arrivalTime" required>' +
                         '</div>' +
                     '</div>' +
                 '</div>' +
@@ -30,15 +36,18 @@ let routeSearchForm = new Vue({
                     '<div class="transport-block">' +
                         '<div class="transport-item">' +
                             '<div class="transport-name">Bus</div>' +
-                            '<input class="transport-checkbox" type="checkbox" checked name="busAvailable">' +
+                            '<input class="transport-checkbox" type="checkbox"' +
+                                ' name="busAllowed" :checked="fd.busAllowed">' +
                         '</div>' +
                         '<div class="transport-item">' +
                             '<div class="transport-name">Train</div>' +
-                            '<input class="transport-checkbox" type="checkbox" checked name="trainAvailable">' +
+                            '<input class="transport-checkbox" type="checkbox" ' +
+                                ' name="trainAllowed" :checked="fd.trainAllowed">' +
                         '</div>' +
                         '<div class="transport-item">' +
                             '<div class="transport-name">Plane</div>' +
-                            '<input class="transport-checkbox" type="checkbox" checked name="planeAvailable">' +
+                            '<input class="transport-checkbox" type="checkbox"' +
+                                ' name="planeAllowed" :checked="fd.planeAllowed">' +
                         '</div>' +
                     '</div>' +
                 '</div>' +

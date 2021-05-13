@@ -8,7 +8,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.chernov.diplom.alg.solver.SolutionType;
+import ru.chernov.diplom.component.FormChecker;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.SolutionService;
@@ -25,28 +27,46 @@ import java.util.HashMap;
 @Controller
 public class MainController {
 
-    private final TripService tripService;
-    private final NodeService nodeService;
     private final SolutionService solutionService;
     private final UserService userService;
+    private final FormChecker formChecker;
 
     @Autowired
-    public MainController(TripService tripService, NodeService nodeService,
-                          SolutionService solutionService, UserService userService) {
-        this.tripService = tripService;
-        this.nodeService = nodeService;
+    public MainController(SolutionService solutionService, UserService userService, FormChecker formChecker) {
         this.solutionService = solutionService;
         this.userService = userService;
+        this.formChecker = formChecker;
     }
 
     @GetMapping("/")
     public String mainPage(@AuthenticationPrincipal User authUser,
+                           @RequestParam(required = false) String error,
+                           @RequestParam(required = false) String notification,
+                           @RequestParam(required = false) String fromCity,
+                           @RequestParam(required = false) String toCity,
+                           @RequestParam(required = false) LocalDateTime departureTime,
+                           @RequestParam(required = false) LocalDateTime arrivalTime,
+                           @RequestParam(required = false, defaultValue = "true") boolean busAllowed,
+                           @RequestParam(required = false, defaultValue = "true") boolean trainAllowed,
+                           @RequestParam(required = false, defaultValue = "true") boolean planeAllowed,
                            Model model) {
         if (authUser != null)
             authUser = userService.findById(authUser.getId());
 
         var frontendData = new HashMap<String, Object>();
+        var formData = new HashMap<>() {{
+            put("fromCity", fromCity);
+            put("toCity", toCity);
+            put("departureTime", departureTime);
+            put("arrivalTime", arrivalTime);
+            put("busAllowed", busAllowed);
+            put("trainAllowed", trainAllowed);
+            put("planeAllowed", planeAllowed);
+        }};
+        frontendData.put("formData", formData);
         frontendData.put("authUser", authUser);
+        frontendData.put("error", error);
+        frontendData.put("notification", notification);
         model.addAttribute("frontendData", frontendData);
         return "main";
     }
@@ -59,16 +79,32 @@ public class MainController {
                                         LocalDateTime departureTime,
                                 @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
                                         LocalDateTime arrivalTime,
-                                @RequestParam(required = false) boolean busAvailable,
-                                @RequestParam(required = false) boolean trainAvailable,
-                                @RequestParam(required = false) boolean planeAvailable,
-                                Model model) {
+                                @RequestParam(required = false) boolean busAllowed,
+                                @RequestParam(required = false) boolean trainAllowed,
+                                @RequestParam(required = false) boolean planeAllowed,
+                                RedirectAttributes ra, Model model) {
+
+        var error = formChecker.checkRouteSearchForm(fromCity, toCity,
+                departureTime, arrivalTime, busAllowed, trainAllowed, planeAllowed);
+
+        if (error != null) {
+            ra.addAttribute("error", error);
+            ra.addAttribute("fromCity", fromCity);
+            ra.addAttribute("toCity", toCity);
+            ra.addAttribute("departureTime", departureTime);
+            ra.addAttribute("arrivalTime", arrivalTime);
+            ra.addAttribute("busAllowed", busAllowed);
+            ra.addAttribute("trainAllowed", trainAllowed);
+            ra.addAttribute("planeAllowed", planeAllowed);
+            return "redirect:/";
+        }
+
         if (authUser != null)
             authUser = userService.findById(authUser.getId());
 
-        var solution1 = solutionService.findSolution(busAvailable, trainAvailable, planeAvailable,
+        var solution1 = solutionService.findSolution(busAllowed, trainAllowed, planeAllowed,
                 departureTime, arrivalTime, fromCity, toCity, SolutionType.TIME);
-        var solution2 = solutionService.findSolution(busAvailable, trainAvailable, planeAvailable,
+        var solution2 = solutionService.findSolution(busAllowed, trainAllowed, planeAllowed,
                 departureTime, arrivalTime, fromCity, toCity, SolutionType.COST);
         
         var frontendData = new HashMap<String, Object>();
@@ -80,6 +116,4 @@ public class MainController {
         model.addAttribute("frontendData", frontendData);
         return "route_search_result";
     }
-
-
 }

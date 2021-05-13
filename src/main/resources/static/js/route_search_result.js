@@ -47,14 +47,14 @@ let routeSearchResult = new Vue({
     el: '#routeSearchResult',
     data: {
         solutions: frontendData.solutions,
-        // error: frontendData.error,
-        // notification: frontendData.notification,
+        error: frontendData.error,
+        notification: frontendData.notification,
     },
     template:
         '<div>' +
             '<form method="post" action="/main">' +
-                // '<p v-if="error !== null">{{ error }}</p>' +
-                // '<p v-if="notification !== null">{{ notification }}</p>' +
+                '<p v-if="error !== null">{{ error }}</p>' +
+                '<p v-if="notification !== null">{{ notification }}</p>' +
 
                 '<div class="solutions">' +
                     '<solution v-for="solution in solutions" v-if="solution !== null" ' +
