@@ -7,9 +7,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.chernov.diplom.component.FormChecker;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.page.Error;
+import ru.chernov.diplom.page.Notification;
 import ru.chernov.diplom.service.UserService;
 
 import java.util.HashMap;
@@ -32,11 +34,17 @@ public class AuthController {
 
     @GetMapping("/login")
     public String loginPage(@AuthenticationPrincipal User authUser,
+                            @RequestParam(required = false) String notification,
+                            @RequestParam(required = false) String error,
                             Model model) {
+
         if (authUser != null)
             authUser = userService.findById(authUser.getId());
 
         var frontendData = new HashMap<String, Object>();
+        // specific Spring login error
+        frontendData.put("error", (error != null && error.isEmpty()) ? Error.WRONG_CREDENTIALS.toString() : error);
+        frontendData.put("notification", notification);
         frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
         return "auth/login";
@@ -44,12 +52,31 @@ public class AuthController {
 
     @GetMapping("/registration")
     public String registrationPage(@AuthenticationPrincipal User authUser,
+                                   @RequestParam(required = false) String notification,
+                                   @RequestParam(required = false) String error,
+                                   @RequestParam(required = false) String username,
+                                   @RequestParam(required = false) String name,
+                                   @RequestParam(required = false) String surname,
+                                   @RequestParam(required = false) String middleName,
+                                   @RequestParam(required = false) String passportId,
+                                   @RequestParam(required = false) String passportSeries,
                                    Model model) {
         if (authUser != null)
             authUser = userService.findById(authUser.getId());
 
         var frontendData = new HashMap<String, Object>();
+        var formData = new HashMap<>() {{
+            put("username", username);
+            put("name", name);
+            put("surname", surname);
+            put("middleName", middleName);
+            put("passportId", passportId);
+            put("passportSeries", passportSeries);
+        }};
+        frontendData.put("formData", formData);
         frontendData.put("authUser", authUser);
+        frontendData.put("error", error);
+        frontendData.put("notification", notification);
         model.addAttribute("frontendData", frontendData);
         return "auth/registration";
     }
@@ -62,10 +89,23 @@ public class AuthController {
                                @RequestParam int passportId,
                                @RequestParam int passportSeries,
                                @RequestParam String password,
-                               @RequestParam String passwordConfirm) {
+                               @RequestParam String passwordConfirm,
+                               RedirectAttributes ra) {
         Error error = formChecker.checkRegistrationData(username, password, passwordConfirm);
-        if (error == null)
-            userService.registration(username, name, surname, middleName, passportId, passportSeries, password);
-        return "redirect:/";
+
+        if (error != null) {
+            ra.addAttribute("error", error.toString());
+            ra.addAttribute("username", username);
+            ra.addAttribute("name", name);
+            ra.addAttribute("surname", surname);
+            ra.addAttribute("middleName", middleName);
+            ra.addAttribute("passportId", passportId);
+            ra.addAttribute("passportSeries", passportSeries);
+            return "redirect:/registration";
+        }
+
+        userService.registration(username, name, surname, middleName, passportId, passportSeries, password);
+        ra.addAttribute("notification", Notification.REGISTRATION_SUCCESSFUL.toString());
+        return "redirect:/login";
     }
 }

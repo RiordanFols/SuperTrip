@@ -22,7 +22,7 @@ public class FormChecker {
     public Error checkRegistrationData(String username, String password, String passwordConfirm) {
 
         // if username is taken
-        if (!userService.loadUserByUsername(username).equals(new User()))
+        if (userService.loadUserByUsername(username) != null)
             return Error.USERNAME_IS_TAKEN;
 
         // if password is too short (at least 6 symbols)

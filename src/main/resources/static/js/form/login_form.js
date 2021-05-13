@@ -1,14 +1,14 @@
 let loginForm = new Vue({
     el: '#loginForm',
     data: {
-        // error: frontendData.error,
-        // notification: frontendData.notification,
+        error: frontendData.error,
+        notification: frontendData.notification,
     },
     template:
         '<div>' +
             '<form method="post" action="/login">' +
-                // '<p v-if="error !== null">{{ error }}</p>' +
-                // '<p v-if="notification !== null">{{ notification }}</p>' +
+                '<p v-if="error !== null">{{ error }}</p>' +
+                '<p v-if="notification !== null">{{ notification }}</p>' +
 
                 '<div>' +
                     '<span>Username</span>' +

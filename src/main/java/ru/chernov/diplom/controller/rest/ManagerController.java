@@ -41,7 +41,7 @@ public class ManagerController {
             authUser = userService.findById(authUser.getId());
 
         var schedule = new TreeSet<>(Comparator.comparing(Trip::getFromTime));
-        // todo: page display
+
         schedule.addAll(tripService.findAll().stream()
                 .limit(30)
                 .collect(Collectors.toSet()));
@@ -52,4 +52,24 @@ public class ManagerController {
         return "manager/schedule";
     }
 
+    @GetMapping("/users")
+    public String usersInfoPage(@AuthenticationPrincipal User authUser,
+                            Model model) {
+        var frontendData = new HashMap<String, Object>();
+        frontendData.put("authUser", authUser);
+        frontendData.put("users", userService.findAll().stream()
+                .limit(30)
+                .collect(Collectors.toSet()));
+        model.addAttribute("frontendData", frontendData);
+        return "manager/users";
+    }
+
+    @GetMapping("/ticket/search")
+    public String ticketSearchPage(@AuthenticationPrincipal User authUser,
+                                   Model model) {
+        var frontendData = new HashMap<String, Object>();
+        frontendData.put("authUser", authUser);
+        model.addAttribute("frontendData", frontendData);
+        return "manager/ticket_search";
+    }
 }

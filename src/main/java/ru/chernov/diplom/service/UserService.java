@@ -9,6 +9,7 @@ import ru.chernov.diplom.domain.Role;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.repository.UserRepository;
 
+import java.util.Collection;
 import java.util.Collections;
 
 /**
@@ -27,8 +28,11 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        User user = findByUsername(username);
-        return user != null ? user : new User();
+        return findByUsername(username);
+    }
+
+    public Collection<User> findAll() {
+        return userRepository.findAll();
     }
 
     public User findById(long id) {

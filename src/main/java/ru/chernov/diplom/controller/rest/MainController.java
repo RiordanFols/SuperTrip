@@ -8,12 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.chernov.diplom.alg.Schedule;
 import ru.chernov.diplom.alg.solver.SolutionType;
-import ru.chernov.diplom.alg.solver.Solver;
-import ru.chernov.diplom.alg.solver.SolverFactory;
-import ru.chernov.diplom.domain.TransportType;
-import ru.chernov.diplom.domain.entity.Node;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.SolutionService;
@@ -23,8 +18,6 @@ import ru.chernov.diplom.service.UserService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * @author Pavel Chernov
@@ -73,30 +66,16 @@ public class MainController {
         if (authUser != null)
             authUser = userService.findById(authUser.getId());
 
-        Schedule schedule = new Schedule(tripService.findAll());
-        Node start = nodeService.findByName(fromCity);
-        Node end = nodeService.findByName(toCity);
-        // todo: open-closed P
-        Set<TransportType> transportTypes = new HashSet<>() {{
-            if (busAvailable)
-                add(TransportType.BUS);
-            if (trainAvailable)
-                add(TransportType.TRAIN);
-            if (planeAvailable)
-                add(TransportType.PLANE);
-        }};
-        Solver solver1 = SolverFactory.getAppropriateSolver(schedule, start, end,
-                departureTime, arrivalTime, transportTypes, SolutionType.TIME);
-        Solver solver2 = SolverFactory.getAppropriateSolver(schedule, start, end,
-                departureTime, arrivalTime, transportTypes, SolutionType.COST);
-        var solution1 = solutionService.save(solver1.solve());
-        var solution2 = solutionService.save(solver2.solve());
-
+        var solution1 = solutionService.findSolution(busAvailable, trainAvailable, planeAvailable,
+                departureTime, arrivalTime, fromCity, toCity, SolutionType.TIME);
+        var solution2 = solutionService.findSolution(busAvailable, trainAvailable, planeAvailable,
+                departureTime, arrivalTime, fromCity, toCity, SolutionType.COST);
+        
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
         frontendData.put("solutions", new ArrayList<>() {{
-            add(solution1);
-            add(solution2);
+            add(solutionService.save(solution1));
+            add(solutionService.save(solution2));
         }});
         model.addAttribute("frontendData", frontendData);
         return "route_search_result";
