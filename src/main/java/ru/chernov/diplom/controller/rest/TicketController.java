@@ -143,11 +143,28 @@ public class TicketController {
 
     @GetMapping("/search")
     public String ticketSearchPage(@AuthenticationPrincipal User authUser,
+                                   @RequestParam(required = false) String error,
+                                   @RequestParam(required = false) String notification,
+                                   @RequestParam(required = false) String name,
+                                   @RequestParam(required = false) String surname,
+                                   @RequestParam(required = false) String middleName,
+                                   @RequestParam(required = false) String passportId,
+                                   @RequestParam(required = false) String passportSeries,
                                    Model model) {
         if (authUser != null)
             authUser = userService.findById(authUser.getId());
 
         var frontendData = new HashMap<String, Object>();
+        var formData = new HashMap<>() {{
+            put("name", name);
+            put("surname", surname);
+            put("middleName", middleName);
+            put("passportId", passportId);
+            put("passportSeries", passportSeries);
+        }};
+        frontendData.put("error", error);
+        frontendData.put("notification", notification);
+        frontendData.put("formData", formData);
         frontendData.put("authUser", authUser);
         model.addAttribute("frontendData", frontendData);
         return "tickets_search";
@@ -157,10 +174,23 @@ public class TicketController {
     public String ticketSearch(@RequestParam String name,
                                @RequestParam String surname,
                                @RequestParam String middleName,
-                               @RequestParam int passportId,
-                               @RequestParam int passportSeries,
-                               Model model) {
-        var passenger = new User(name, surname, middleName, passportId, passportSeries);
+                               @RequestParam String passportId,
+                               @RequestParam String passportSeries,
+                               RedirectAttributes ra, Model model) {
+        var error = formChecker.checkUserData(name, surname, middleName, passportId, passportSeries);
+
+        if (error != null) {
+            ra.addAttribute("error", error);
+            ra.addAttribute("name", name);
+            ra.addAttribute("surname", surname);
+            ra.addAttribute("middleName", middleName);
+            ra.addAttribute("passportId", passportId);
+            ra.addAttribute("passportSeries", passportSeries);
+            return "redirect:/ticket/search";
+        }
+
+        var passenger = new User(name, surname, middleName,
+                Integer.parseInt(passportId), Integer.parseInt(passportSeries));
         var passengerTickets = ticketService.findTicketsByUser(passenger);
 
         var frontendData = new HashMap<String, Object>();

@@ -14,27 +14,27 @@ let passengerInfoForm = new Vue({
 
                 '<div>' +
                     '<span>Name</span>' +
-                    '<input type="text" maxlength="25" name="name" v-model="fd.name" required autofocus/>' +
+                    '<input type="text" maxlength="25" name="name" :value="fd.name" required autofocus/>' +
                 '</div>' +
 
                 '<div>' +
                     '<span>Surname</span>' +
-                    '<input type="text" maxlength="25" name="surname" v-model="fd.surname" required/>' +
+                    '<input type="text" maxlength="25" name="surname" :value="fd.surname" required/>' +
                 '</div>' +
 
                 '<div>' +
                     '<span>Middle name</span>' +
-                    '<input type="text" maxlength="25" v-model="fd.middleName" name="middleName"/>' +
+                    '<input type="text" maxlength="25" :value="fd.middleName" name="middleName"/>' +
                 '</div>' +
 
                 '<div>' +
                     '<span>Passport id</span>' +
-                    '<input type="text" maxlength="6" minlength="6" name="passportId" v-model="fd.passportId" required/>' +
+                    '<input type="text" maxlength="6" minlength="6" name="passportId" :value="fd.passportId" required/>' +
                 '</div>' +
 
                 '<div>' +
                     '<span>Passport series</span>' +
-                    '<input type="text" maxlength="4" minlength="4" name="passportSeries" v-model="fd.passportSeries" required/>' +
+                    '<input type="text" maxlength="4" minlength="4" name="passportSeries" :value="fd.passportSeries" required/>' +
                 '</div>' +
 
                 '<div>' +

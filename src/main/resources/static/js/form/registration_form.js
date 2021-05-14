@@ -13,32 +13,32 @@ let registrationForm = new Vue({
 
                 '<div>' +
                     '<span>Username</span>' +
-                    '<input type="text" maxlength="25" name="username" v-model="fd.username" required autofocus/>' +
+                    '<input type="text" maxlength="25" name="username" :value="fd.username" required autofocus/>' +
                 '</div>' +
 
                 '<div>' +
                     '<span>Name</span>' +
-                    '<input type="text" maxlength="25" name="name" v-model="fd.name" required/>' +
+                    '<input type="text" maxlength="25" name="name" :value="fd.name" required/>' +
                 '</div>' +
 
                 '<div>' +
                     '<span>Surname</span>' +
-                    '<input type="text" maxlength="25" name="surname" v-model="fd.surname" required/>' +
+                    '<input type="text" maxlength="25" name="surname" :value="fd.surname" required/>' +
                 '</div>' +
 
                 '<div>' +
                     '<span>Middle name</span>' +
-                    '<input type="text" maxlength="25" name="middleName" v-model="fd.middleName"/>' +
+                    '<input type="text" maxlength="25" name="middleName" :value="fd.middleName"/>' +
                 '</div>' +
 
                 '<div>' +
                     '<span>Passport id</span>' +
-                    '<input type="text" minlength="6" maxlength="6" name="passportId" v-model="fd.passportId" required/>' +
+                    '<input type="text" minlength="6" maxlength="6" name="passportId" :value="fd.passportId" required/>' +
                 '</div>' +
 
                 '<div>' +
                     '<span>Passport series</span>' +
-                    '<input type="text" minlength="4" maxlength="4" name="passportSeries" v-model="fd.passportSeries" required/>' +
+                    '<input type="text" minlength="4" maxlength="4" name="passportSeries" :value="fd.passportSeries" required/>' +
                 '</div>' +
 
                 '<div>' +

@@ -27,8 +27,8 @@ let ticketSearchResult = new Vue({
         user: frontendData.user,
         expiredTickets: frontendData.expiredTickets,
         actualTickets: frontendData.actualTickets,
-        // error: frontendData.error,
-        // notification: frontendData.notification,
+        error: frontendData.error,
+        notification: frontendData.notification,
     },
     template:
         '<div class="tickets-info">' +

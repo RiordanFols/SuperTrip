@@ -70,6 +70,15 @@ public class FormChecker {
 
     public String checkUserData(String name, String surname, String middleName,
                                 String passportId, String passportSeries) {
+
+        // if names contains numbers
+        if (name.matches(".*\\d.*"))
+            return UserDataError.NAME_HAS_DIGITS.toString();
+        if (surname.matches(".*\\d.*"))
+            return UserDataError.SURNAME_HAS_DIGITS.toString();
+        if (middleName.matches(".*\\d.*"))
+            return UserDataError.MIDDLE_NAME_HAS_DIGITS.toString();
+
         // not numeric passport id or series
         try {
             Integer.parseInt(passportId);
