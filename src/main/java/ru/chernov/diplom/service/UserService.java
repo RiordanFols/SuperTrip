@@ -28,7 +28,8 @@ public class UserService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        return findByUsername(username);
+        User user = findByUsername(username);
+        return user == null ? new User() : user;
     }
 
     public Collection<User> findAll() {
