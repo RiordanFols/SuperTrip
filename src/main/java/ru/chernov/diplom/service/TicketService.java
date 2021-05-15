@@ -30,7 +30,6 @@ public class TicketService {
     }
 
     public Ticket save(Ticket ticket) {
-        ticket.setCreationDateTime(LocalDateTime.now());
         return ticketRepository.save(ticket);
     }
 
@@ -44,20 +43,13 @@ public class TicketService {
     }
 
     public Ticket assembleAndSave(Solution solution, User user) {
-        Ticket ticket = new Ticket();
-        ticket.setNumber(UUID.randomUUID().toString());
-        ticket.setPasName(user.getName());
-        ticket.setPasSurname(user.getSurname());
-        ticket.setPasMiddleName(user.getMiddleName());
-        ticket.setPasPassportId(user.getPassportId());
-        ticket.setPasPassportSeries(user.getPassportSeries());
-        ticket.setStatus(TicketStatus.NOT_PAID);
-
         var trips = solution.getTrips();
-        ticket.setTrips(trips);
-        ticket.setCost(trips.stream()
+        var cost = trips.stream()
                 .map(Trip::getCost)
-                .reduce(Double::sum).orElse(0.0));
+                .reduce(Double::sum).orElse(0.0);
+        var number = UUID.randomUUID().toString();
+        Ticket ticket = new Ticket(number, cost, TicketStatus.NOT_PAID, LocalDateTime.now(), trips, user.getName(),
+                user.getSurname(), user.getMiddleName(), user.getPassportId(), user.getPassportSeries());
         return save(ticket);
     }
 

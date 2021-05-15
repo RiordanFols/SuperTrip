@@ -39,7 +39,7 @@ public class FormChecker {
 
         // if password and passwordConfirm are different
         if (!password.equals(passwordConfirm))
-            return AuthError.DIFFERENT_PASSWORDS.toString();
+            return AuthError.DIFF_PASSWORDS.toString();
 
         return checkUserData(name, surname, middleName, passportId, passportSeries);
     }
@@ -59,7 +59,7 @@ public class FormChecker {
 
         // arrival time is before departure time
         if (toTime.isBefore(fromTime) || toTime.isEqual(fromTime))
-            return MainError.NEGATIVE_TIME_DIF.toString();
+            return MainError.NEGATIVE_TIME_DIFF.toString();
 
         // if no transport selected
         if (!busAllowed && !trainAllowed && !planeAllowed)

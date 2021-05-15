@@ -2,6 +2,7 @@ package ru.chernov.diplom.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import ru.chernov.diplom.domain.TicketStatus;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @Entity
 @Data
+@NoArgsConstructor
 public class Ticket {
 
     @Id
@@ -53,4 +55,18 @@ public class Ticket {
     @Column(nullable = false, updatable = false)
     private int pasPassportSeries;
 
+    public Ticket(String number, double cost, TicketStatus status, LocalDateTime creationDateTime,
+                  List<Trip> trips, String pasName, String pasSurname, String pasMiddleName,
+                  int pasPassportId, int pasPassportSeries) {
+        this.number = number;
+        this.cost = cost;
+        this.status = status;
+        this.creationDateTime = creationDateTime;
+        this.trips = trips;
+        this.pasName = pasName;
+        this.pasSurname = pasSurname;
+        this.pasMiddleName = pasMiddleName;
+        this.pasPassportId = pasPassportId;
+        this.pasPassportSeries = pasPassportSeries;
+    }
 }
