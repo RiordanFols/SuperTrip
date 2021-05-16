@@ -1,8 +1,21 @@
+body {
+    background-image: url("/img/beach2.jpg");
+    background-repeat: no-repeat;
+    background-color: #70B5FF;
+    background-size: cover;
+}
+
 .route-search-form {
-    height: 120px;
-    padding: 10px 20px;
-    border: 1px solid #E8E8E8;
-    border-radius: 5px;
+    margin-top: 45px;
+    color: white;
+    height: 140px;
+    padding: 15px 20px 25px 20px;
+    border: 1px solid #888888;
+    border-radius: 6px;
+}
+
+.route-search-form, .submit-btn {
+    background-color: rgba(0, 0, 0, 0.75);
 }
 
 .form-block-left {
@@ -90,17 +103,16 @@
 
 .submit-btn {
     display: inline-block;
-    border: none;
+    border: 1px solid #888888;
     box-sizing: border-box;
     font-size: 16px;
     font-weight: bold;
     padding: 8px 32px;
-    background-color: #2276AA;
     color: white;
-    border-radius: 3px;
+    border-radius: 5px;
 }
 
 .submit-btn:hover {
     cursor: pointer;
-    color: #F5F353;
+    color: #70B5FF;
 }

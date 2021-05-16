@@ -3,14 +3,14 @@ let routeSearchForm = new Vue({
     data: {
         fd: frontendData.formData,
         error: frontendData.error,
-        notification: frontendData.notification,
     },
     template:
         '<form method="post" action="/">' +
-            '<p v-if="error !== null">{{ error }}</p>' +
-            '<p v-if="notification !== null">{{ notification }}</p>' +
 
             '<div class="route-search-form">' +
+                '<div class="error" v-if="error !== null">{{ error }}</div>' +
+                '<div class="error" v-else></div>' +
+
                 '<div class="form-block-left">' +
                     '<div class="form-block-left-line">' +
                         '<input class="city-input" type="text" maxlength="50" name="fromCity" placeholder="From"' +

@@ -37,8 +37,6 @@ let profile = new Vue({
         expiredTickets: frontendData.expiredTickets,
         actualTickets: frontendData.actualTickets,
         privilegeInfo: frontendData.privilegeInfo,
-        // error: frontendData.error,
-        // notification: frontendData.notification,
     },
     template:
         '<div class="profile">' +
