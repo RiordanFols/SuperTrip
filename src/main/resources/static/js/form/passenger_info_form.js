@@ -3,43 +3,45 @@ let passengerInfoForm = new Vue({
     data: {
         fd: frontendData.formData,
         solutionId: frontendData.solutionId,
-        error: frontendData.error,
-        notification: frontendData.notification,
+        error: frontendData.error
     },
     template:
-        '<div>' +
-            '<form method="post" v-bind:href="\'/ticket/assemble/\' + solutionId">' +
-                '<p v-if="error !== null">{{ error }}</p>' +
-                '<p v-if="notification !== null">{{ notification }}</p>' +
+        '<form method="post" v-bind:href="\'/ticket/assemble/\' + solutionId">' +
 
-                '<div>' +
-                    '<span>Name</span>' +
-                    '<input type="text" maxlength="25" name="name" :value="fd.name" required autofocus/>' +
+            '<div class="user-info-form">' +
+                '<div class="user-info-form-caption">Enter passenger data</div>' +
+
+                '<div class="error" v-if="error !== null">{{ error }}</div>' +
+
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Name</span>' +
+                    '<input class="user-info-input" type="text" maxlength="25" name="name" :value="fd.name" required autofocus/>' +
                 '</div>' +
 
-                '<div>' +
-                    '<span>Surname</span>' +
-                    '<input type="text" maxlength="25" name="surname" :value="fd.surname" required/>' +
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Surname</span>' +
+                    '<input class="user-info-input" type="text" maxlength="25" name="surname" :value="fd.surname" required/>' +
                 '</div>' +
 
-                '<div>' +
-                    '<span>Middle name</span>' +
-                    '<input type="text" maxlength="25" :value="fd.middleName" name="middleName"/>' +
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Middle name</span>' +
+                    '<input class="user-info-input" type="text" maxlength="25" :value="fd.middleName" name="middleName"/>' +
                 '</div>' +
 
-                '<div>' +
-                    '<span>Passport id</span>' +
-                    '<input type="text" maxlength="6" minlength="6" name="passportId" :value="fd.passportId" required/>' +
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Passport id</span>' +
+                    '<input class="user-info-input" type="text" maxlength="6" minlength="6" name="passportId" :value="fd.passportId" required/>' +
                 '</div>' +
 
-                '<div>' +
-                    '<span>Passport series</span>' +
-                    '<input type="text" maxlength="4" minlength="4" name="passportSeries" :value="fd.passportSeries" required/>' +
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Passport series</span>' +
+                    '<input class="user-info-input" type="text" maxlength="4" minlength="4" name="passportSeries" :value="fd.passportSeries" required/>' +
                 '</div>' +
 
-                '<div>' +
-                    '<input value="OK" type="submit"/>' +
+                '<div class="user-info-input-line">' +
+                    '<input class="user-info-btn" value="Go to payment" type="submit"/>' +
                 '</div>' +
-            '</form>' +
-        '</div>'
+            '</div>' +
+
+        '</form>'
 });

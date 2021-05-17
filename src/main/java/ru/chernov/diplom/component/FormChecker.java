@@ -2,6 +2,7 @@ package ru.chernov.diplom.component;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.page.error.AuthError;
 import ru.chernov.diplom.page.error.MainError;
 import ru.chernov.diplom.page.error.UserDataError;
@@ -30,7 +31,8 @@ public class FormChecker {
                                         String passportId, String passportSeries) {
 
         // if username is taken
-        if (userService.loadUserByUsername(username) != null)
+        if (userService.loadUserByUsername(username) != null &&
+                !userService.loadUserByUsername(username).equals(new User()))
             return AuthError.USERNAME_IS_TAKEN.toString();
 
         // if password is too short (at least 6 symbols)
@@ -45,7 +47,7 @@ public class FormChecker {
     }
 
     public String checkRouteSearchForm(String from, String to, LocalDateTime fromTime, LocalDateTime toTime,
-                                      boolean busAllowed, boolean trainAllowed, boolean planeAllowed) {
+                                       boolean busAllowed, boolean trainAllowed, boolean planeAllowed) {
 
         // can't find city
         if (nodeService.findByName(from) == null)

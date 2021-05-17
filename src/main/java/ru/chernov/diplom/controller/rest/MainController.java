@@ -13,9 +13,7 @@ import ru.chernov.diplom.alg.solver.SolutionType;
 import ru.chernov.diplom.component.FormChecker;
 import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.domain.entity.User;
-import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.SolutionService;
-import ru.chernov.diplom.service.TripService;
 import ru.chernov.diplom.service.UserService;
 
 import java.time.LocalDateTime;

@@ -1,4 +1,6 @@
-
+body {
+    font-size: 18px;
+}
 /*header*/
 /**/
 
@@ -87,9 +89,9 @@
 /**/
 
 .main {
-    width: 1000px;
+    width: 1050px;
     height: 800px;
-    margin: 5px auto 0 auto;
+    margin: 50px auto 0 auto;
 }
 
 /*footer*/
@@ -144,12 +146,14 @@
 
 .error {
     font-size: 18px;
-    height: 30px;
+    min-height: 30px;
+    margin-bottom: 3px;
     color: red;
 }
 
 .notification {
     font-size: 18px;
-    height: 20px;
+    min-height: 30px;
+    margin-bottom: 3px;
     color: green;
 }

@@ -1,7 +1,6 @@
 package ru.chernov.diplom.domain;
 
 import lombok.Getter;
-import ru.chernov.diplom.domain.entity.User;
 
 import java.util.Arrays;
 import java.util.Collections;

@@ -1,0 +1,54 @@
+.main {
+    width: 430px;
+}
+
+.user-info-form {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 15px 60px 25px 60px;
+    border: 1px solid #888888;
+    border-radius: 6px;
+}
+
+.user-info-form-caption {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    font-size: 22px;
+}
+
+.user-info-input-line {
+    height: 35px;
+}
+
+.user-info-label {
+
+}
+
+.user-info-input {
+    float: right;
+    width: 160px;
+    padding: 3px 4px;
+}
+
+.user-info-btn {
+    text-decoration: none;
+    margin: 15px auto 0 auto;
+    display: block;
+    background: none;
+    width: 150px;
+    text-align: center;
+    border: 1px solid #888888;
+    box-sizing: border-box;
+    font-size: 16px;
+    padding: 7px 0;
+    font-weight: bold;
+    color: white;
+    border-radius: 5px;
+}
+
+
+.user-info-btn:hover {
+    cursor: pointer;
+    color: #70B5FF;
+}

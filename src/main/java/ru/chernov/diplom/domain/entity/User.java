@@ -1,6 +1,7 @@
 package ru.chernov.diplom.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -21,10 +22,12 @@ import java.util.Set;
 @Getter
 @Table(name = "usr")
 @NoArgsConstructor
+@EqualsAndHashCode
 public class User implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Setter
     private long id;
 
     @Setter
