@@ -68,7 +68,7 @@ body {
     color: #70B5FF;
 }
 
-.header-auth {
+.header-middle-item {
     border-left: 1px solid #656573;
     float: left;
     display: block;
@@ -81,7 +81,11 @@ body {
     align-content: center;
 }
 
-.header-auth:hover {
+.header-middle-item:first-child {
+    margin-left: 100px;
+}
+
+.header-middle-item:hover {
     color: #70B5FF;
 }
 

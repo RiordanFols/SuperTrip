@@ -1,3 +1,31 @@
+
+.main {
+    width: 715px;
+}
+
+.profile {
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    padding: 15px 60px 25px 60px;
+    border: 1px solid #888888;
+    border-radius: 6px;
+}
+
+.profile-caption {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 30px;
+    font-size: 22px;
+}
+
+.user-info {
+    margin-bottom: 20px;
+}
+
+.user-info-line {
+    height: 30px;
+}
+
 .privilege-progress {
 
 }
@@ -5,4 +33,8 @@
 .privilege-progress-bar {
     width: 600px;
     height: 45px;
+}
+
+.privilege-caption {
+    text-align: center;
 }

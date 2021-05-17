@@ -10,7 +10,7 @@ let header = new Vue({
                 '<img class="header-app-name" src="/img/logo.png"  alt=""/>' +
             '</a>' +
             '<div class="header-middle">' +
-                '<div></div>' +
+                '<a class="header-middle-item" href="/ticket/search"><div>Ticket search</div></a>' +
                 '<div></div>' +
                 '<div></div>' +
             '</div>' +
@@ -21,8 +21,8 @@ let header = new Vue({
                 '</div>' +
             '</a>' +
 
-            '<a class="header-auth" v-if="authUser === null" href="/login">Login</a>' +
-            '<a class="header-auth" v-else href="/logout">Logout</a>' +
+            '<a class="header-middle-item" v-if="authUser === null" href="/login">Login</a>' +
+            '<a class="header-middle-item" v-else href="/logout">Logout</a>' +
         '</div>' +
     '</div>'
 });

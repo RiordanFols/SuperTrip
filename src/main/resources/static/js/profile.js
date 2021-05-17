@@ -4,7 +4,7 @@ Vue.component('privilege-progress', {
     template:
         '<div class="privilege-progress">' +
             '<progress class="privilege-progress-bar" :max="privilegeInfo.threshold" :value="privilegeInfo.spent"/>' +
-            '<div>{{ privilegeInfo.desc }}</div>' +
+            '<div class="privilege-caption">{{ privilegeInfo.desc }}</div>' +
         '</div>'
 });
 
@@ -40,14 +40,16 @@ let profile = new Vue({
     },
     template:
         '<div class="profile">' +
+            '<div class="profile-caption">Profile</div>' +
+
             '<div class="user-info">' +
-                '<div class="user-info-username">Username: {{ user.username }}</div>' +
-                '<div class="user-info-name">Name: {{ user.name }}</div>' +
-                '<div class="user-info-surname">Surname: {{ user.surname }}</div>' +
-                '<div class="user-info-middle-name">Middle name: {{ user.middleName }}</div>' +
-                '<div class="user-info-passport">Passport: {{ user.passportId }} {{ user.passportSeries }}</div>' +
+                '<div class="user-info-line">Username: {{ user.username }}</div>' +
+                '<div class="user-info-line">Full name: {{ user.name }} {{ user.surname }} {{ user.middleName }}</div>' +
+                '<div class="user-info-line">Passport: {{ user.passportId }} {{ user.passportSeries }}</div>' +
             '</div>' +
+
             '<privilege-progress :privilegeInfo="privilegeInfo"/>' +
+
             // '<div class="user-tickets" v-if="actualTickets.length > 0">' +
             //     '<h4>Your actual tickets:</h4>' +
             //     '<user-ticket v-for="ticket in actualTickets" :key="ticket.id" :ticket="ticket"/>' +
