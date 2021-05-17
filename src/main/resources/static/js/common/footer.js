@@ -42,7 +42,7 @@ let footer = new Vue({
                     '<a href="">' +
                         '<div class="footer-up-item">' +
                             '<img class="footer-up-item-img" src="" alt=""/>' +
-                            '<div class="footer-up-item-text">Contact</div>' +
+                            '<div class="footer-up-item-text">Contact us</div>' +
                         '</div>' +
                     '</a>' +
                 '</div>' +

@@ -23,11 +23,7 @@
 }
 
 .header-app-name {
-    margin-top: 5px;
-    color: white;
-    width: 150px;
     height: 40px;
-    font-size: 26px;
     float: left;
 }
 
@@ -142,7 +138,7 @@
 .footer-down-text {
     text-align: center;
     padding-top: 10px;
-    color: white;
+    color: #BBBBBB;
     font-size: 17px;
 }
 

@@ -6,7 +6,9 @@ let header = new Vue({
     template:
     '<div class="header">' +
         '<div class="header-content">' +
-            '<a href="/"><div class="header-app-name">Super trip</div></a>' +
+            '<a href="/">' +
+                '<img class="header-app-name" src="/img/logo.png"  alt=""/>' +
+            '</a>' +
             '<div class="header-middle">' +
                 '<div></div>' +
                 '<div></div>' +

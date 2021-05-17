@@ -1,0 +1,88 @@
+a {
+    text-decoration: none;
+}
+
+.main {
+    width: 1350px;
+}
+
+.route-search-result {
+    margin-top: 45px;
+    background-color: rgba(0, 0, 0, 0.75);
+    color: white;
+    border-radius: 5px;
+}
+
+.solutions-header {
+
+}
+
+.solution-header {
+    border-right: white solid 2px;
+    width: 418px;
+    height: 25px;
+    margin-right: 10px;
+    padding: 10px 10px;
+    font-size: 20px;
+}
+
+.solution-header:last-child {
+    border-right: none;
+}
+
+.coming-soon {
+    font-size: 24px;
+    text-align: center;
+}
+
+.solution {
+    width: 396px;
+    font-size: 18px;
+    padding: 10px 10px;
+    border-right: white solid 2px;
+}
+
+.solution:last-child {
+    border-right: none;
+}
+
+
+.solution-metrics-block {
+
+}
+
+.solution-trips-block {
+    margin-top: 15px;
+}
+
+.solution-trip {
+    margin-top: 5px;
+    margin-bottom: 10px;
+}
+
+.trip-info-nodes, .trip-info-time {
+    text-align: center;
+}
+
+.buy-btn-href {
+    display: block;
+    width: 110px;
+    margin: 30px auto 10px auto;
+}
+
+.buy-btn {
+    width: 110px;
+    text-align: center;
+    border: 1px solid #888888;
+    box-sizing: border-box;
+    font-size: 18px;
+    font-weight: bold;
+    padding: 6px 0;
+    color: white;
+    border-radius: 5px;
+}
+
+.buy-btn:hover {
+    cursor: pointer;
+    color: #70B5FF;
+}

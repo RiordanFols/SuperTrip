@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.chernov.diplom.alg.solver.SolutionType;
 import ru.chernov.diplom.component.FormChecker;
+import ru.chernov.diplom.domain.entity.Solution;
 import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.service.NodeService;
 import ru.chernov.diplom.service.SolutionService;
@@ -111,6 +112,8 @@ public class MainController {
         frontendData.put("authUser", authUser);
         frontendData.put("solutions", new ArrayList<>() {{
             add(solutionService.save(solution1));
+            // todo: place for optimal route for future release
+            add(new Solution());
             add(solutionService.save(solution2));
         }});
         model.addAttribute("frontendData", frontendData);
