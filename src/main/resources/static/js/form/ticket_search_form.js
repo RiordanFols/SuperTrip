@@ -3,44 +3,43 @@ let ticketSearchForm = new Vue({
     data: {
         fd: frontendData.formData,
         error: frontendData.error,
-        notification: frontendData.notification,
     },
     template:
-        '<div>' +
-            '<form method="post" action="/ticket/search">' +
-                '<p v-if="error !== null">{{ error }}</p>' +
-                '<p v-if="notification !== null">{{ notification }}</p>' +
+        '<form method="post" action="/ticket/search">' +
 
-                '<div>Passenger data:</div>' +
+            '<div class="user-info-form">' +
+                '<div class="user-info-form-caption">Already have tickets, but lost them? Enter passenger data to find your tickets</div>' +
 
-                '<div>' +
-                    '<span>Name</span>' +
-                    '<input type="text" maxlength="25" name="name" :value="fd.name" required autofocus>' +
+                '<div class="error" v-if="error !== null">{{ error }}</div>' +
+
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Name</span>' +
+                    '<input  class="user-info-input" type="text" maxlength="25" name="name" :value="fd.name" required autofocus>' +
                 '</div>' +
 
-                '<div>' +
-                    '<span>Surname</span>' +
-                    '<input type="text" maxlength="25" name="surname" :value="fd.surname" required>' +
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Surname</span>' +
+                    '<input  class="user-info-input" type="text" maxlength="25" name="surname" :value="fd.surname" required>' +
                 '</div>' +
 
-                '<div>' +
-                    '<span>Middle name</span>' +
-                    '<input type="text" maxlength="25" :value="fd.middleName" name="middleName">' +
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Middle name</span>' +
+                    '<input  class="user-info-input" type="text" maxlength="25" :value="fd.middleName" name="middleName">' +
                 '</div>' +
 
-                '<div>' +
-                    '<span>Passport id</span>' +
-                    '<input type="text" minlength="6" maxlength="6" name="passportId" :value="fd.passportId" required>' +
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Passport id</span>' +
+                    '<input  class="user-info-input" type="text" minlength="6" maxlength="6" name="passportId" :value="fd.passportId" required>' +
                 '</div>' +
 
-                '<div>' +
-                    '<span>Passport series</span>' +
-                    '<input type="text" minlength="4" maxlength="4" name="passportSeries" :value="fd.passportSeries" required>' +
+                '<div class="user-info-input-line">' +
+                    '<span class="user-info-label">Passport series</span>' +
+                    '<input  class="user-info-input" type="text" minlength="4" maxlength="4" name="passportSeries" :value="fd.passportSeries" required>' +
                 '</div>' +
 
-                '<div>' +
-                    '<input value="OK" type="submit">' +
+                '<div class="user-info-input-line">' +
+                    '<input class="user-info-btn" value="Ok" type="submit">' +
                 '</div>' +
-            '</form>' +
-        '</div>'
+            '</div>' +
+        '</form>'
 });

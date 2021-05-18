@@ -12,9 +12,8 @@ Vue.component('ticket-trip', {
     props: ['trip'],
     template:
         '<div class="ticket-trip">' +
-            '<div class="trip-info-transport">Transport: {{ trip.type }} ({{ trip.cost }}$)</div>' +
-            '<div class="trip-info-nodes">From {{ trip.edge.from.name }} to {{ trip.edge.to.name }}</div>' +
-            '<div class="trip-info-time">{{ trip.fromTime }} - {{ trip.toTime }}</div>' +
+            '<div class="trip-info-nodes">{{ trip.edge.from.name }} — {{ trip.edge.to.name }}:  {{ trip.type }} ({{ trip.cost }}$)</div>' +
+            '<div class="trip-info-time">{{ trip.fromTime }} — {{ trip.toTime }}</div>' +
         '</div>'
 });
 
@@ -22,11 +21,11 @@ Vue.component('user-ticket', {
     props: ['ticket'],
     template:
         '<div class="user-ticket">' +
-            '<div class="user-ticket-number">Number: {{ ticket.number }}</div>' +
-            '<div class="user-ticket-status">Status: {{ ticket.status }}</div>' +
-            '<div class="user-ticket-trips">' +
-            '<ticket-trip v-for="trip in ticket.trips" :key="trip.id" :trip="trip"/>' +
-        '</div>' +
+            '<div class="ticket-info-line">Ticket <span class="ticket-number">{{ ticket.number }}</span> </div>' +
+            '<div class="ticket-info-line">Status: {{ ticket.status }} ({{ ticket.cost }}$)</div>' +
+            '<div class="ticket-trips">' +
+                '<ticket-trip v-for="trip in ticket.trips" :key="trip.id" :trip="trip"/>' +
+            '</div>' +
         '</div>'
 });
 
@@ -50,13 +49,21 @@ let profile = new Vue({
 
             '<privilege-progress :privilegeInfo="privilegeInfo"/>' +
 
-            // '<div class="user-tickets" v-if="actualTickets.length > 0">' +
-            //     '<h4>Your actual tickets:</h4>' +
-            //     '<user-ticket v-for="ticket in actualTickets" :key="ticket.id" :ticket="ticket"/>' +
-            // '</div>' +
-            // '<div class="user-tickets" v-if="expiredTickets.length > 0">' +
-            //     '<h4>Your expired tickets:</h4>' +
-            //     '<user-ticket v-for="ticket in expiredTickets" :key="ticket.id" :ticket="ticket"/>' +
-            // '</div>' +
+            '<table>' +
+                '<tr>' +
+                    '<th>Actual tickets</th>' +
+                    '<th>Expired tickets</th>' +
+                '</tr>' +
+                '<tr>' +
+                    '<td>' +
+                        '<user-ticket v-for="ticket in actualTickets" :key="ticket.id" :ticket="ticket"/>' +
+                    '</td>' +
+
+                    '<td>' +
+                        // '<user-ticket v-for="ticket in expiredTickets" :key="ticket.id" :ticket="ticket"/>' +
+                        '<div class="expired-tickets-switch">Open</div>' +
+                    '</td>' +
+                '</tr>' +
+            '</table>' +
         '</div>'
 });

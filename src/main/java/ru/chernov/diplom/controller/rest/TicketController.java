@@ -171,7 +171,8 @@ public class TicketController {
     }
 
     @PostMapping("/search")
-    public String ticketSearch(@RequestParam String name,
+    public String ticketSearch(@AuthenticationPrincipal User authUser,
+                               @RequestParam String name,
                                @RequestParam String surname,
                                @RequestParam String middleName,
                                @RequestParam String passportId,
@@ -193,8 +194,18 @@ public class TicketController {
                 Integer.parseInt(passportId), Integer.parseInt(passportSeries));
         var passengerTickets = ticketService.findTicketsByUser(passenger);
 
+        String notification = null;
+        if (passengerTickets.size() == 0)
+            error = "Oops...found no tickets";
+        else
+            notification = "Found " + passengerTickets.size() + " tickets";
+
         var frontendData = new HashMap<String, Object>();
+        frontendData.put("authUser", authUser);
         frontendData.put("user", passenger);
+        frontendData.put("error", error);
+        frontendData.put("notification", notification);
+        // todo: sort
         frontendData.put("expiredTickets", ticketService.getExpiredTickets(passengerTickets));
         frontendData.put("actualTickets", ticketService.getActualTickets(passengerTickets));
         model.addAttribute("frontendData", frontendData);
