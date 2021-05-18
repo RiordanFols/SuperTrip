@@ -10,6 +10,7 @@ import ru.chernov.diplom.component.FormChecker;
 import ru.chernov.diplom.domain.Role;
 import ru.chernov.diplom.domain.entity.Ticket;
 import ru.chernov.diplom.domain.entity.User;
+import ru.chernov.diplom.page.notification.TicketNotification;
 import ru.chernov.diplom.service.SolutionService;
 import ru.chernov.diplom.service.TicketService;
 import ru.chernov.diplom.service.UserService;
@@ -58,11 +59,11 @@ public class TicketController {
         } else {
             var frontendData = new HashMap<String, Object>();
             var formData = new HashMap<>() {{
+                put("passportId", passportId);
+                put("passportSeries", passportSeries);
                 put("name", name);
                 put("surname", surname);
                 put("middleName", middleName);
-                put("passportId", passportId);
-                put("passportSeries", passportSeries);
             }};
             frontendData.put("formData", formData);
             frontendData.put("error", error);
@@ -117,11 +118,13 @@ public class TicketController {
 
     @PostMapping("/buy/{number}")
     public String buyTicket(@AuthenticationPrincipal User authUser,
-                            @PathVariable(name = "number") String ticketNumber) {
+                            @PathVariable(name = "number") String ticketNumber,
+                            RedirectAttributes ra) {
         if (authUser != null)
             authUser = userService.findById(authUser.getId());
 
         ticketService.pay(ticketNumber, authUser);
+        ra.addAttribute("notification", TicketNotification.PAYMENT_SUCCESSFUL.toString());
         return "redirect:/";
     }
 

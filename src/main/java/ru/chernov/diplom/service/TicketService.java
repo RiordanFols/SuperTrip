@@ -22,7 +22,6 @@ import java.util.stream.Collectors;
 public class TicketService {
 
     private final TicketRepository ticketRepository;
-    private final UserService userService;
 
     private final Comparator<Ticket> sortTicketsByFirstTripFromTime = (e1, e2) -> {
         var e1FirstTrip = e1.getTrips().stream()
@@ -40,9 +39,8 @@ public class TicketService {
     };
 
     @Autowired
-    public TicketService(TicketRepository ticketRepository, UserService userService) {
+    public TicketService(TicketRepository ticketRepository) {
         this.ticketRepository = ticketRepository;
-        this.userService = userService;
     }
 
     public Ticket save(Ticket ticket) {
@@ -77,7 +75,6 @@ public class TicketService {
             authUser.addToSpent(ticket.getCost());
 
         save(ticket);
-        userService.save(authUser);
     }
 
     public List<Ticket> getActualTickets(List<Ticket> tickets) {
