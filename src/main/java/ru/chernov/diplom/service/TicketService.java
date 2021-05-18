@@ -10,6 +10,7 @@ import ru.chernov.diplom.domain.entity.User;
 import ru.chernov.diplom.repository.TicketRepository;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -22,6 +23,21 @@ public class TicketService {
 
     private final TicketRepository ticketRepository;
     private final UserService userService;
+
+    private final Comparator<Ticket> sortTicketsByFirstTripFromTime = (e1, e2) -> {
+        var e1FirstTrip = e1.getTrips().stream()
+                .min(Comparator.comparing(Trip::getFromTime)).orElse(null);
+        var e2FirstTrip = e2.getTrips().stream()
+                .min(Comparator.comparing(Trip::getFromTime)).orElse(null);
+        assert e1FirstTrip != null;
+        assert e2FirstTrip != null;
+
+        if (e1FirstTrip.getFromTime().isAfter(e2FirstTrip.getFromTime()))
+            return 1;
+        if (e1FirstTrip.getFromTime().isBefore(e2FirstTrip.getFromTime()))
+            return -1;
+        return 0;
+    };
 
     @Autowired
     public TicketService(TicketRepository ticketRepository, UserService userService) {
@@ -70,6 +86,7 @@ public class TicketService {
                     var lastTrip = e.getTrips().get(e.getTrips().size() - 1);
                     return lastTrip.getFromTime().isAfter(LocalDateTime.now());
                 })
+                .sorted(sortTicketsByFirstTripFromTime)
                 .collect(Collectors.toList());
     }
 
@@ -79,6 +96,8 @@ public class TicketService {
                     var lastTrip = e.getTrips().get(e.getTrips().size() - 1);
                     return lastTrip.getFromTime().isBefore(LocalDateTime.now());
                 })
+                .sorted(sortTicketsByFirstTripFromTime)
                 .collect(Collectors.toList());
     }
+
 }
