@@ -40,8 +40,9 @@ public abstract class Solver {
         // filtering trips by time and transport type
         schedule = filterSchedule(this.schedule);
 
-        undone = new ArrayList<>(schedule.getNodes());
-        undone.remove(start);
+        undone = new ArrayList<>(schedule.getNodes()) {{
+            remove(start);
+        }};
     }
 
     abstract public Solution solve();
