@@ -44,7 +44,6 @@ public class Solution {
     @Enumerated(EnumType.STRING)
     private SolutionType type;
 
-
     public Trip getLastTrip() {
         return trips.isEmpty() ? null : trips.get(trips.size() - 1);
     }

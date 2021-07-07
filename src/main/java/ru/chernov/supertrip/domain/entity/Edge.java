@@ -2,6 +2,7 @@ package ru.chernov.supertrip.domain.entity;
 
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
@@ -23,5 +24,4 @@ public class Edge {
 
     @ManyToOne(fetch = FetchType.EAGER)
     private Node to;
-
 }

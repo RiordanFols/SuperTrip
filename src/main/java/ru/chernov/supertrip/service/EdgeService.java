@@ -19,8 +19,8 @@ public class EdgeService {
         this.edgeRepository = edgeRepository;
     }
 
-    public Edge save(Edge edge) {
-        return edgeRepository.save(edge);
+    public void save(Edge edge) {
+        edgeRepository.save(edge);
     }
 
     public Edge findById(long id) {
