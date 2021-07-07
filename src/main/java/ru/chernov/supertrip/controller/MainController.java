@@ -1,4 +1,4 @@
-package ru.chernov.supertrip.controller.rest;
+package ru.chernov.supertrip.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
