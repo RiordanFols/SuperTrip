@@ -43,6 +43,7 @@ public class AStarSolver extends Solver {
         findStraightSolutions();
 
         while (undone.size() > 1) {
+//            printIntermediateResult();
             // node with minimum weight from undone
             Node minNode = getMinNode();
             if (minNode == null)
@@ -77,14 +78,13 @@ public class AStarSolver extends Solver {
                 Trip firstTrip = findBestTrip(edgeTrips, null, startTime, endTime);
                 // if can't find any satisfying trip
                 if (firstTrip == null)
-                    return;
+                    continue;
 
                 Solution solution = new Solution();
                 solution.getTrips().add(firstTrip);
                 solution.setTime(firstTrip.getTravelTime());
                 solution.setCost(firstTrip.getCost());
                 solution.setType(solutionType);
-
                 solutions.put(curNode, solution);
             } else {
                 solutions.put(curNode, null);
@@ -228,6 +228,26 @@ public class AStarSolver extends Solver {
             }
         }
     }
+
+//    public void printIntermediateResult() {
+//        System.out.println("\n\nIntermediate result:");
+//        for (var solutionKey : solutions.keySet()) {
+//            var solution = solutions.get(solutionKey);
+//            if (solution != null) {
+//                var time = solution.getTime();
+//                var cost = solution.getCost();
+//                var trips = solution.getTrips();
+//
+//                System.out.println("\n" + solutionKey.getName() + ": ");
+//                System.out.println("Time = " + time / 60 + "h " + time % 60 + "m");
+//                System.out.println("Cost = " + cost + "$");
+//                System.out.println("Route:");
+//                trips.forEach(System.out::println);
+//            } else {
+//                System.out.println("No route");
+//            }
+//        }
+//    }
 
 //    public void printResult() {
 //        System.out.println("\n\nResult:");
