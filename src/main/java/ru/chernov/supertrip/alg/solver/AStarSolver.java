@@ -14,6 +14,16 @@ import java.util.Set;
 import java.util.function.Predicate;
 
 /**
+ * Алгоритм А* работет следующим образом:
+ * 1) Сначала от начальной точки прокладываются решения ко всем
+ * точкам, к которым есть маршрут (метод findStraightSolutions)
+ * 2) В цикле происходит выбор пункта с минимальной стоимостью
+ * (то есть до которого можно добраться быстрее всего от старта),
+ * один и тот же пункт не может быть выбран дважды. (метод getMinNode)
+ * 3) От данного пунтка просчитываюся маршруты ко всем соседним еще не задействованным.
+ * ... пункты 2 и 3 повторяются, пока не останется пунтков для выбора в (2)
+ * 4) Происходит оптимизация маршрута при возможности (метод optimizeSolutions)
+ *
  * @author Pavel Chernov
  */
 public class AStarSolver extends Solver {
@@ -24,6 +34,7 @@ public class AStarSolver extends Solver {
         super(schedule, start, end, startTime, endTime, transportTypesAvailable, solutionType);
 
     }
+
 
     @Override
     public Solution solve() {
@@ -53,9 +64,7 @@ public class AStarSolver extends Solver {
             }
         }
         optimizeSolution();
-
 //        printResult();
-
         return solutions.get(end);
     }
 

@@ -8,6 +8,9 @@ import java.time.LocalDateTime;
 import java.util.Set;
 
 /**
+ * Все отличие алгоритма Дейкстры от А* - в отсутствии
+ * эвристической функции (она равна 0)
+ *
  * @author Pavel Chernov
  */
 public class DijkstraSolver extends AStarSolver {
