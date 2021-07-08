@@ -58,7 +58,8 @@ public class UserService implements UserDetailsService {
         save(user);
     }
 
-    public void managerRegistration(String username, String name, String surname, String middleName, String password) {
+    public void managerRegistration(String username, String name, String surname,
+                                    String middleName, String password) {
         User user = new User(name, surname, middleName, 0, 0);
         user.setUsername(username);
         user.setPassword(passwordEncoder.encode(password));

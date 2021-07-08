@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import ru.chernov.supertrip.alg.solver.SolutionType;
 import ru.chernov.supertrip.component.FormChecker;
+import ru.chernov.supertrip.domain.TransportType;
 import ru.chernov.supertrip.domain.entity.Solution;
 import ru.chernov.supertrip.domain.entity.User;
 import ru.chernov.supertrip.service.SolutionService;
@@ -101,9 +102,15 @@ public class MainController {
         if (authUser != null)
             authUser = userService.findById(authUser.getId());
 
-        var solution1 = solutionService.findSolution(busAllowed, trainAllowed, planeAllowed,
+        var transportMap = new HashMap<TransportType, Boolean>() {{
+            put(TransportType.BUS, busAllowed);
+            put(TransportType.TRAIN, trainAllowed);
+            put(TransportType.PLANE, planeAllowed);
+        }};
+
+        var solution1 = solutionService.findSolution(transportMap,
                 departureTime, arrivalTime, fromCity, toCity, SolutionType.TIME);
-        var solution2 = solutionService.findSolution(busAllowed, trainAllowed, planeAllowed,
+        var solution2 = solutionService.findSolution(transportMap,
                 departureTime, arrivalTime, fromCity, toCity, SolutionType.COST);
         
         var frontendData = new HashMap<String, Object>();

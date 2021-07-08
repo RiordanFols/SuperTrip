@@ -13,6 +13,7 @@ import ru.chernov.supertrip.repository.SolutionRepository;
 
 import java.time.LocalDateTime;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 /**
@@ -44,23 +45,21 @@ public class SolutionService {
         return solutionRepository.findById(id).orElse(null);
     }
 
-    public Solution findSolution(boolean busAvailable, boolean trainAvailable, boolean planeAvailable,
+    public Solution findSolution(Map<TransportType, Boolean> transportMap,
                                  LocalDateTime departureTime, LocalDateTime arrivalTime,
                                  String fromCity, String toCity, SolutionType solutionType) {
         Schedule schedule = new Schedule(tripService.findAll());
         Node start = nodeService.findByName(fromCity);
         Node end = nodeService.findByName(toCity);
-        // todo: open-closed P
-        Set<TransportType> transportTypes = new HashSet<>() {{
-            if (busAvailable)
-                add(TransportType.BUS);
-            if (trainAvailable)
-                add(TransportType.TRAIN);
-            if (planeAvailable)
-                add(TransportType.PLANE);
-        }};
+
+        var transportAvailable = new HashSet<TransportType>();
+        for (var type : transportMap.keySet()) {
+            if (transportMap.get(type))
+                transportAvailable.add(type);
+        }
+
         Solver solver = SolverFactory.getAppropriateSolver(schedule, start, end,
-                departureTime, arrivalTime, transportTypes, solutionType);
+                departureTime, arrivalTime, transportAvailable, solutionType);
         return solver.solve();
     }
 }
