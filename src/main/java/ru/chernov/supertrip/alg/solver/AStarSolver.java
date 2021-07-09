@@ -204,6 +204,9 @@ public class AStarSolver extends Solver {
     private void optimizeTime() {
         for (Node key : solutions.keySet()) {
             var solution = solutions.get(key);
+            if (solution == null)
+                continue;
+
             var trips = solution.getTrips();
             // going throw trips from the last to 2nd
             for (int i = trips.size() - 1; i > 0; i--) {

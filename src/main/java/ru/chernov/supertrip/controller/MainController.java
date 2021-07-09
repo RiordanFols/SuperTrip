@@ -14,6 +14,7 @@ import ru.chernov.supertrip.component.FormChecker;
 import ru.chernov.supertrip.domain.TransportType;
 import ru.chernov.supertrip.domain.entity.Solution;
 import ru.chernov.supertrip.domain.entity.User;
+import ru.chernov.supertrip.page.error.MainError;
 import ru.chernov.supertrip.service.SolutionService;
 import ru.chernov.supertrip.service.UserService;
 
@@ -112,7 +113,19 @@ public class MainController {
                 departureTime, arrivalTime, fromCity, toCity, SolutionType.TIME);
         var solution2 = solutionService.findSolution(transportMap,
                 departureTime, arrivalTime, fromCity, toCity, SolutionType.COST);
-        
+
+        if (solution1 == null && solution2 == null) {
+            ra.addAttribute("departureTime", departureTime);
+            ra.addAttribute("arrivalTime", arrivalTime);
+            ra.addAttribute("fromCity", fromCity);
+            ra.addAttribute("toCity", toCity);
+            ra.addAttribute("busAllowed", busAllowed);
+            ra.addAttribute("trainAllowed", trainAllowed);
+            ra.addAttribute("planeAllowed", planeAllowed);
+            ra.addAttribute("error", MainError.NO_TRIPS_AVAILABLE.toString());
+            return "redirect:/";
+        }
+
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
         frontendData.put("solutions", new ArrayList<>() {{
