@@ -12,9 +12,10 @@ import ru.chernov.supertrip.domain.entity.Solution;
 import ru.chernov.supertrip.repository.SolutionRepository;
 
 import java.time.LocalDateTime;
+import java.util.Arrays;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * @author Pavel Chernov
@@ -45,9 +46,9 @@ public class SolutionService {
         return solutionRepository.findById(id).orElse(null);
     }
 
-    public Solution findSolution(Map<TransportType, Boolean> transportMap,
-                                 LocalDateTime departureTime, LocalDateTime arrivalTime,
-                                 String fromCity, String toCity, SolutionType solutionType) {
+    public List<Solution> findAllSolutions(Map<TransportType, Boolean> transportMap,
+                                           LocalDateTime departureTime, LocalDateTime arrivalTime,
+                                           String fromCity, String toCity) {
         Schedule schedule = new Schedule(tripService.findAll());
         Node start = nodeService.findByName(fromCity);
         Node end = nodeService.findByName(toCity);
@@ -58,8 +59,23 @@ public class SolutionService {
                 transportAvailable.add(type);
         }
 
-        Solver solver = SolverFactory.getAppropriateSolver(schedule, start, end,
-                departureTime, arrivalTime, transportAvailable, solutionType);
-        return solver.solve();
+        Solver solver1 = SolverFactory.getProperSolver(schedule, start, end,
+                departureTime, arrivalTime, transportAvailable, SolutionType.TIME);
+        Solver solver2 = SolverFactory.getProperSolver(schedule, start, end,
+                departureTime, arrivalTime, transportAvailable, SolutionType.COST);
+
+        Solution solution1 = solver1.solve();
+        Solution solution2 = solver2.solve();
+
+        Solver solver3 = SolverFactory.getProperSolver(schedule, start, end, departureTime, arrivalTime,
+                transportAvailable, SolutionType.TIME_OPTIMAL, solution2.getCost(), solution1.getCost());
+        Solver solver4 = SolverFactory.getProperSolver(schedule, start, end, departureTime, arrivalTime,
+                transportAvailable, SolutionType.COST_OPTIMAL, solution1.getTime(), solution2.getTime());
+
+        Solution solution3 = solver3.solve();
+        Solution solution4 = solver4.solve();
+
+        return Arrays.asList(solution1, solution3, solution4, solution2);
     }
+
 }

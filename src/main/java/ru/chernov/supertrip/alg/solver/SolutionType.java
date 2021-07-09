@@ -7,6 +7,14 @@ import lombok.Getter;
  */
 @Getter
 public enum SolutionType {
-    COST,
-    TIME
+    COST(0),
+    TIME(0),
+    TIME_OPTIMAL(0.9),
+    COST_OPTIMAL(0.9);
+
+    private final double threshold;
+
+    SolutionType(double threshold) {
+        this.threshold = threshold;
+    }
 }

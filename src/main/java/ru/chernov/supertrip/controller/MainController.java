@@ -21,6 +21,7 @@ import ru.chernov.supertrip.service.UserService;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * @author Pavel Chernov
@@ -109,12 +110,10 @@ public class MainController {
             put(TransportType.PLANE, planeAllowed);
         }};
 
-        var solution1 = solutionService.findSolution(transportMap,
-                departureTime, arrivalTime, fromCity, toCity, SolutionType.TIME);
-        var solution2 = solutionService.findSolution(transportMap,
-                departureTime, arrivalTime, fromCity, toCity, SolutionType.COST);
+        List<Solution> solutions = solutionService.findAllSolutions(transportMap,
+                departureTime, arrivalTime, fromCity, toCity);
 
-        if (solution1 == null && solution2 == null) {
+        if (solutions.get(0) == null || solutions.get(3) == null) {
             ra.addAttribute("departureTime", departureTime);
             ra.addAttribute("arrivalTime", arrivalTime);
             ra.addAttribute("fromCity", fromCity);
@@ -129,10 +128,9 @@ public class MainController {
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
         frontendData.put("solutions", new ArrayList<>() {{
-            add(solutionService.save(solution1));
-            // todo: place for optimal route for future release
+            add(solutionService.save(solutions.get(0)));
             add(new Solution());
-            add(solutionService.save(solution2));
+            add(solutionService.save(solutions.get(3)));
         }});
         model.addAttribute("frontendData", frontendData);
         return "route_search_result";

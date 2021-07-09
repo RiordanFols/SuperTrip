@@ -113,10 +113,10 @@ public class AStarSolver extends Solver {
         var minCost = minCostTrip != null ? minCostTrip.getCost() : 0;
 
         return switch (solutionType) {
-            case TIME -> trips.stream()
+            case TIME, TIME_OPTIMAL -> trips.stream()
                     .filter(timeFilterPredicate)
                     .min(Comparator.comparing(Trip::getToTime)).orElse(null);
-            case COST -> trips.stream()
+            case COST, COST_OPTIMAL -> trips.stream()
                     .filter(timeFilterPredicate)
                     .filter(e -> e.getCost() == minCost)
                     .min(Comparator.comparing(Trip::getToTime)).orElse(null);
@@ -126,10 +126,10 @@ public class AStarSolver extends Solver {
     // get node with minimum weight from undone list
     private Node getMinNode() {
         return switch (solutionType) {
-            case TIME -> undone.stream()
+            case TIME, TIME_OPTIMAL -> undone.stream()
                     .filter(node -> solutions.get(node) != null)
-                    .min(Comparator.comparingDouble(o -> solutions.get(o).getTime())).orElse(null);
-            case COST -> undone.stream()
+                    .min(Comparator.comparingLong(o -> solutions.get(o).getTime())).orElse(null);
+            case COST, COST_OPTIMAL -> undone.stream()
                     .filter(node -> solutions.get(node) != null)
                     .min(Comparator.comparingDouble(o -> solutions.get(o).getCost())).orElse(null);
         };
@@ -143,8 +143,9 @@ public class AStarSolver extends Solver {
             return false;
 
         return switch (solutionType) {
-            case COST -> minNodeSolution.getCost() >= endSolution.getCost();
-            case TIME -> minNodeSolution.getTime() + getTimeHeuristicFunction(minNode, end) >= endSolution.getTime();
+            case COST, COST_OPTIMAL -> minNodeSolution.getCost() >= endSolution.getCost();
+            case TIME, TIME_OPTIMAL -> minNodeSolution.getTime()
+                    + getTimeHeuristicFunction(minNode, end) >= endSolution.getTime();
         };
     }
 
@@ -184,7 +185,7 @@ public class AStarSolver extends Solver {
             }
         }
         // if there is no solution yet or new solution is better
-        if (curSolution == null || newWeight < oldWeight) {
+        if (chooseSolution(curSolution, newWeight, oldWeight, curNode, newCost, newTime)) {
             curSolution = new Solution();
             curSolution.setTime(newTime);
             curSolution.setCost(newCost);
@@ -193,6 +194,11 @@ public class AStarSolver extends Solver {
             curSolution.getTrips().add(plannedTrip);
         }
         return curSolution;
+    }
+
+    public boolean chooseSolution(Solution curSolution, double newWeight, double oldWeight,
+                                  Node curNode, double newCost, double newTime) {
+        return curSolution == null || newWeight < oldWeight;
     }
 
     private void optimizeSolution() {
