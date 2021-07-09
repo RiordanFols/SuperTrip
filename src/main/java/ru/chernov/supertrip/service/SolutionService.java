@@ -67,6 +67,9 @@ public class SolutionService {
         Solution solution1 = solver1.solve();
         Solution solution2 = solver2.solve();
 
+        if (solution1 == null || solution2 == null)
+            return Arrays.asList(solution1, null, null, solution2);
+
         Solver solver3 = SolverFactory.getProperSolver(schedule, start, end, departureTime, arrivalTime,
                 transportAvailable, SolutionType.TIME_OPTIMAL, solution2.getCost(), solution1.getCost());
         Solver solver4 = SolverFactory.getProperSolver(schedule, start, end, departureTime, arrivalTime,
@@ -77,5 +80,4 @@ public class SolutionService {
 
         return Arrays.asList(solution1, solution3, solution4, solution2);
     }
-
 }
