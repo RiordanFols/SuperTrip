@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
-import ru.chernov.supertrip.alg.solver.SolutionType;
 import ru.chernov.supertrip.component.FormChecker;
 import ru.chernov.supertrip.domain.TransportType;
 import ru.chernov.supertrip.domain.entity.Solution;
@@ -19,9 +18,9 @@ import ru.chernov.supertrip.service.SolutionService;
 import ru.chernov.supertrip.service.UserService;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Pavel Chernov
@@ -125,13 +124,20 @@ public class MainController {
             return "redirect:/";
         }
 
+        solutions.stream()
+                .filter(Objects::nonNull)
+                .filter(e -> !e.equals(new Solution()))
+                .forEach(solutionService::save);
+
+        // for frontend
+        solutions.forEach(e -> {
+            if (e.getId() == 0)
+                solutionService.giveFakeId(e);
+        });
+
         var frontendData = new HashMap<String, Object>();
         frontendData.put("authUser", authUser);
-        frontendData.put("solutions", new ArrayList<>() {{
-            add(solutionService.save(solutions.get(0)));
-            add(new Solution());
-            add(solutionService.save(solutions.get(3)));
-        }});
+        frontendData.put("solutions", solutions);
         model.addAttribute("frontendData", frontendData);
         return "route_search_result";
     }

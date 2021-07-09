@@ -3,7 +3,7 @@ a {
 }
 
 .main {
-    width: 1350px;
+    width: 1450px;
 }
 
 .route-search-result {
@@ -18,7 +18,7 @@ a {
 
 .solution-header {
     border-right: white solid 2px;
-    width: 418px;
+    width: 375px;
     height: 25px;
     margin-right: 10px;
     padding: 10px 10px;
@@ -35,7 +35,6 @@ a {
 }
 
 .solution {
-    width: 396px;
     padding: 10px 10px;
     border-right: white solid 2px;
 }
@@ -47,6 +46,11 @@ a {
 
 .solution-metrics-block {
 
+}
+
+.solution-metrics-block-error {
+    width: 180px;
+    margin: 0 auto;
 }
 
 .solution-trips-block {

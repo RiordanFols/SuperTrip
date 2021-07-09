@@ -12,10 +12,9 @@ import ru.chernov.supertrip.domain.entity.Solution;
 import ru.chernov.supertrip.repository.SolutionRepository;
 
 import java.time.LocalDateTime;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author Pavel Chernov
@@ -34,12 +33,15 @@ public class SolutionService {
         this.nodeService = nodeService;
     }
 
-    public Solution save(Solution solution) {
+    public void save(Solution solution) {
         if (solution != null) {
             solution.setCreationDateTime(LocalDateTime.now());
-            return solutionRepository.save(solution);
+            solutionRepository.save(solution);
         }
-        return null;
+    }
+
+    public void giveFakeId(Solution solution) {
+        solution.setId(new Random().nextInt(1_000_000) + 1_000_000);
     }
 
     public Solution findById(long id) {
@@ -78,6 +80,8 @@ public class SolutionService {
         Solution solution3 = solver3.solve();
         Solution solution4 = solver4.solve();
 
-        return Arrays.asList(solution1, solution3, solution4, solution2);
+        return Stream.of(solution1, solution3, solution4, solution2)
+                .map(e -> e == null ? new Solution() : e)
+                .collect(Collectors.toList());
     }
 }
