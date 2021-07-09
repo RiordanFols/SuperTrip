@@ -24,9 +24,6 @@ public class Solution {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM-dd-yyyy HH:mm")
     private LocalDateTime creationDateTime;
 
-    @Transient
-    private Number metric;
-
     @Column(nullable = false, updatable = false)
     private long time;
 
