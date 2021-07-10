@@ -14,6 +14,7 @@ import ru.chernov.supertrip.domain.TransportType;
 import ru.chernov.supertrip.domain.entity.Solution;
 import ru.chernov.supertrip.domain.entity.User;
 import ru.chernov.supertrip.page.error.MainError;
+import ru.chernov.supertrip.service.NodeService;
 import ru.chernov.supertrip.service.SolutionService;
 import ru.chernov.supertrip.service.UserService;
 
@@ -31,12 +32,15 @@ public class MainController {
     private final SolutionService solutionService;
     private final UserService userService;
     private final FormChecker formChecker;
+    private final NodeService nodeService;
 
     @Autowired
-    public MainController(SolutionService solutionService, UserService userService, FormChecker formChecker) {
+    public MainController(SolutionService solutionService, UserService userService,
+                          FormChecker formChecker, NodeService nodeService) {
         this.solutionService = solutionService;
         this.userService = userService;
         this.formChecker = formChecker;
+        this.nodeService = nodeService;
     }
 
     @GetMapping("/")
@@ -65,6 +69,7 @@ public class MainController {
             put("planeAllowed", planeAllowed);
         }};
         frontendData.put("formData", formData);
+        frontendData.put("cities", nodeService.findAllSorted());
         frontendData.put("authUser", authUser);
         frontendData.put("error", error);
         frontendData.put("notification", notification);
