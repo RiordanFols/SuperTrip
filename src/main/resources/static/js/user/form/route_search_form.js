@@ -3,7 +3,8 @@ let routeSearchForm = new Vue({
     data: {
         fd: frontendData.formData,
         error: frontendData.error,
-        notification: frontendData.notification
+        notification: frontendData.notification,
+        cities: frontendData.cities,
     },
     template:
         '<form method="post" action="/">' +
@@ -15,10 +16,14 @@ let routeSearchForm = new Vue({
 
                 '<div class="form-block-left">' +
                     '<div class="form-block-left-line">' +
-                        '<input class="city-input" type="text" maxlength="50" name="fromCity" placeholder="From"' +
-                            ' :value="fd.fromCity" required autofocus>' +
-                        '<input class="city-input" type="text" maxlength="50" name="toCity" placeholder="To"' +
-                            ' :value="fd.toCity" required>' +
+                        '<select class="city-input" name="fromCity" :value="fd.fromCity" required autofocus>' +
+                            '<option disabled selected value="">Departure city</option> ' +
+                            '<option v-for="city in cities" :key="city.id" :value="city.name">{{ city.name }}</option>' +
+                        '</select>' +
+                        '<select class="city-input" name="toCity" :value="fd.toCity" required>' +
+                            '<option disabled selected value="">Arrival city</option> ' +
+                            '<option v-for="city in cities" :key="city.id" :value="city.name">{{ city.name }}</option>' +
+                        '</select>' +
                     '</div>' +
                     '<div class="form-block-left-line">' +
                         '<div class="datetime-input-line">' +
