@@ -10,6 +10,7 @@ a {
     background-color: rgba(0, 0, 0, 0.75);
     color: white;
     border-radius: 5px;
+    margin: 0 auto;
 }
 
 .solutions-header {

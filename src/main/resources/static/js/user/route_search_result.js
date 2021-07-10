@@ -27,20 +27,17 @@ Vue.component('solution', {
     props: ['solution'],
     template:
         '<td class="solution">' +
-            '<div class="solution-metrics-block-error" v-if="solution == null || solution.type == null">Sorry, can\'t find route</div>' +
-            '<div v-else>' +
-                '<div class="solution-metrics-block">' +
-                    '<time-separator :time="solution.time"/>' +
-                    '<div>Cost &#61;  {{ solution.cost }} $</div>' +
-                '</div>' +
-                    '<div class="solution-trips-block">' +
-                    '<div>Route:</div>' +
-                    '<solution-trip v-for="trip in solution.trips" :key="trip.id" :trip="trip"/>' +
-                '</div>' +
-                '<a class="buy-btn-href" v-bind:href="\'/ticket/assemble/\' + solution.id">' +
-                    '<div class="buy-btn">Buy</div>' +
-                '</a>' +
+            '<div class="solution-metrics-block">' +
+                '<time-separator :time="solution.time"/>' +
+                '<div>Cost &#61;  {{ solution.cost }} $</div>' +
             '</div>' +
+                '<div class="solution-trips-block">' +
+                '<div>Route:</div>' +
+                '<solution-trip v-for="trip in solution.trips" :key="trip.id" :trip="trip"/>' +
+            '</div>' +
+            '<a class="buy-btn-href" v-bind:href="\'/ticket/assemble/\' + solution.id">' +
+                '<div class="buy-btn">Buy</div>' +
+            '</a>' +
         '</td>'
 });
 
@@ -63,11 +60,8 @@ Vue.component('solution-header', {
             case "COST":
                 this.header = "Best cost";
                 break;
-            case "TIME_OPTIMAL":
-                this.header = "Time priority";
-                break;
-            case "COST_OPTIMAL":
-                this.header = "Cost priority";
+            case "TIME_OPTIMAL": case "COST_OPTIMAL":
+                this.header = "Optimal";
                 break;
             default:
                 this.header = "No route";
@@ -84,10 +78,12 @@ let routeSearchResult = new Vue({
     template:
         '<table class="route-search-result">' +
             '<tr class="solutions-header">' +
-                '<solution-header v-for="solution in solutions" :key="solution.id" :solution="solution"/>' +
+                '<solution-header v-for="solution in solutions" :key="solution.id" :solution="solution" ' +
+                    'v-if="solution != null && solution.type != null"/>' +
             '</tr>' +
             '<tr class="solutions">' +
-                '<solution v-for="solution in solutions" :key="solution.id" :solution="solution"/>' +
+                '<solution v-for="solution in solutions" :key="solution.id" :solution="solution" ' +
+                    'v-if="solution != null && solution.type != null"/>' +
             '</tr>' +
         '</table>'
 });
