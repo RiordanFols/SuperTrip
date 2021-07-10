@@ -78,7 +78,12 @@ public class SolutionService {
                 transportAvailable, SolutionType.COST_OPTIMAL, solution1.getTime(), solution2.getTime());
 
         Solution solution3 = solver3.solve();
+        if (solution3 != null && solution3.equals(solution1))
+            solution3 = null;
+
         Solution solution4 = solver4.solve();
+        if (solution4 != null && solution4.equals(solution2))
+            solution4 = null;
 
         return Stream.of(solution1, solution3, solution4, solution2)
                 .map(e -> e == null ? new Solution() : e)

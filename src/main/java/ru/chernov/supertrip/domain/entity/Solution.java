@@ -2,6 +2,7 @@ package ru.chernov.supertrip.domain.entity;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import ru.chernov.supertrip.alg.solver.SolutionType;
 
 import javax.persistence.*;
@@ -14,6 +15,7 @@ import java.util.List;
  */
 @Data
 @Entity
+@EqualsAndHashCode(of = {"time", "cost"})
 public class Solution {
 
     @Id
