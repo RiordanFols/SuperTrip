@@ -29,15 +29,16 @@ public class SolverFactory {
 
     public static Solver getProperSolver(Schedule schedule, Node start, Node end, LocalDateTime startTime,
                                          LocalDateTime endTime, Set<TransportType> transportTypesAvailable,
-                                         SolutionType solutionType, double minWeight, double maxWeight) {
+                                         SolutionType solutionType, long minTime, long maxTime,
+                                         double minCost, double maxCost) {
         switch (solutionType) {
             case TIME_OPTIMAL -> {
                 return new PriorityTimeSolver(schedule, start, end, startTime, endTime, transportTypesAvailable,
-                        solutionType, minWeight, maxWeight);
+                        solutionType, minCost, maxCost, maxTime);
             }
             case COST_OPTIMAL -> {
                 return new PriorityCostSolver(schedule, start, end, startTime, endTime, transportTypesAvailable,
-                        solutionType, minWeight, maxWeight);
+                        solutionType, minTime, maxTime, maxCost);
             }
             default -> throw new IllegalArgumentException();
         }

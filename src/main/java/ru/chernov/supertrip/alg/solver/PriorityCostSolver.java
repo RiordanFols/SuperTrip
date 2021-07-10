@@ -14,15 +14,17 @@ import java.util.Set;
 public class PriorityCostSolver extends DijkstraSolver {
 
 
-    private final double upTimeThreshold;
-    private final double downTimeThreshold;
+    private final long upTimeThreshold;
+    private final long downTimeThreshold;
+    private final double maxCost;
 
     public PriorityCostSolver(Schedule schedule, Node start, Node end, LocalDateTime startTime,
                               LocalDateTime endTime, Set<TransportType> transportTypesAvailable,
-                              SolutionType solutionType, double minTime, double maxTime) {
+                              SolutionType solutionType, long minTime, long maxTime, double maxCost) {
         super(schedule, start, end, startTime, endTime, transportTypesAvailable, solutionType);
-        upTimeThreshold = minTime + (maxTime - minTime) * solutionType.getThreshold();
+        upTimeThreshold = Math.round(minTime + (maxTime - minTime) * solutionType.getThreshold());
         downTimeThreshold = minTime;
+        this.maxCost = maxCost;
     }
 
     @Override
@@ -32,7 +34,8 @@ public class PriorityCostSolver extends DijkstraSolver {
             return (curSolution == null || newWeight < oldWeight);
         else
             return (curSolution == null || newWeight < oldWeight)
-                    && newTime <= upTimeThreshold
-                    && newTime > downTimeThreshold;
+                    && newTime < upTimeThreshold
+                    && newTime > downTimeThreshold
+                    && newCost <= maxCost;
     }
 }

@@ -9,8 +9,8 @@ import lombok.Getter;
 public enum SolutionType {
     COST(0),
     TIME(0),
-    TIME_OPTIMAL(0.9),
-    COST_OPTIMAL(0.9);
+    TIME_OPTIMAL(0.95),
+    COST_OPTIMAL(0.95);
 
     private final double threshold;
 

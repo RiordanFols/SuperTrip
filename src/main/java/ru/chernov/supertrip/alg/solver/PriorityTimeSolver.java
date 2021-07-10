@@ -15,13 +15,15 @@ public class PriorityTimeSolver extends AStarSolver {
 
     private final double upCostThreshold;
     private final double downCostThreshold;
+    private final long maxTime;
 
     public PriorityTimeSolver(Schedule schedule, Node start, Node end, LocalDateTime startTime,
                               LocalDateTime endTime, Set<TransportType> transportTypesAvailable,
-                              SolutionType solutionType, double minCost, double maxCost) {
+                              SolutionType solutionType, double minCost, double maxCost, long maxTime) {
         super(schedule, start, end, startTime, endTime, transportTypesAvailable, solutionType);
         upCostThreshold = minCost + (maxCost - minCost) * solutionType.getThreshold();
         downCostThreshold = minCost;
+        this.maxTime = maxTime;
     }
 
     @Override
@@ -31,7 +33,8 @@ public class PriorityTimeSolver extends AStarSolver {
             return (curSolution == null || newWeight < oldWeight);
         else
             return (curSolution == null || newWeight < oldWeight)
-                    && newCost <= upCostThreshold
-                    && newCost > downCostThreshold;
+                    && newCost < upCostThreshold
+                    && newCost > downCostThreshold
+                    && newTime <= maxTime;
     }
 }
